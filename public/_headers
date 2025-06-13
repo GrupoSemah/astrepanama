@@ -1,0 +1,15 @@
+/*
+  # 1. Content Security Policy
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*; font-src 'self'; connect-src 'self'; media-src 'self'; object-src 'none'; frame-src 'self'; worker-src 'self'; frame-ancestors 'self'; form-action 'self'; upgrade-insecure-requests; block-all-mixed-content;
+  
+  # 2. HTTP Strict Transport Security
+  Strict-Transport-Security: max-age=63072000; includeSubDomains; preload
+  
+  # 3. X-Content-Type-Options
+  X-Content-Type-Options: nosniff
+  
+  # 4. X-Frame-Options
+  X-Frame-Options: SAMEORIGIN
+  
+  # 5. Referrer-Policy
+  Referrer-Policy: strict-origin-when-cross-origin

@@ -1,0 +1,79 @@
+---
+// No necesitamos importar de lucide-astro ya que usaremos SVG inline
+
+// Tipo para las propiedades del componente
+interface Props {
+  isOpen: boolean;
+}
+
+const { isOpen } = Astro.props;
+
+// Lista de enlaces del menú con anclas a las secciones en la misma página
+const menuLinks = [
+  { text: 'Inicio', href: '#inicio', id: 'inicio' },
+  { text: 'Diseño', href: '#diseno', id: 'diseno' },
+  { text: 'Apartamentos', href: '#apartamentos', id: 'apartamentos' },
+  { text: 'Amenidades', href: '#amenidades', id: 'amenidades' },
+  { text: 'Ubicación', href: '#ubicacion', id: 'ubicacion' },
+  { text: 'Contacto', href: '#contacto', id: 'contacto' },
+];
+---
+
+<div id="sideMenu" class={`fixed top-0 right-0 w-full md:w-[430px] h-full bg-astreblue z-50 transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : 'translate-x-full'}`}>
+  <!-- Fondo decorativo con pattern hexagonal -->
+   <div class="absolute bottom-6 right-3 z-0">
+    <img src="/icons/svg/background-menu.svg" alt="" class="w-80 h-80 object-cover" />
+   </div>
+
+  
+  <div class="p-6 flex justify-end relative z-10">
+    <button id="closeMenu" class="text-white hover:text-opacity-80 transition-opacity" aria-label="Close Menu">
+      <!-- Usar una X simple como en la imagen -->
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M18 6L6 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M6 6L18 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+  
+  <nav class="mt-24 relative z-10">
+    <ul class="flex flex-col space-y-12 px-16">
+      {menuLinks.map((link) => (
+        <li>
+          <a 
+            href={link.href} 
+            class="text-white text-3xl block py-2 font-medium hover:opacity-80 transition-opacity"
+            style="font-family: var(--font-heading);"
+          >
+            {link.text}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </nav>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const sideMenu = document.getElementById('sideMenu');
+    const closeMenu = document.getElementById('closeMenu');
+    
+    // Cerrar el menú cuando se hace clic en el botón de cierre
+    closeMenu?.addEventListener('click', () => {
+      sideMenu?.classList.add('translate-x-full');
+    });
+    
+    // Escuchar el evento personalizado para abrir el menú
+    document.addEventListener('toggle-menu', () => {
+      sideMenu?.classList.remove('translate-x-full');
+    });
+
+    // Cerrar el menú cuando se hace clic en un enlace
+    const menuLinks = document.querySelectorAll('#sideMenu a');
+    menuLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        sideMenu?.classList.add('translate-x-full');
+      });
+    });
+  });
+</script>

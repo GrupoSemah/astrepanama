@@ -1,0 +1,70 @@
+---
+import Layout from '@/layouts/Layout.astro';
+import Navbar from '@/components/ui/Navbar.astro';
+import SideMenu from '@/components/ui/SideMenu.astro';
+import Hero from '@/components/sections/Hero.astro';
+import Amenities from '@/components/sections/Amenities.astro';
+
+import Design from '@/components/sections/Design.astro';
+import Apartments from '@/components/sections/Apartments.astro';
+import Location from '@/components/sections/Location.astro';
+import Contact from '@/components/sections/Contact.astro';
+
+const isMenuOpen = false;
+
+const sectionMapping = {
+  home: { id: "inicio", title: "Inicio" },
+  design: { id: "diseno", title: "Diseño" },
+  apartments: { id: "apartamentos", title: "Apartamentos" },
+  amenities: { id: "amenidades", title: "Amenidades" },
+  location: { id: "ubicacion", title: "Ubicación" },
+  contact: { id: "contacto", title: "Contacto" }
+};
+---
+
+<Layout title="Astre Panamá | Vive en el corazón de San Francisco">
+  <Navbar />
+  <SideMenu isOpen={isMenuOpen} />
+  
+  <main>
+    <section id={sectionMapping.home.id} class="min-h-screen">
+      <Hero />
+    </section>
+    
+    <section id={sectionMapping.design.id} class="min-h-screen bg-white p-8">
+      <Design />
+    </section>
+    
+    <section id={sectionMapping.apartments.id} class="min-h-screen bg-secondary p-8">
+      <Apartments />
+    </section>
+    
+    <section id={sectionMapping.amenities.id} class="min-h-screen bg-white p-8">
+      <Amenities />
+    </section>
+    
+    <section id={sectionMapping.location.id} class="min-h-screen bg-secondary">
+      <Location />
+    </section>
+  </main>
+  <Contact />
+</Layout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(this: HTMLAnchorElement, e: Event) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href')?.substring(1);
+        const targetElement = document.getElementById(targetId || '');
+        
+        if (targetElement) {
+          window.scrollTo({
+            top: targetElement.offsetTop,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  });
+</script>

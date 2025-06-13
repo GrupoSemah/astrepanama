@@ -1,0 +1,76 @@
+---
+interface Props {
+  isMenuOpen?: boolean;
+}
+
+const { isMenuOpen = false } = Astro.props;
+---
+
+<header class="w-full fixed top-0 left-0 z-50 bg-primary text-white h-16 md:h-20 flex items-center justify-between px-4 md:px-8">
+  <div class="logo">
+    <a href="/" class="flex items-center">
+      <img src="/icons/svg/logoastre.svg" alt="Astre Logo" height="28" class="h-7 md:h-8" />
+    </a>
+  </div>
+  
+  <div class="hidden md:flex items-center space-x-8 absolute left-1/2 transform -translate-x-1/2">
+    <a href="#diseno" class="nav-link hover:scale-110 hover:font-bold" data-section="diseno">Diseño</a>
+    <a href="#apartamentos" class="nav-link hover:scale-110 hover:font-bold" data-section="apartamentos">Apartamentos</a>
+    <a href="#amenidades" class="nav-link hover:scale-110 hover:font-bold" data-section="amenidades">Amenidades</a>
+    <a href="#ubicacion" class="nav-link hover:scale-110 hover:font-bold" data-section="ubicacion">Ubicación</a>
+  </div>
+  
+  <div class="hidden md:block">
+    <a href="#contacto" class="text-white font-medium py-1 px-4 border border-white rounded-md hover:bg-white hover:text-primary transition-colors">Contacto</a>
+  </div>
+  
+  <button id="menuToggle" class="menu-toggle focus:outline-none md:hidden" aria-label="Toggle Menu">
+    <img src="/icons/svg/menu-item.svg" alt="Menu" width="52" height="52" />
+  </button>
+</header>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const menuToggle = document.getElementById('menuToggle');
+    
+    menuToggle?.addEventListener('click', () => {
+      const event = new CustomEvent('toggle-menu');
+      document.dispatchEvent(event);
+    });
+    
+    const navLinks = document.querySelectorAll('header a[href^="#"]');
+    
+    navLinks.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        const targetId = link.getAttribute('href')?.substring(1);
+        if (!targetId) return;
+        
+        const targetElement = document.getElementById(targetId);
+        if (!targetElement) return;
+        
+        // Obtener la altura del navbar para restar del scroll
+        const navbar = document.querySelector('header');
+        const navbarHeight = navbar ? navbar.offsetHeight : 0;
+        
+        // Calcular la posición del elemento destino considerando el navbar
+        const targetPosition = targetElement.getBoundingClientRect().top + window.scrollY - navbarHeight;
+        
+        // Scroll suave a la posición calculada
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+      });
+    });
+  });
+</script>
+
+<style>
+  .menu-toggle {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+</style>

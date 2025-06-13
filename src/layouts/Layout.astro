@@ -1,0 +1,72 @@
+---
+import '@/styles/global.css';
+
+interface Props {
+	title?: string;
+	description?: string;
+	canonicalUrl?: string;
+	image?: string;
+	twitterUsername?: string;
+}
+
+const { 
+	title = "Astre Panamá | Vive en el corazón de San Francisco",
+	description = "Céntrico, cómodo y estratégico. Apartamentos de lujo en el corazón de San Francisco, Panamá.",
+	canonicalUrl = Astro.url.href,
+	image = "/images/astre-panama-og.jpg", // Asume que existe, si no, crea una imagen OG
+	twitterUsername = "@astrepty" // Actualiza con el nombre de usuario correcto
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<meta name="theme-color" content="#222222" />
+		<link rel="manifest" href="/manifest.json" />
+		<meta name="generator" content={Astro.generator} />
+		
+		<!-- SEO Meta Tags Primarios -->
+		<title>{title}</title>
+		<meta name="description" content={description} />
+		<link rel="canonical" href={canonicalUrl} />
+		
+		<!-- Open Graph / Facebook -->
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content={Astro.url.href} />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:image" content={new URL(image, Astro.url.origin).href} />
+		<meta property="og:locale" content="es_ES" />
+		<meta property="og:site_name" content="Astre Panamá" />
+		
+		<!-- Twitter -->
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:url" content={Astro.url.href} />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={new URL(image, Astro.url.origin).href} />
+		<meta name="twitter:creator" content={twitterUsername} />
+		
+		<!-- Google Fonts: Mermaid (para títulos) y Raleway (para texto) con display=swap para rendimiento -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Mermaid&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+	</head>
+	<body>
+		<slot />
+	</body>
+</html>
+
+<style>
+	html,
+	body {
+		margin: 0;
+		padding: 0;
+		width: 100%;
+		height: 100%;
+	}
+</style>

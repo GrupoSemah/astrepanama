@@ -1,0 +1,146 @@
+---
+import Carousel from "../ui/Carousel.astro";
+
+interface Props {
+  title?: string;
+}
+
+const { 
+  title = "Vive en lo alto del confort"
+} = Astro.props;
+
+// Imágenes para el carrusel
+const carouselImages = [
+  "https://images.unsplash.com/photo-1484154218962-a197022b5858?q=80&w=1470&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1501183638710-841dd1904471?q=80&w=1470&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1464288550599-43d5a73451b8?q=80&w=1470&auto=format&fit=crop"
+];
+---
+
+<section id="diseno" class="w-full bg-white overflow-hidden pt-20 md:pt-20">
+  <!-- Versión móvil (Imagen arriba, contenido abajo) -->
+  <div class="md:hidden">
+    <!-- Carousel primero en móvil -->
+    <div class="mb-8">
+      <Carousel images={carouselImages} />
+    </div>
+    
+    <div class="px-6 max-w-[394px] mx-auto">
+      <h2 class="text-3xl font-bold mb-5 text-center" style="font-family: var(--font-heading);">
+        Vive en lo alto del confort
+      </h2>
+      
+      <p class="text-base text-gray-700 mb-4 text-center" style="font-family: var(--font-body);">
+        Ubicado en el prestigioso sector de San Francisco, PH Astre redefine el concepto de vida urbana en Ciudad de Panamá.
+      </p>
+      
+      <p class="text-base text-gray-700 mb-8 text-center" style="font-family: var(--font-body);">
+        Este exclusivo proyecto residencial combina elegancia, funcionalidad y una conexión directa con los puntos más dinámicos de la ciudad.
+      </p>
+      
+      <!-- Botón agendar visita -->
+      <div class="flex justify-center">
+        <a 
+          href="#contacto" 
+          class="group inline-flex items-center px-8 py-4 border-2 border-black text-black font-medium rounded-lg transition-colors hover:bg-black hover:text-white"
+        >
+          <span>Agendar una visita</span>
+          <svg 
+            class="ml-2 w-5 h-5 transition-transform duration-300 group-hover:rotate-90" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path 
+              d="M7 17L17 7M17 7H7M17 7V17" 
+              stroke="currentColor" 
+              stroke-width="2" 
+              stroke-linecap="round" 
+              stroke-linejoin="round"
+            />
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Versión desktop (Texto arriba, carousel abajo) -->
+  <div class="hidden md:block container mx-auto px-8 pb-24">
+    <!-- Título y párrafos en el centro -->
+    <div class="max-w-3xl mx-auto text-center mb-12">
+      <h2 class="text-5xl font-bold mb-6" style="font-family: var(--font-heading);">
+        Vive en lo alto del confort
+      </h2>
+      
+      <p class="text-md text-gray-700 mb-4" style="font-family: var(--font-body);">
+        Ubicado en el prestigioso sector de San Francisco, PH Astre redefine el concepto de vida urbana en Ciudad de Panamá.
+      </p>
+      
+      <p class="text-md text-gray-700 mb-8" style="font-family: var(--font-body);">
+        Este exclusivo proyecto residencial combina elegancia, funcionalidad y una conexión directa con los puntos más dinámicos de la ciudad.
+      </p>
+      
+      <!-- Botón en el centro debajo del texto -->
+      <div class="flex justify-center mb-12">
+        <a 
+          href="#contacto" 
+          class="group inline-flex items-center px-4 py-2 border-2 border-black text-black font-medium rounded-lg transition-colors hover:bg-black hover:text-white"
+        >
+          <span>Agenda una visita</span>
+          <svg 
+            class="ml-2 w-5 h-5 transition-transform duration-300 group-hover:rotate-90" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path 
+              d="M7 17L17 7M17 7H7M17 7V17" 
+              stroke="currentColor" 
+              stroke-width="2" 
+              stroke-linecap="round" 
+              stroke-linejoin="round"
+            />
+        </a>
+      </div>
+    </div>
+    
+    <!-- Carousel abajo del botón con botones a los lados -->
+    <div class="max-w-xl mx-auto relative">
+      <!-- Botón Anterior (fuera de la imagen, a la izquierda) -->
+      <button 
+        class="absolute left-0 top-1/2 -translate-x-16 -translate-y-1/2 w-12 h-12 rounded-full border-2 border-[#222222] flex items-center justify-center hover:bg-gray-100 transition-colors" 
+        aria-label="Anterior imagen"
+        onclick="document.querySelector('#design-carousel .carousel-prev').click()"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 18L9 12L15 6" stroke="#222222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      
+      <!-- Botón Siguiente (fuera de la imagen, a la derecha) -->
+      <button 
+        class="absolute right-0 top-1/2 translate-x-16 -translate-y-1/2 w-12 h-12 rounded-full border-2 border-[#222222] flex items-center justify-center hover:bg-gray-100 transition-colors" 
+        aria-label="Siguiente imagen"
+        onclick="document.querySelector('#design-carousel .carousel-next').click()"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 6L15 12L9 18" stroke="#222222" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      
+      <!-- El carousel mantiene su tamaño original -->
+      <Carousel 
+        images={carouselImages} 
+        id="design-carousel" 
+        class="rounded-xl overflow-hidden" 
+      />
+      
+      <style>
+        /* Ocultar los botones originales del carousel */
+        :global(#design-carousel .carousel-prev),
+        :global(#design-carousel .carousel-next) {
+          display: none;
+        }
+      </style>
+    </div>
+  </div>
+</section>

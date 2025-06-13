@@ -1,0 +1,12 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colores del proyecto */
+  --color-primary: #222222;
+  --color-secondary: #FFFFFF;
+  --color-astreblue: #1D3557;
+  
+  /* Configuración de fuentes */
+  --font-heading: 'Mermaid', serif;
+  --font-body: 'Raleway', sans-serif;
+}

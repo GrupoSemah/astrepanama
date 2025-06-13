@@ -1,0 +1,198 @@
+---
+import { getImageUrl } from "@/services/cloudStorage";
+import Carousel from "../ui/Carousel.astro";
+
+interface Props {
+  title?: string;
+}
+
+const { title = "Amenidades" } = Astro.props;
+
+// Descripción del amenity
+const description = "Relájate con estilo, rodeado de paisajismo moderno";
+
+// Imágenes para el carousel de la piscina
+const poolImages = [
+  "https://images.unsplash.com/photo-1576013551627-0ee425f8b394?q=80&w=1470&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1575429198097-0414ec08e8cd?q=80&w=1470&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=1470&auto=format&fit=crop",
+];
+---
+
+<section
+  id="amenidades"
+  class="min-h-screen w-full flex items-center justify-center bg-white"
+>
+  <!-- Versión Móvil -->
+  <div class="w-full md:hidden">
+    <div class="container mx-auto px-6">
+      <!-- Título y descripción centrados -->
+      <div class="text-center mb-6">
+        <h2
+          class="text-5xl font-bold text-[#222222] mb-3"
+          style="font-family: var(--font-heading);"
+        >
+          Piscina
+        </h2>
+        <p
+          class="text-base text-[#222222] opacity-80"
+          style="font-family: var(--font-body);"
+        >
+          {description}
+        </p>
+      </div>
+
+      <!-- Carousel con imágenes -->
+      <div class="mb-8">
+        <div class="relative">
+          <Carousel
+            images={poolImages}
+            id="pool-carousel-mobile"
+            class="rounded-3xl overflow-hidden aspect-[16/10]"
+          />
+        </div>
+
+        <!-- Botones personalizados para móvil (posición inferior) -->
+        <div class="custom-carousel-controls flex justify-center mt-8 gap-6">
+          <button
+            class="custom-prev-btn w-12 h-12 rounded-full border-2 border-[#222222] flex items-center justify-center hover:bg-gray-100 transition-colors"
+            aria-label="Anterior imagen"
+            onclick="document.querySelector('#pool-carousel-mobile .carousel-prev').click()"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M15 18L9 12L15 6"
+                stroke="#222222"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+            </svg>
+          </button>
+          <button
+            class="custom-next-btn w-12 h-12 rounded-full border-2 border-[#222222] flex items-center justify-center hover:bg-gray-100 transition-colors"
+            aria-label="Siguiente imagen"
+            onclick="document.querySelector('#pool-carousel-mobile .carousel-next').click()"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M9 6L15 12L9 18"
+                stroke="#222222"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hidden md:block w-full">
+    <div class="container mx-auto px-8">
+      <div class="grid grid-cols-2 gap-20 items-center">
+        <div>
+          <div class="mb-6">
+            <img
+              src="/icons/svg/pool.svg"
+              alt="Icono de piscina"
+              class="w-12 h-12"
+            />
+          </div>
+
+          <!-- Título y descripción -->
+          <h2
+            class="text-4xl font-bold text-[#222222] mb-3"
+            style="font-family: var(--font-heading);"
+          >
+            Piscina
+          </h2>
+          <p
+            class="text-lg text-[#222222] opacity-80 mb-8 max-w-md"
+            style="font-family: var(--font-body);"
+          >
+            {description}
+          </p>
+        </div>
+
+        <!-- Columna derecha con carousel -->
+        <div class="relative">
+          <Carousel
+            images={poolImages}
+            id="pool-carousel-desktop"
+            class="rounded-3xl overflow-hidden aspect-[16/10]"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-center mt-16 gap-16">
+      <button
+        class="custom-prev-btn w-12 h-12 rounded-full border-2 border-[#222222] bg-white flex items-center justify-center shadow-md hover:bg-gray-100 transition-colors"
+        aria-label="Anterior imagen"
+        onclick="document.querySelector('#pool-carousel-desktop .carousel-prev').click()"
+      >
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M15 18L9 12L15 6"
+            stroke="#222222"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+      </button>
+      <button
+        class="custom-next-btn w-12 h-12 rounded-full border-2 border-[#222222] bg-white flex items-center justify-center shadow-md hover:bg-gray-100 transition-colors"
+        aria-label="Siguiente imagen"
+        onclick="document.querySelector('#pool-carousel-desktop .carousel-next').click()"
+      >
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M9 6L15 12L9 18"
+            stroke="#222222"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Ocultar los botones originales del carousel */
+  :global(#pool-carousel-mobile .carousel-prev),
+  :global(#pool-carousel-mobile .carousel-next),
+  :global(#pool-carousel-desktop .carousel-prev),
+  :global(#pool-carousel-desktop .carousel-next) {
+    display: none !important;
+  }
+
+  /* Ocultar los indicadores de posición (dots) */
+  :global(.carousel-container .carousel-dot) {
+    display: none !important;
+  }
+</style>
