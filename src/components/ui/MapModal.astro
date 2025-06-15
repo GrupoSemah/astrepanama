@@ -43,54 +43,58 @@ const { imageUrl, imageAlt = "Mapa ampliado" } = Astro.props;
   </div>
 </div>
 
-<script>
-  // Definimos la interfaz para el evento personalizado
-  interface MapModalEvent extends CustomEvent {
-    detail: {
-      imageUrl: string;
-    };
-  }
-
-  // Función simple para gestionar el modal del mapa
-  document.addEventListener('DOMContentLoaded', () => {
+<script is:inline>
+  // Funciones globales para operar el modal del mapa
+  function openMapModal(imageUrl) {
     const mapModal = document.getElementById('map-modal');
-    const closeModalBtn = document.getElementById('close-modal');
-    const modalImage = document.getElementById('modal-map-image') as HTMLImageElement;
-
-    // Abrir modal
-    document.addEventListener('openMapModal', ((e: MapModalEvent) => {
-      if (mapModal && modalImage) {
-        const imageUrl = e.detail?.imageUrl;
-        
-        if (imageUrl) {
-          modalImage.src = imageUrl;
-        }
-        
-        // Mostrar modal
-        mapModal.classList.remove('hidden');
-        mapModal.classList.add('flex');
-        document.body.style.overflow = 'hidden';
+    const modalImage = document.getElementById('modal-map-image');
+    
+    if (mapModal && modalImage) {
+      if (imageUrl) {
+        modalImage.src = imageUrl;
       }
-    }) as EventListener);
-
-    // Cerrar con botón X
-    if (closeModalBtn) {
-      closeModalBtn.addEventListener('click', () => {
-        if (mapModal) {
-          mapModal.classList.add('hidden');
-          mapModal.classList.remove('flex');
-          document.body.style.overflow = '';
-        }
-      });
+      
+      // Mostrar modal
+      mapModal.classList.remove('hidden');
+      mapModal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+      
+      // Añadir listener para tecla Escape
+      document.addEventListener('keydown', handleEscape);
     }
-
-    // Cerrar con tecla Escape
-    document.addEventListener('keydown', (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && mapModal && !mapModal.classList.contains('hidden')) {
-        mapModal.classList.add('hidden');
-        mapModal.classList.remove('flex');
-        document.body.style.overflow = '';
-      }
-    });
+  }
+  
+  function closeMapModal() {
+    const mapModal = document.getElementById('map-modal');
+    
+    if (mapModal) {
+      mapModal.classList.add('hidden');
+      mapModal.classList.remove('flex');
+      document.body.style.overflow = '';
+      
+      // Eliminar listener de tecla Escape
+      document.removeEventListener('keydown', handleEscape);
+    }
+  }
+  
+  function handleEscape(e) {
+    if (e.key === 'Escape') {
+      closeMapModal();
+    }
+  }
+  
+  // Inicializar el botón de cierre cuando el DOM esté listo
+  document.addEventListener('DOMContentLoaded', () => {
+    const closeModalBtn = document.getElementById('close-modal');
+    
+    if (closeModalBtn) {
+      closeModalBtn.addEventListener('click', closeMapModal);
+    }
+  });
+  
+  // También podemos seguir soportando el evento personalizado por compatibilidad
+  document.addEventListener('openMapModal', (e) => {
+    const detail = e.detail || {};
+    openMapModal(detail.imageUrl);
   });
 </script>
