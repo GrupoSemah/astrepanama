@@ -101,9 +101,9 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
         <!-- Botones personalizados para móvil (posición inferior) -->
         <div class="custom-carousel-controls flex justify-center mt-4 gap-6">
           <button
+            id="mobile-prev-btn"
             class="custom-prev-btn w-12 h-12 rounded-full border-2 border-primary flex items-center justify-center hover:bg-gray-100 transition-colors"
             aria-label="Anterior imagen"
-            onclick="document.querySelector('#pool-carousel-mobile .carousel-prev').click()"
           >
             <svg
               width="24"
@@ -121,9 +121,9 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
             </svg>
           </button>
           <button
+            id="mobile-next-btn"
             class="custom-next-btn w-12 h-12 rounded-full border-2 border-primary flex items-center justify-center hover:bg-gray-100 transition-colors"
             aria-label="Siguiente imagen"
-            onclick="document.querySelector('#pool-carousel-mobile .carousel-next').click()"
           >
             <svg
               width="24"
@@ -188,9 +188,9 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
 
     <div class="flex justify-center mt-16 gap-16">
       <button
+        id="desktop-prev-btn"
         class="custom-prev-btn w-12 h-12 rounded-full border-2 border-primary bg-white flex items-center justify-center shadow-md hover:bg-gray-100 transition-colors"
         aria-label="Anterior imagen"
-        onclick="document.querySelector('#pool-carousel-desktop .carousel-prev').click()"
       >
         <svg
           width="24"
@@ -208,9 +208,9 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
         </svg>
       </button>
       <button
+        id="desktop-next-btn"
         class="custom-next-btn w-12 h-12 rounded-full border-2 border-primary bg-white flex items-center justify-center shadow-md hover:bg-gray-100 transition-colors"
         aria-label="Siguiente imagen"
-        onclick="document.querySelector('#pool-carousel-desktop .carousel-next').click()"
       >
         <svg
           width="24"
@@ -314,17 +314,51 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
       }
     };
 
-    if (prevBtnMobile) {
-      prevBtnMobile.addEventListener('click', () => {
-        currentMobileIndex = (currentMobileIndex - 1 + amenidades.length) % amenidades.length;
-        setTimeout(() => updateInfo(currentMobileIndex, true), 50);
+    // Botones de navegación del móvil
+    const mobilePrevBtn = document.getElementById('mobile-prev-btn');
+    const mobileNextBtn = document.getElementById('mobile-next-btn');
+    
+    if (mobilePrevBtn) {
+      mobilePrevBtn.addEventListener('click', () => {
+        // Hacer clic en el botón original del carrusel, que emitirá el evento personalizado
+        const carouselPrevBtn = document.querySelector('#pool-carousel-mobile .carousel-prev') as HTMLButtonElement;
+        if (carouselPrevBtn) {
+          carouselPrevBtn.click();
+        }
       });
     }
     
-    if (nextBtnMobile) {
-      nextBtnMobile.addEventListener('click', () => {
-        currentMobileIndex = (currentMobileIndex + 1) % amenidades.length;
-        setTimeout(() => updateInfo(currentMobileIndex, true), 50);
+    if (mobileNextBtn) {
+      mobileNextBtn.addEventListener('click', () => {
+        // Hacer clic en el botón original del carrusel, que emitirá el evento personalizado
+        const carouselNextBtn = document.querySelector('#pool-carousel-mobile .carousel-next') as HTMLButtonElement;
+        if (carouselNextBtn) {
+          carouselNextBtn.click();
+        }
+      });
+    }
+    
+    // Botones de navegación de desktop
+    const desktopPrevBtn = document.getElementById('desktop-prev-btn');
+    const desktopNextBtn = document.getElementById('desktop-next-btn');
+    
+    if (desktopPrevBtn) {
+      desktopPrevBtn.addEventListener('click', () => {
+        // Hacer clic en el botón original del carrusel, que emitirá el evento personalizado
+        const carouselPrevBtn = document.querySelector('#pool-carousel-desktop .carousel-prev') as HTMLButtonElement;
+        if (carouselPrevBtn) {
+          carouselPrevBtn.click();
+        }
+      });
+    }
+    
+    if (desktopNextBtn) {
+      desktopNextBtn.addEventListener('click', () => {
+        // Hacer clic en el botón original del carrusel, que emitirá el evento personalizado
+        const carouselNextBtn = document.querySelector('#pool-carousel-desktop .carousel-next') as HTMLButtonElement;
+        if (carouselNextBtn) {
+          carouselNextBtn.click();
+        }
       });
     }
     
