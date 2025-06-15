@@ -24,7 +24,7 @@ const longitude = -79.5032962191003;
     <div class="absolute inset-0">
       <button 
         id="open-map-modal"
-        class="w-full h-full border-0 p-0 m-0 bg-transparent cursor-pointer"
+        class="w-full h-full border-0 p-0 m-0 bg-transparent cursor-pointer group"
         aria-label="Ver mapa ampliado"
       >
         <img 
@@ -33,6 +33,21 @@ const longitude = -79.5032962191003;
           class="w-full h-full object-cover" 
           id="map-image"
         />
+        
+        <!-- Ícono de lupa con signo + -->
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-sm p-4 rounded-full shadow-lg group-hover:bg-white transition-all duration-300 flex items-center justify-center z-10">
+          <div class="relative w-12 h-12">
+            <!-- Lupa -->
+            <svg class="w-12 h-12" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+            
+            <!-- Signo + en el centro del círculo de la lupa -->
+            <svg class="w-4 h-4 absolute top-[25%] left-[25%]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+          </div>
+        </div>
       </button>
     </div>
     <div class="absolute inset-0 flex items-end justify-center pb-12 md:pb-16">
@@ -68,23 +83,36 @@ const longitude = -79.5032962191003;
 <MapModal imageUrl={mapImageUrl} imageAlt="Mapa detallado de ubicación de Astre" />
 
 <script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
+  // Esperar a que el DOM esté completamente cargado
+  window.addEventListener('load', () => {
+    // Obtener referencias a los elementos
     const openModalBtn = document.getElementById('open-map-modal');
     const mapImage = document.getElementById('map-image');
-
-    if (openModalBtn && mapImage) {
+    const mapModal = document.getElementById('map-modal');
+    const modalImage = document.getElementById('modal-map-image');
+    
+    // Si todos los elementos necesarios están disponibles
+    if (openModalBtn && mapImage && mapModal && modalImage) {
+      // Configurar el evento de clic directamente
       openModalBtn.addEventListener('click', () => {
-        // Usando la función global definida en MapModal.astro
-        if (typeof openMapModal === 'function') {
-          openMapModal(mapImage.getAttribute('src'));
-        } else {
-          // Fallback usando el evento personalizado (por compatibilidad)
-          const openMapModalEvent = new CustomEvent('openMapModal', {
-            detail: { imageUrl: mapImage.getAttribute('src') }
-          });
-          document.dispatchEvent(openMapModalEvent);
+        console.log('Map button clicked'); // Debugging
+        
+        // Obtener la URL de la imagen
+        const imageUrl = mapImage.getAttribute('src');
+        if (imageUrl) {
+          // Actualizar la imagen del modal
+          modalImage.src = imageUrl;
         }
+        
+        // Mostrar el modal
+        mapModal.classList.remove('hidden');
+        mapModal.classList.add('flex');
+        document.body.style.overflow = 'hidden';
       });
+      
+      console.log('Map modal click handler set up'); // Debugging
+    } else {
+      console.error('Algunos elementos del modal de mapa no fueron encontrados');
     }
   });
 </script>
