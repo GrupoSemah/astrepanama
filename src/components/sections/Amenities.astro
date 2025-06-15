@@ -344,52 +344,24 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
 
     const carouselMobile = document.getElementById('pool-carousel-mobile');
     if (carouselMobile) {
-      let startX: number;
-      let currentX: number;
-
-      carouselMobile.addEventListener('touchstart', (e: TouchEvent) => {
-        startX = e.touches[0].clientX;
-      });
-
-      carouselMobile.addEventListener('touchend', (e: TouchEvent) => {
-        if (Math.abs(currentX - startX) > 50) {
-          if (currentX < startX) {
-            currentMobileIndex = (currentMobileIndex + 1) % amenidades.length;
-          } else {
-            currentMobileIndex = (currentMobileIndex - 1 + amenidades.length) % amenidades.length;
-          }
-          setTimeout(() => updateInfo(currentMobileIndex, true), 100);
-        }
-      });
-
-      carouselMobile.addEventListener('touchmove', (e: TouchEvent) => {
-        currentX = e.touches[0].clientX;
-      });
+      // Escuchar al nuevo evento personalizado para cambios de slide
+      carouselMobile.addEventListener('carousel-slide-changed', ((e: CustomEvent) => {
+        const { direction, index } = e.detail;
+        // Actualizar la información basada en el índice real del carousel
+        currentMobileIndex = index;
+        updateInfo(currentMobileIndex, true);
+      }) as EventListener);
     }
 
     const carouselDesktop = document.getElementById('pool-carousel-desktop');
     if (carouselDesktop) {
-      let startX: number;
-      let currentX: number;
-
-      carouselDesktop.addEventListener('touchstart', (e: TouchEvent) => {
-        startX = e.touches[0].clientX;
-      });
-
-      carouselDesktop.addEventListener('touchend', (e: TouchEvent) => {
-        if (Math.abs(currentX - startX) > 50) {
-          if (currentX < startX) {
-            currentDesktopIndex = (currentDesktopIndex + 1) % amenidades.length;
-          } else {
-            currentDesktopIndex = (currentDesktopIndex - 1 + amenidades.length) % amenidades.length;
-          }
-          setTimeout(() => updateInfo(currentDesktopIndex, false), 100);
-        }
-      });
-
-      carouselDesktop.addEventListener('touchmove', (e: TouchEvent) => {
-        currentX = e.touches[0].clientX;
-      });
+      // Escuchar al nuevo evento personalizado para cambios de slide
+      carouselDesktop.addEventListener('carousel-slide-changed', ((e: CustomEvent) => {
+        const { direction, index } = e.detail;
+        // Actualizar la información basada en el índice real del carousel
+        currentDesktopIndex = index;
+        updateInfo(currentDesktopIndex, false);
+      }) as EventListener);
     }
   });
 </script>

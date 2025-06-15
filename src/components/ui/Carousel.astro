@@ -149,11 +149,31 @@ const { images = [], id = "image-carousel", class: className = "" } = Astro.prop
     }
     
     next() {
+      const oldIndex = this.currentIndex;
       this.goToSlide(this.currentIndex + 1);
+      
+      // Solo disparar evento si realmente cambió el índice
+      if (oldIndex !== this.currentIndex) {
+        const event = new CustomEvent('carousel-slide-changed', {
+          bubbles: true,
+          detail: { direction: 'next', index: this.currentIndex }
+        });
+        this.container.dispatchEvent(event);
+      }
     }
     
     prev() {
+      const oldIndex = this.currentIndex;
       this.goToSlide(this.currentIndex - 1);
+      
+      // Solo disparar evento si realmente cambió el índice
+      if (oldIndex !== this.currentIndex) {
+        const event = new CustomEvent('carousel-slide-changed', {
+          bubbles: true,
+          detail: { direction: 'prev', index: this.currentIndex }
+        });
+        this.container.dispatchEvent(event);
+      }
     }
     
     handleTouchStart(e: TouchEvent) {
@@ -193,10 +213,23 @@ const { images = [], id = "image-carousel", class: className = "" } = Astro.prop
       if (Math.abs(diffX) > threshold) {
         if (diffX > 0) {
           this.prev();
+          // Disparar evento personalizado de cambio a slide previo
+          const prevEvent = new CustomEvent('carousel-slide-changed', {
+            bubbles: true,
+            detail: { direction: 'prev', index: this.currentIndex }
+          });
+          this.container.dispatchEvent(prevEvent);
         } else {
           this.next();
+          // Disparar evento personalizado de cambio a siguiente slide
+          const nextEvent = new CustomEvent('carousel-slide-changed', {
+            bubbles: true,
+            detail: { direction: 'next', index: this.currentIndex }
+          });
+          this.container.dispatchEvent(nextEvent);
         }
       } else {
+        // No hubo cambio de slide, se regresa al mismo
         this.goToSlide(this.currentIndex);
       }
     }
