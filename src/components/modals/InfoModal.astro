@@ -1,0 +1,142 @@
+---
+import Terms from './Terms.astro';
+import Privacy from './Privacy.astro';
+
+interface Props {
+  id?: string;
+}
+
+const { id = "info-modal" } = Astro.props;
+---
+
+<!-- Modal del contenedor principal -->
+<div id={id} class="fixed inset-0 z-50 hidden items-center justify-center">
+  <!-- Overlay oscuro de fondo -->
+  <div id="modal-overlay" class="absolute inset-0 bg-primary opacity-80"></div>
+  
+  <!-- Contenido del modal -->
+  <div class="relative z-10 w-full max-w-4xl max-h-[90vh] overflow-auto bg-white rounded-lg shadow-xl p-6 md:p-8">
+    <!-- Botón de cierre -->
+    <button 
+      id="close-modal" 
+      type="button" 
+      class="absolute top-4 right-4 p-2 text-primary hover:scale-110 hover:text-bold transition-transform cursor-pointer" 
+      aria-label="Cerrar modal"
+      onclick="closeInfoModal()"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+      <span class="sr-only">Cerrar</span>
+    </button>
+    
+    <div class="modal-content-wrapper">
+      <!-- Los contenidos de Terms.astro y Privacy.astro se cargarán aquí dinámicamente -->
+      <div id="terms-container" class="hidden">
+        <Terms />
+      </div>
+      
+      <div id="privacy-container" class="hidden">
+        <Privacy />
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  // Definición de funciones globales para manipular el modal
+  
+  // Función global para cerrar el modal
+  function closeInfoModal() {
+    console.log('Cerrando modal');
+    const modal = document.getElementById('info-modal');
+    if (modal) {
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = '';
+      document.removeEventListener('keydown', handleEscapeKey);
+    }
+  }
+  
+  // Manejador para cerrar con tecla Escape
+  function handleEscapeKey(e) {
+    if (e.key === 'Escape') closeInfoModal();
+  }
+  
+  // Función para abrir el modal con el contenido específico
+  function openInfoModal(type) {
+    console.log('Abriendo modal:', type);
+    const modal = document.getElementById('info-modal');
+    const termsContainer = document.getElementById('terms-container');
+    const privacyContainer = document.getElementById('privacy-container');
+    
+    if (!modal || !termsContainer || !privacyContainer) {
+      console.error('No se encontraron todos los elementos del modal');
+      return;
+    }
+    
+    // Ocultar ambos contenedores primero
+    termsContainer.classList.add('hidden');
+    privacyContainer.classList.add('hidden');
+    
+    // Mostrar el contenedor correspondiente
+    if (type === 'terms') {
+      termsContainer.classList.remove('hidden');
+    } else if (type === 'privacy') {
+      privacyContainer.classList.remove('hidden');
+    }
+    
+    // Mostrar el modal
+    document.body.style.overflow = 'hidden';
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+    
+    // Activar escucha de tecla Escape
+    document.addEventListener('keydown', handleEscapeKey);
+  }
+  
+  // Configurar los event listeners cuando el documento esté listo
+  document.addEventListener('DOMContentLoaded', () => {
+    console.log('Configurando event listeners del modal');
+    
+    // Configurar event listener para el overlay
+    const overlay = document.getElementById('modal-overlay');
+    if (overlay) {
+      overlay.addEventListener('click', closeInfoModal);
+    }
+    
+    // Configurar event listener para abrir el modal
+    document.addEventListener('openInfoModal', (e) => {
+      if (e.detail && e.detail.type) {
+        openInfoModal(e.detail.type);
+      }
+    });
+  });
+</script>
+
+<style>
+  .modal-content-wrapper {
+    line-height: 1.6;
+    color: #333;
+  }
+  
+  /* Estilos para scrollbar personalizado */
+  .modal-content-wrapper::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .modal-content-wrapper::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+    border-radius: 4px;
+  }
+  
+  .modal-content-wrapper::-webkit-scrollbar-thumb {
+    background-color: #888;
+    border-radius: 4px;
+  }
+  
+  .modal-content-wrapper::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+</style>

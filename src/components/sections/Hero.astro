@@ -1,29 +1,29 @@
 ---
-// Importamos los tipos para TypeScript
+import { getImageUrl, projectFiles } from '@/services/cloudStorage';
+
 interface Props {
   title1?: string;
   title2?: string;
   subtitle?: string;
-  imageUrl?: string;
 }
 
 const { 
   title1 = "Vive en el corazón de",
   title2 = "San Francisco", 
-  subtitle = "Céntrico, cómodo y estratégico.",
-  // Usamos una imagen temporal hasta que se configure Google Cloud Storage
-  imageUrl = "/placeholder-building.jpg"
+  subtitle = "Céntrico, cómodo y estratégico."
 } = Astro.props;
+
+const heroImage = projectFiles.images.hero;
+const heroFolder = "DISENO";
+const imageUrl = getImageUrl(heroImage.id, heroFolder);
 ---
 
 <section class="relative flex items-start md:items-center justify-end md:justify-center w-full h-screen">
-  <!-- Overlay para oscurecer la imagen de fondo y mejorar la legibilidad -->
   <div 
     class="absolute inset-0 z-10"
-    style="background-image: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1486325212027-8081e485255e?q=80&w=1470&auto=format&fit=crop'); background-size: cover; background-position: center;"
+    style={`background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('${imageUrl}'); background-size: cover; background-position: center;`}
   ></div>
   
-  <!-- Contenido del Hero -->
   <div class="relative z-20 flex flex-col justify-end md:justify-center md:items-center h-screen w-full md:mt-72 pb-42">
     <div class="w-full md:max-w-3xl lg:max-w-4xl">
       <h1 
@@ -45,26 +45,13 @@ const {
       >
         {subtitle}
       </p>
-      
-      <!-- Logo en la parte inferior -->
-      <div class="mt-8">
-        <img 
-          src="/icons/svg/logo-full.svg" 
-          alt="Astre by Ihsus" 
-          class="h-10"
-        />
-      </div>
     </div>
   </div>
   
-  <!-- Botón de scroll con semicírculo como en el diseño de Figma -->
   <div class="absolute bottom-2 left-1/2 transform -translate-x-1/2 z-20">
     <div class="relative flex flex-col items-center">
-      <!-- Semicírculo azul de fondo que sobresale del hero -->
         <a href="#diseno" class="flex flex-col items-center -mt-2 group hover:opacity-80 transition-opacity">
-          <!-- Texto scroll -->
           <span class="text-lg text-secondary mb-1">scroll</span>
-          <!-- SVG de flecha hacia abajo -->
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="animate-bounce">
             <path d="M7 13L12 18L17 13" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
@@ -74,21 +61,6 @@ const {
 </section>
 
 <script>
-  // Script para manejar el comportamiento del botón de scroll
-  document.addEventListener('DOMContentLoaded', () => {
-    const scrollButton = document.querySelector('a[href="#diseno"]');
-    scrollButton?.addEventListener('click', (e) => {
-      e.preventDefault();
-      const targetSection = document.getElementById('diseno');
-      if (targetSection) {
-        targetSection.scrollIntoView({ behavior: 'smooth' });
-      }
-    });
-  });
-</script>
-
-<script>
-  // Script para manejar el comportamiento del botón de scroll
   document.addEventListener('DOMContentLoaded', () => {
     const scrollButton = document.querySelector('a[href="#diseno"]');
     scrollButton?.addEventListener('click', (e) => {

@@ -1,19 +1,26 @@
 ---
+import { getVideoUrl, getPdfUrl, getImageUrl } from '@/services/cloudStorage';
+
 interface Props {
   title?: string;
 }
 
 const { title = "Apartamentos" } = Astro.props;
 
-// URL de la imagen del apartamento interior
-const interiorUrl = "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q=80&w=1470&auto=format&fit=crop";
+const folderName = "APARTAMENTOS";
+const videoFileName = "Video%20Astre%20(Apto%20Modelo).mp4";
+const pdfFileName = "Plantas_Astre.pdf";
+
+const videoUrl = getVideoUrl(videoFileName, folderName);
+const pdfUrl = getPdfUrl(pdfFileName, folderName);
+
+const videoPreviewImageId = "Disen%CC%83o_Imagenes-05.webp";
+const videoPreviewUrl = getImageUrl(videoPreviewImageId, "DISENO");
 ---
 
-<div class="bg-[#222222] w-screen min-h-screen flex flex-col justify-center overflow-hidden" style="margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%); width: 100vw;">
-  <!-- Versión móvil -->
+<div class="bg-primary w-screen min-h-screen flex flex-col justify-center overflow-hidden" style="margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%); width: 100vw;">
   <div class="md:hidden w-full px-8 py-16 flex flex-col justify-center">
     <div class="max-w-md mx-auto w-full">
-      <!-- Título y descripción -->
       <div class="text-center mb-6">
         <h2 class="text-3xl font-bold text-white mb-2" style="font-family: var(--font-heading);">
           Espacios que elevan<br/>tu experiencia<br/>diaria
@@ -23,11 +30,10 @@ const interiorUrl = "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q
         </p>
       </div>
       
-      <!-- Imagen con botón de play -->
       <div class="mb-6">
-        <div class="relative rounded-lg overflow-hidden">
-          <img src={interiorUrl} alt="Interior apartamento" class="w-full h-64 object-cover" />
-          <div class="absolute inset-0 flex items-center justify-center">
+        <div class="relative rounded-lg overflow-hidden video-container" data-video-url={videoUrl}>
+          <img src={videoPreviewUrl} alt="Interior apartamento" class="w-full h-64 object-cover video-preview" />
+          <div class="absolute inset-0 flex items-center justify-center video-play-button">
             <div class="w-16 h-16 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/40 transition-all cursor-pointer">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M8 5V19L19 12L8 5Z" fill="white" stroke="white" stroke-width="2" stroke-linejoin="round"/>
@@ -37,16 +43,14 @@ const interiorUrl = "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q
         </div>
       </div>
       
-      <!-- Características -->
-      <div class="text-center mb-5 ">
+      <div class="text-center mb-5">
         <p class="text-xl text-white" style="font-family: var(--font-heading);">
           apartamentos de 2 y 3.5<br/>recámaras desde 100m²
         </p>
       </div>
       
-      <!-- Botón Ver Plantas -->
       <div class="flex justify-center">
-        <a href="#planos" class="group inline-flex items-center justify-center px-6 py-3 border-2 border-white text-white font-medium rounded-lg transition-colors hover:bg-white hover:text-[#222222] w-full">
+        <a href={pdfUrl} target="_blank" download="Plantas_Astre.pdf" class="group inline-flex items-center justify-center px-6 py-3 border-2 border-white text-white font-medium rounded-lg transition-colors hover:bg-white hover:text-[#222222] w-full">
           <span>Ver plantas arquitectónicas</span>
           <svg 
             class="ml-2 w-5 h-5 transition-transform duration-300 group-hover:rotate-90" 
@@ -60,15 +64,14 @@ const interiorUrl = "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q
               stroke-linecap="round" 
               stroke-linejoin="round"
             />
+          </svg>
         </a>
       </div>
     </div>
   </div>
   
-  <!-- Versión desktop -->
   <div class="hidden md:block w-full px-8 py-16">
     <div class="max-w-7xl mx-auto">
-      <!-- Título y descripción centrados -->
       <div class="text-center mb-16">
         <h2 class="text-5xl font-bold text-white mb-4" style="font-family: var(--font-heading);">
           Espacios que elevan tu experiencia diaria
@@ -79,15 +82,13 @@ const interiorUrl = "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q
         </p>
       </div>
       
-      <!-- Grid de 2 columnas -->
       <div class="grid grid-cols-2 gap-20 items-center">
-        <!-- Columna izquierda (información) -->
         <div class="px-20">
           <p class="text-2xl text-white mb-8" style="font-family: var(--font-heading);">
             Apartamentos de 2 y 3.5<br/>recámaras desde 100m²
           </p>
           
-          <a href="#planos" class="group inline-flex items-center px-8 py-3.5 border-2 border-white text-white font-medium rounded-lg transition-colors hover:bg-white hover:text-[#222222]">
+          <a href={pdfUrl} target="_blank" download="Plantas_Astre.pdf" class="group inline-flex items-center px-8 py-3.5 border-2 border-white text-white font-medium rounded-lg transition-colors hover:bg-white hover:text-[#222222]">
             <span>Ver plantas arquitectónicas</span>
             <svg 
               class="ml-2 w-5 h-5 transition-transform duration-300 group-hover:rotate-90" 
@@ -101,13 +102,13 @@ const interiorUrl = "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q
                 stroke-linecap="round" 
                 stroke-linejoin="round"
               />
+            </svg>
           </a>
         </div>
         
-        <!-- Columna derecha (imagen) -->
-        <div class="relative rounded-xl overflow-hidden">
-          <img src={interiorUrl} alt="Interior apartamento" class="w-full h-auto object-cover" />
-          <div class="absolute inset-0 flex items-center justify-center">
+        <div class="relative rounded-xl overflow-hidden video-container" data-video-url={videoUrl}>
+          <img src={videoPreviewUrl} alt="Interior apartamento" class="w-full h-auto object-cover video-preview" />
+          <div class="absolute inset-0 flex items-center justify-center video-play-button">
             <div class="w-20 h-20 bg-white/30 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/40 transition-all cursor-pointer">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M8 5V19L19 12L8 5Z" fill="white" stroke="white" stroke-width="2" stroke-linejoin="round"/>
@@ -119,3 +120,28 @@ const interiorUrl = "https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?q
     </div>
   </div>
 </div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const videoContainers = document.querySelectorAll('.video-container');
+    
+    videoContainers.forEach(container => {
+      const playButton = container.querySelector('.video-play-button');
+      const videoUrl = container.getAttribute('data-video-url');
+      
+      if (playButton && videoUrl) {
+        playButton.addEventListener('click', () => {
+          const videoElement = document.createElement('video');
+          videoElement.src = videoUrl;
+          videoElement.className = 'w-full h-full object-cover';
+          videoElement.controls = true;
+          videoElement.autoplay = true;
+          
+          container.querySelector('.video-preview')?.remove();
+          container.querySelector('.video-play-button')?.remove();
+          container.appendChild(videoElement);
+        });
+      }
+    });
+  });
+</script>

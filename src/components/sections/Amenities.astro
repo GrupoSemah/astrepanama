@@ -8,42 +8,88 @@ interface Props {
 
 const { title = "Amenidades" } = Astro.props;
 
-// Descripción del amenity
-const description = "Relájate con estilo, rodeado de paisajismo moderno";
-
-// Imágenes para el carousel de la piscina
-const poolImages = [
-  "https://images.unsplash.com/photo-1576013551627-0ee425f8b394?q=80&w=1470&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1575429198097-0414ec08e8cd?q=80&w=1470&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1540541338287-41700207dee6?q=80&w=1470&auto=format&fit=crop",
+const amenidades = [
+  {
+    title: "Piscina",
+    description: "Relájate con estilo, rodeado de paisajismo moderno",
+    icon: "/icons/svg/pool.svg"
+  },
+  {
+    title: "Sala de fiestas",
+    description: "Ideal para celebraciones privadas y momentos especiales",
+    icon: "/icons/svg/salon.svg"
+  },
+  {
+    title: "Área infantil",
+    description: "Un espacio seguro y divertido para los más pequeños",
+    icon: "/icons/svg/areainfantil.svg"
+  },
+  {
+    title: "Cancha de Basket",
+    description: "Perfecto para liberar energía y mantenerte activo",
+    icon: "/icons/svg/cancha.svg"
+  },
+  {
+    title: "Gimnasio",
+    description: "Equipado para entrenamientos funcionales y de fuerza",
+    icon: "/icons/svg/gym.svg"
+  },
+  {
+    title: "Game room",
+    description: "Diversión para toda la familia sin salir de casa",
+    icon: "/icons/svg/game.svg"
+  }
 ];
+
+const currentAmenity = amenidades[0];
+const imageFolder = "AMENIDADES";
+const imageNames = [
+  "Amenidades_imagenes-01.webp",
+  "Amenidades_imagenes-02.webp",
+  "Amenidades_imagenes-03.webp",
+  "Amenidades_imagenes-04.webp",
+  "Amenidades_imagenes-05.webp",
+  "Amenidades_imagenes-06.webp"
+];
+
+const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
 ---
 
 <section
   id="amenidades"
-  class="min-h-screen w-full flex items-center justify-center bg-white"
+  class="md:min-h-screen w-full flex items-center justify-center bg-white md:py-24"
 >
   <!-- Versión Móvil -->
-  <div class="w-full md:hidden">
-    <div class="container mx-auto px-6">
-      <!-- Título y descripción centrados -->
-      <div class="text-center mb-6">
+  <div class="w-full md:hidden min-h-[90vh] flex flex-col justify-between py-8">
+    <div class="container mx-auto px-4 flex-grow flex flex-col">
+      <!-- Ícono, Título y descripción centrados -->
+      <div class="text-center mb-4">
+        <div class="flex justify-center mb-4">
+          <img
+            src={currentAmenity.icon}
+            alt={`Icono de ${currentAmenity.title}`}
+            class="w-22 h-22 transition-all duration-500 ease-in-out"
+            id="amenity-icon-mobile"
+          />
+        </div>
         <h2
-          class="text-5xl font-bold text-[#222222] mb-3"
+          class="text-5xl font-bold text-[#222222] mb-2 transition-all duration-500 ease-in-out" 
+          id="amenity-title-mobile"
           style="font-family: var(--font-heading);"
         >
-          Piscina
+          {currentAmenity.title}
         </h2>
         <p
-          class="text-base text-[#222222] opacity-80"
+          class="text-xl text-[#222222] opacity-80 transition-all duration-500 ease-in-out"
+          id="amenity-description-mobile"
           style="font-family: var(--font-body);"
         >
-          {description}
+          {currentAmenity.description}
         </p>
       </div>
 
       <!-- Carousel con imágenes -->
-      <div class="mb-8">
+      <div class="flex-grow mb-4 flex flex-col justify-center">
         <div class="relative">
           <Carousel
             images={poolImages}
@@ -53,9 +99,9 @@ const poolImages = [
         </div>
 
         <!-- Botones personalizados para móvil (posición inferior) -->
-        <div class="custom-carousel-controls flex justify-center mt-8 gap-6">
+        <div class="custom-carousel-controls flex justify-center mt-4 gap-6">
           <button
-            class="custom-prev-btn w-12 h-12 rounded-full border-2 border-[#222222] flex items-center justify-center hover:bg-gray-100 transition-colors"
+            class="custom-prev-btn w-12 h-12 rounded-full border-2 border-primary flex items-center justify-center hover:bg-gray-100 transition-colors"
             aria-label="Anterior imagen"
             onclick="document.querySelector('#pool-carousel-mobile .carousel-prev').click()"
           >
@@ -75,7 +121,7 @@ const poolImages = [
             </svg>
           </button>
           <button
-            class="custom-next-btn w-12 h-12 rounded-full border-2 border-[#222222] flex items-center justify-center hover:bg-gray-100 transition-colors"
+            class="custom-next-btn w-12 h-12 rounded-full border-2 border-primary flex items-center justify-center hover:bg-gray-100 transition-colors"
             aria-label="Siguiente imagen"
             onclick="document.querySelector('#pool-carousel-mobile .carousel-next').click()"
           >
@@ -101,28 +147,31 @@ const poolImages = [
 
   <div class="hidden md:block w-full">
     <div class="container mx-auto px-8">
-      <div class="grid grid-cols-2 gap-20 items-center">
+      <div class="grid grid-cols-2 gap-20 place-content-center">
         <div>
-          <div class="mb-6">
+          <div class="flex justify-center mb-6">
             <img
-              src="/icons/svg/pool.svg"
-              alt="Icono de piscina"
-              class="w-12 h-12"
+              src={currentAmenity.icon}
+              alt={`Icono de ${currentAmenity.title}`}
+              class="w-32 h-32 transition-all duration-500 ease-in-out"
+              id="amenity-icon-desktop"
             />
           </div>
 
           <!-- Título y descripción -->
           <h2
-            class="text-4xl font-bold text-[#222222] mb-3"
+            class="text-6xl text-center font-bold text-primary mb-3 transition-all duration-500 ease-in-out"
             style="font-family: var(--font-heading);"
+            id="amenity-title-desktop"
           >
-            Piscina
+            {currentAmenity.title}
           </h2>
           <p
-            class="text-lg text-[#222222] opacity-80 mb-8 max-w-md"
+            class="text-xl text-center text-primary opacity-80 mb-8 max-w-lg transition-all duration-500 ease-in-out"
             style="font-family: var(--font-body);"
+            id="amenity-description-desktop"
           >
-            {description}
+            {currentAmenity.description}
           </p>
         </div>
 
@@ -139,7 +188,7 @@ const poolImages = [
 
     <div class="flex justify-center mt-16 gap-16">
       <button
-        class="custom-prev-btn w-12 h-12 rounded-full border-2 border-[#222222] bg-white flex items-center justify-center shadow-md hover:bg-gray-100 transition-colors"
+        class="custom-prev-btn w-12 h-12 rounded-full border-2 border-primary bg-white flex items-center justify-center shadow-md hover:bg-gray-100 transition-colors"
         aria-label="Anterior imagen"
         onclick="document.querySelector('#pool-carousel-desktop .carousel-prev').click()"
       >
@@ -159,7 +208,7 @@ const poolImages = [
         </svg>
       </button>
       <button
-        class="custom-next-btn w-12 h-12 rounded-full border-2 border-[#222222] bg-white flex items-center justify-center shadow-md hover:bg-gray-100 transition-colors"
+        class="custom-next-btn w-12 h-12 rounded-full border-2 border-primary bg-white flex items-center justify-center shadow-md hover:bg-gray-100 transition-colors"
         aria-label="Siguiente imagen"
         onclick="document.querySelector('#pool-carousel-desktop .carousel-next').click()"
       >
@@ -181,6 +230,169 @@ const poolImages = [
     </div>
   </div>
 </section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const amenidades = [
+      {
+        title: "Piscina",
+        description: "Relájate con estilo, rodeado de paisajismo moderno",
+        icon: "/icons/svg/pool.svg"
+      },
+      {
+        title: "Sala de fiestas",
+        description: "Ideal para celebraciones privadas y momentos especiales",
+        icon: "/icons/svg/salon.svg"
+      },
+      {
+        title: "Área infantil",
+        description: "Un espacio seguro y divertido para los más pequeños",
+        icon: "/icons/svg/areainfantil.svg"
+      },
+      {
+        title: "Cancha de Basket",
+        description: "Perfecto para liberar energía y mantenerte activo",
+        icon: "/icons/svg/cancha.svg"
+      },
+      {
+        title: "Gimnasio",
+        description: "Equipado para entrenamientos funcionales y de fuerza",
+        icon: "/icons/svg/gym.svg"
+      },
+      {
+        title: "Game room",
+        description: "Diversión para toda la familia sin salir de casa",
+        icon: "/icons/svg/game.svg"
+      }
+    ];
+
+    let currentMobileIndex = 0;
+    let currentDesktopIndex = 0;
+
+    const titleMobile = document.getElementById('amenity-title-mobile');
+    const descriptionMobile = document.getElementById('amenity-description-mobile');
+    const iconMobile = document.getElementById('amenity-icon-mobile') as HTMLImageElement;
+    
+    const iconDesktop = document.getElementById('amenity-icon-desktop') as HTMLImageElement;
+    const titleDesktop = document.getElementById('amenity-title-desktop');
+    const descriptionDesktop = document.getElementById('amenity-description-desktop');
+
+    const mobileControls = document.querySelector('.w-full.md\\:hidden .custom-carousel-controls');
+    const desktopControls = document.querySelector('.hidden.md\\:block .flex.justify-center.mt-16.gap-16');
+    
+    const prevBtnMobile = mobileControls?.querySelector('.custom-prev-btn');
+    const nextBtnMobile = mobileControls?.querySelector('.custom-next-btn');
+    const prevBtnDesktop = desktopControls?.querySelector('.custom-prev-btn');
+    const nextBtnDesktop = desktopControls?.querySelector('.custom-next-btn');
+    
+    const updateInfo = (index: number, isMobile: boolean): void => {
+      if (index >= 0 && index < amenidades.length) {
+        const amenidad = amenidades[index];
+        
+        if (isMobile) {
+          currentMobileIndex = index;
+        } else {
+          currentDesktopIndex = index;
+        }
+        
+        if (isMobile && titleMobile && descriptionMobile) {
+          titleMobile.textContent = amenidad.title;
+          descriptionMobile.textContent = amenidad.description;
+          
+          if (iconMobile) {
+            iconMobile.src = amenidad.icon;
+            iconMobile.alt = `Icono de ${amenidad.title}`;
+          }
+        }
+        
+        if (!isMobile && iconDesktop && titleDesktop && descriptionDesktop) {
+          iconDesktop.src = amenidad.icon;
+          iconDesktop.alt = `Icono de ${amenidad.title}`;
+          titleDesktop.textContent = amenidad.title;
+          descriptionDesktop.textContent = amenidad.description;
+        }
+      }
+    };
+
+    if (prevBtnMobile) {
+      prevBtnMobile.addEventListener('click', () => {
+        currentMobileIndex = (currentMobileIndex - 1 + amenidades.length) % amenidades.length;
+        setTimeout(() => updateInfo(currentMobileIndex, true), 50);
+      });
+    }
+    
+    if (nextBtnMobile) {
+      nextBtnMobile.addEventListener('click', () => {
+        currentMobileIndex = (currentMobileIndex + 1) % amenidades.length;
+        setTimeout(() => updateInfo(currentMobileIndex, true), 50);
+      });
+    }
+    
+    if (prevBtnDesktop) {
+      prevBtnDesktop.addEventListener('click', () => {
+        currentDesktopIndex = (currentDesktopIndex - 1 + amenidades.length) % amenidades.length;
+        setTimeout(() => updateInfo(currentDesktopIndex, false), 50);
+      });
+    }
+    
+    if (nextBtnDesktop) {
+      nextBtnDesktop.addEventListener('click', () => {
+        currentDesktopIndex = (currentDesktopIndex + 1) % amenidades.length;
+        setTimeout(() => updateInfo(currentDesktopIndex, false), 50);
+      });
+    }
+
+    const carouselMobile = document.getElementById('pool-carousel-mobile');
+    if (carouselMobile) {
+      let startX: number;
+      let currentX: number;
+
+      carouselMobile.addEventListener('touchstart', (e: TouchEvent) => {
+        startX = e.touches[0].clientX;
+      });
+
+      carouselMobile.addEventListener('touchend', (e: TouchEvent) => {
+        if (Math.abs(currentX - startX) > 50) {
+          if (currentX < startX) {
+            currentMobileIndex = (currentMobileIndex + 1) % amenidades.length;
+          } else {
+            currentMobileIndex = (currentMobileIndex - 1 + amenidades.length) % amenidades.length;
+          }
+          setTimeout(() => updateInfo(currentMobileIndex, true), 100);
+        }
+      });
+
+      carouselMobile.addEventListener('touchmove', (e: TouchEvent) => {
+        currentX = e.touches[0].clientX;
+      });
+    }
+
+    const carouselDesktop = document.getElementById('pool-carousel-desktop');
+    if (carouselDesktop) {
+      let startX: number;
+      let currentX: number;
+
+      carouselDesktop.addEventListener('touchstart', (e: TouchEvent) => {
+        startX = e.touches[0].clientX;
+      });
+
+      carouselDesktop.addEventListener('touchend', (e: TouchEvent) => {
+        if (Math.abs(currentX - startX) > 50) {
+          if (currentX < startX) {
+            currentDesktopIndex = (currentDesktopIndex + 1) % amenidades.length;
+          } else {
+            currentDesktopIndex = (currentDesktopIndex - 1 + amenidades.length) % amenidades.length;
+          }
+          setTimeout(() => updateInfo(currentDesktopIndex, false), 100);
+        }
+      });
+
+      carouselDesktop.addEventListener('touchmove', (e: TouchEvent) => {
+        currentX = e.touches[0].clientX;
+      });
+    }
+  });
+</script>
 
 <style>
   /* Ocultar los botones originales del carousel */

@@ -1,0 +1,131 @@
+---
+interface Props {
+  id?: string;
+}
+
+const { id = "privacy-content" } = Astro.props;
+---
+
+<div id={id} class="legal-content">
+  <h2 class="text-2xl font-bold mb-4 text-primary">Política de Privacidad</h2>
+  
+  <section class="mb-6">
+    <h3 class="text-xl font-semibold mb-3">1. Introducción</h3>
+    <p class="mb-2">
+      En Astre Panamá, accesible desde astrepanama.com, una de nuestras principales prioridades es la privacidad de nuestros visitantes. Esta Política de Privacidad describe cómo recopilamos, utilizamos y protegemos la información que nos proporciona cuando utiliza nuestro sitio web.
+    </p>
+    <p>
+      Al utilizar nuestro sitio web, usted acepta las prácticas descritas en esta política. Si no está de acuerdo con esta política, le rogamos que se abstenga de utilizar nuestro sitio web.
+    </p>
+  </section>
+
+  <section class="mb-6">
+    <h3 class="text-xl font-semibold mb-3">2. Información que Recopilamos</h3>
+    <p class="mb-2">
+      Cuando usted completa el formulario de contacto en nuestro sitio web, podemos recopilar la siguiente información personal:
+    </p>
+    <ul class="list-disc pl-6 mb-2">
+      <li>Nombre y apellido</li>
+      <li>Información de contacto (dirección de correo electrónico y número de teléfono)</li>
+      <li>Preferencias de apartamentos e intereses específicos</li>
+      <li>Cualquier otra información que usted decida proporcionarnos en el campo de mensaje</li>
+    </ul>
+    <p>
+      Además, recopilamos automáticamente cierta información cuando visita nuestro sitio web, como su dirección IP, tipo de navegador, páginas de referencia/salida y sistema operativo.
+    </p>
+  </section>
+
+  <section class="mb-6">
+    <h3 class="text-xl font-semibold mb-3">3. Uso de la Información</h3>
+    <p class="mb-2">
+      La información personal que recopilamos se utiliza para los siguientes propósitos:
+    </p>
+    <ul class="list-disc pl-6">
+      <li>Proporcionar, operar y mantener nuestro sitio web</li>
+      <li>Responder a sus consultas y solicitudes</li>
+      <li>Enviarle información relevante sobre nuestros apartamentos y servicios</li>
+      <li>Mejorar la experiencia del usuario en nuestro sitio web</li>
+      <li>Analizar el uso del sitio para mejorar nuestros servicios</li>
+      <li>Prevenir actividades fraudulentas y mejorar la seguridad de nuestro sitio web</li>
+    </ul>
+  </section>
+
+  <section class="mb-6">
+    <h3 class="text-xl font-semibold mb-3">4. Protección de la Información</h3>
+    <p class="mb-2">
+      Implementamos medidas de seguridad técnicas, administrativas y físicas apropiadas para proteger la información personal que recopilamos contra el acceso no autorizado, la divulgación, el uso indebido o la alteración.
+    </p>
+    <p>
+      Sin embargo, tenga en cuenta que ninguna transmisión de datos por Internet o sistema de almacenamiento electrónico es 100% seguro. Aunque nos esforzamos por proteger su información personal, no podemos garantizar su seguridad absoluta.
+    </p>
+  </section>
+
+  <section class="mb-6">
+    <h3 class="text-xl font-semibold mb-3">5. Cookies y Tecnologías de Seguimiento</h3>
+    <p class="mb-2">
+      Utilizamos cookies y tecnologías similares para mejorar su experiencia en nuestro sitio web, analizar el tráfico y comprender de dónde provienen nuestros visitantes.
+    </p>
+    <p>
+      Puede optar por desactivar las cookies a través de la configuración de su navegador, pero esto puede afectar la funcionalidad de nuestro sitio web.
+    </p>
+  </section>
+
+  <section class="mb-6">
+    <h3 class="text-xl font-semibold mb-3">6. Divulgación a Terceros</h3>
+    <p class="mb-2">
+      No vendemos, comerciamos ni transferimos su información personal a terceros sin su consentimiento, excepto a proveedores de servicios que nos ayudan a operar nuestro sitio web y a brindar servicios relacionados (como procesadores de pagos, análisis web y servicios de correo electrónico).
+    </p>
+    <p>
+      También podemos divulgar su información si estamos legalmente obligados a hacerlo, o si creemos de buena fe que dicha divulgación es necesaria para proteger nuestros derechos, proteger su seguridad o la seguridad de otros, investigar fraudes o responder a una solicitud gubernamental.
+    </p>
+  </section>
+
+  <section class="mb-6">
+    <h3 class="text-xl font-semibold mb-3">7. Derechos del Usuario</h3>
+    <p class="mb-2">
+      Como usuario, usted tiene derecho a:
+    </p>
+    <ul class="list-disc pl-6">
+      <li>Acceder a su información personal</li>
+      <li>Corregir inexactitudes en su información personal</li>
+      <li>Eliminar su información personal</li>
+      <li>Objetar al procesamiento de su información personal</li>
+      <li>Retirar su consentimiento en cualquier momento</li>
+    </ul>
+    <p class="mt-2">
+      Para ejercer estos derechos, contáctenos a través de la información proporcionada en la sección "Contacto" de esta política.
+    </p>
+  </section>
+
+  <section class="mb-6">
+    <h3 class="text-xl font-semibold mb-3">8. Cambios a Esta Política</h3>
+    <p>
+      Podemos actualizar nuestra Política de Privacidad de vez en cuando. Cualquier cambio se publicará en esta página, y si los cambios son significativos, le notificaremos a través de un aviso prominente en nuestro sitio web o por correo electrónico.
+    </p>
+  </section>
+
+  <section>
+    <h3 class="text-xl font-semibold mb-3">9. Contacto</h3>
+    <p>
+      Si tiene alguna pregunta o inquietud sobre nuestra Política de Privacidad, no dude en contactarnos a través del formulario de contacto en nuestro sitio web o enviándonos un correo electrónico a privacy@astrepanama.com.
+    </p>
+  </section>
+  
+  <p class="mt-6 text-sm text-gray-500">
+    Última actualización: 15 de junio de 2025
+  </p>
+</div>
+
+<style>
+  .legal-content h3 {
+    color: #333;
+  }
+  
+  .legal-content p, .legal-content li {
+    line-height: 1.6;
+  }
+  
+  .legal-content ul {
+    margin-bottom: 1rem;
+  }
+</style>

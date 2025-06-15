@@ -1,89 +1,84 @@
 ---
+import { getImageUrl } from "@/services/cloudStorage";
+import MapModal from "@/components/ui/MapModal.astro";
+
 interface Props {
   title?: string;
 }
 
 const { title = "Ubicación" } = Astro.props;
 
-const mapImageUrl = "/images/mapa.jpg";
+const mapImageFolder = "UBICACION";
+const mapImageName = "Mapa%20Astre.webp";
+const mapImageUrl = getImageUrl(mapImageName, mapImageFolder);
 
-const latitude = 9.0069;
-const longitude = -79.5211;
+const latitude = 8.988646429787098;
+const longitude = -79.5032962191003;
 ---
 
 <section
   id="ubicacion"
-  class="min-h-screen w-full relative flex flex-col bg-gray-200 max-w-full overflow-hidden"
+  class="min-h-screen w-full relative flex flex-col max-w-full overflow-hidden"
 >
-  <div class="w-full h-[60vh] flex-grow relative">
-    <div
-      class="absolute inset-0 bg-cover bg-center w-screen"
-      style={`background-image: url(${mapImageUrl})`}
-    >
-      <div
-        class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+  <div class="w-full h-[85vh] md:h-[90vh] flex-grow relative">
+    <div class="absolute inset-0">
+      <button 
+        id="open-map-modal"
+        class="w-full h-full border-0 p-0 m-0 bg-transparent cursor-pointer"
+        aria-label="Ver mapa ampliado"
       >
-        <div class="flex flex-col items-center">
-          <div
-            class="w-8 h-8 bg-black rounded-full flex items-center justify-center"
+        <img 
+          src={mapImageUrl} 
+          alt="Mapa de ubicación de Astre" 
+          class="w-full h-full object-cover" 
+          id="map-image"
+        />
+      </button>
+    </div>
+    <div class="absolute inset-0 flex items-end justify-center pb-12 md:pb-16">
+      <div class="w-full max-w-md px-4 md:px-0">
+        <a
+          href="https://maps.app.goo.gl/j7CG3XsMig97BgDF6"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group flex items-center justify-between w-full border border-black rounded px-6 py-3 bg-white/90 backdrop-blur-sm text-black hover:bg-primary hover:text-white transition-colors"
+        >
+          <span class="text-lg font-medium">Ubicación del proyecto</span>
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="transition-transform duration-300 group-hover:rotate-90"
           >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M12 22C12 22 20 16 20 10C20 5.58172 16.4183 2 12 2C7.58172 2 4 5.58172 4 10C4 16 12 22 12 22Z"
-                stroke="white"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"></path>
-              <path
-                d="M12 13C13.6569 13 15 11.6569 15 10C15 8.34315 13.6569 7 12 7C10.3431 7 9 8.34315 9 10C9 11.6569 10.3431 13 12 13Z"
-                stroke="white"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"></path>
-            </svg>
-          </div>
-          <div
-            class="text-xs font-bold bg-black text-white px-2 py-1 rounded mt-1"
-          >
-            astre
-          </div>
-        </div>
+            <path
+              d="M7 17L17 7M17 7H7M17 7V17"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+        </a>
       </div>
     </div>
   </div>
-
-  <div class="w-full py-4 px-6 bg-white flex justify-center">
-    <a
-      href={`https://maps.google.com/?q=${latitude},${longitude}`}
-      target="_blank"
-      rel="noopener noreferrer"
-      class="group flex items-center justify-between w-full max-w-sm border border-black rounded px-6 py-3 text-black hover:bg-[#222222] hover:text-white transition-colors"
-    >
-      <span class="text-lg font-medium">Ubicación del proyecto</span>
-      <svg
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        class="transition-transform duration-300 group-hover:rotate-90"
-      >
-        <path
-          d="M7 17L17 7M17 7H7M17 7V17"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"></path>
-      </svg>
-    </a>
-  </div>
 </section>
 
+<MapModal imageUrl={mapImageUrl} imageAlt="Mapa detallado de ubicación de Astre" />
+
 <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const openModalBtn = document.getElementById('open-map-modal');
+    const mapImage = document.getElementById('map-image');
+
+    if (openModalBtn && mapImage) {
+      openModalBtn.addEventListener('click', () => {
+        const openMapModalEvent = new CustomEvent('openMapModal', {
+          detail: { imageUrl: mapImage.getAttribute('src') }
+        });
+        document.dispatchEvent(openMapModalEvent);
+      });
+    }
+  });
 </script>

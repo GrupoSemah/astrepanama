@@ -4,7 +4,7 @@
 
 ## Apartamentos de lujo en el corazón de San Francisco, Panamá
 
-[![Vercel Deploy](https://img.shields.io/badge/Vercel-Deploy-black?style=for-the-badge&logo=vercel)](https://astrepanama.vercel.app/)
+[![Website](https://img.shields.io/badge/Website-Online-success?style=for-the-badge&logo=vercel)](https://astrepanama.com/)
 [![Lighthouse Score](https://img.shields.io/badge/Lighthouse-100%25-success?style=for-the-badge&logo=lighthouse)](https://pagespeed.web.dev/)
 [![Built with Astro](https://img.shields.io/badge/Built%20with-Astro-purple?style=for-the-badge&logo=astro)](https://astro.build/)
 

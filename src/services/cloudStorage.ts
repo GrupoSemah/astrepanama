@@ -1,49 +1,152 @@
-/**
- * Servicio para gestionar imágenes desde Google Cloud Storage
- */
+export const ENV_STORAGE_URL = 'GCS_STORAGE_URL';
+export const ENV_BUCKET_NAME = 'GCS_BUCKET_NAME';
+export const ENV_PROJECT_ID = 'GCS_PROJECT_ID';
 
-// Interfaz para imágenes
-export interface CloudImage {
+export type FileType = 'image' | 'pdf' | 'video' | 'document' | 'other';
+export interface CloudFile {
   id: string;
   filename: string;
-  alt: string;
+  alt?: string;
   section?: string;
+  type: FileType;
+  mimeType?: string;
 }
 
-// Crear la URL completa para una imagen en el bucket
-export const getImageUrl = (imageId: string): string => {
-  const GCS_URL: string = import.meta.env.PUBLIC_GCS_URL || '';
+export interface CloudImage extends CloudFile {
+  type: 'image';
+  alt: string;
+}
+
+export interface CloudPdf extends CloudFile {
+  type: 'pdf';
+  title?: string;
+}
+
+export interface CloudVideo extends CloudFile {
+  type: 'video';
+  title?: string;
+  poster?: string; 
+  duration?: number; 
+}
+
+type EnvVariables = Record<string, string | undefined>;
+const getEnvVariable = (name: string, defaultValue: string = ''): string => {
+  const env = import.meta.env as EnvVariables;
+  const value = env[name];
   
-  if (!GCS_URL) {
-    console.error('Error: PUBLIC_GCS_URL no está definido en el archivo .env');
+  if (!value && defaultValue !== '' && import.meta.env.DEV) {
+    console.debug(`Variable de entorno ${name} no definida, usando valor predeterminado.`);
+  }
+  
+  return value || defaultValue;
+};
+
+export const getStorageBaseUrl = (): string => {
+  const storageUrl = getEnvVariable(ENV_STORAGE_URL, 'https://storage.googleapis.com');
+  const bucketName = getEnvVariable(ENV_BUCKET_NAME);
+  
+  if (!bucketName && import.meta.env.DEV) {
+    console.warn(`${ENV_BUCKET_NAME} no está definido en las variables de entorno.`);
     return '';
   }
   
-  return `${GCS_URL}/${imageId}`;
+  return `${storageUrl}/${bucketName}`;
 };
 
-// Obtener objeto de imagen con toda la información
-export const getImageData = (imageId: string, alt: string, section?: string): CloudImage => {
+
+export const buildFileUrl = (fileId: string, folder?: string): string => {
+  const baseUrl = getStorageBaseUrl();
+  
+  if (!baseUrl || !fileId) {
+    console.warn('Error al construir URL: baseUrl o fileId no definidos');
+    return '';
+  }
+  
+  return folder ? `${baseUrl}/${folder}/${fileId}` : `${baseUrl}/${fileId}`;
+};
+
+
+
+export const getImageUrl = (imageId: string, folder?: string): string => {
+  return buildFileUrl(imageId, folder);
+};
+
+
+export const getPdfUrl = (pdfId: string, folder?: string): string => {
+  return buildFileUrl(pdfId, folder);
+};
+
+
+export const getVideoUrl = (videoId: string, folder?: string): string => {
+  return buildFileUrl(videoId, folder);
+};
+
+export const getImageData = (imageId: string, alt: string, section?: string, folder?: string): CloudImage => {
   return {
     id: imageId,
-    filename: imageId,
+    filename: folder ? `${folder}/${imageId}` : imageId,
     alt,
-    section
+    section,
+    type: 'image'
   };
 };
 
-// Listado de imágenes del proyecto (puedes expandir esto según necesites)
-export const projectImages: Record<string, CloudImage> = {
-  hero: {
-    id: 'building-background.jpg',
-    filename: 'building-background.jpg',
-    alt: 'Edificio Astre Panama',
-    section: 'hero'
+export const getPdfData = (pdfId: string, title?: string, section?: string): CloudPdf => {
+  return {
+    id: pdfId,
+    filename: pdfId,
+    title,
+    section,
+    type: 'pdf',
+    mimeType: 'application/pdf'
+  };
+};
+
+
+export const getVideoData = (videoId: string, title?: string, poster?: string, section?: string): CloudVideo => {
+  return {
+    id: videoId,
+    filename: videoId,
+    title,
+    poster,
+    section,
+    type: 'video'
+  };
+};
+
+// Configuración de archivos del proyecto usando funciones de utilidad para crear objetos estandarizados
+export const projectFiles = {
+  images: {
+    hero: getImageData(
+      'Disen%CC%83o_Imagenes-06.webp', 
+      'Edificio Astre Panama', 
+      'hero', 
+      'DISENO'
+    ),
+    logo: getImageData(
+      'astre-logo.png', 
+      'Logo de Astre by Ihsus', 
+      'general'
+    )
   },
-  logo: {
-    id: 'astre-logo.png',
-    filename: 'astre-logo.png',
-    alt: 'Logo de Astre by Ihsus',
-    section: 'general'
+  documents: {
+    brochure: getPdfData(
+      'astre-brochure.pdf', 
+      'Brochure Astre Panamá',
+      'downloads'
+    )
+  },
+  videos: {
+    presentation: getVideoData(
+      'astre-presentation.mp4',
+      'Presentación Astre Panamá',
+      'astre-video-poster.jpg',
+      'media'
+    )
   }
+};
+
+export const projectImages: Record<string, CloudImage> = {
+  hero: projectFiles.images.hero,
+  logo: projectFiles.images.logo
 };

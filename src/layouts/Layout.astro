@@ -1,5 +1,6 @@
 ---
 import '@/styles/global.css';
+import InfoModal from '@/components/modals/InfoModal.astro';
 
 interface Props {
 	title?: string;
@@ -13,8 +14,8 @@ const {
 	title = "Astre Panamá | Vive en el corazón de San Francisco",
 	description = "Céntrico, cómodo y estratégico. Apartamentos de lujo en el corazón de San Francisco, Panamá.",
 	canonicalUrl = Astro.url.href,
-	image = "/images/astre-panama-og.jpg", // Asume que existe, si no, crea una imagen OG
-	twitterUsername = "@astrepty" // Actualiza con el nombre de usuario correcto
+	image = "/favicon.svg", 
+	twitterUsername = "@astrepty" 
 } = Astro.props;
 ---
 
@@ -23,7 +24,7 @@ const {
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" type="image/svg+xml" href="/icons/svg/logoastre.svg" />
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		<meta name="theme-color" content="#222222" />
 		<link rel="manifest" href="/manifest.json" />
@@ -58,6 +59,7 @@ const {
 	</head>
 	<body>
 		<slot />
+		<InfoModal />
 	</body>
 </html>
 

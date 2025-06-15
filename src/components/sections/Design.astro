@@ -1,5 +1,6 @@
 ---
 import Carousel from "../ui/Carousel.astro";
+import { getImageUrl } from '@/services/cloudStorage';
 
 interface Props {
   title?: string;
@@ -9,18 +10,22 @@ const {
   title = "Vive en lo alto del confort"
 } = Astro.props;
 
-// Imágenes para el carrusel
-const carouselImages = [
-  "https://images.unsplash.com/photo-1484154218962-a197022b5858?q=80&w=1470&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1501183638710-841dd1904471?q=80&w=1470&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1464288550599-43d5a73451b8?q=80&w=1470&auto=format&fit=crop"
+const imageFolder = "DISENO";
+
+const imageNames = [
+  "Disen%CC%83o_Imagenes-01.webp",
+  "Disen%CC%83o_Imagenes-02.webp",
+  "Disen%CC%83o_Imagenes-03.webp",
+  "Disen%CC%83o_Imagenes-04.webp",
+  "Disen%CC%83o_Imagenes-05.webp",
+  "Disen%CC%83o_Imagenes-06.webp"
 ];
+
+const carouselImages = imageNames.map(name => getImageUrl(name, imageFolder));
 ---
 
 <section id="diseno" class="w-full bg-white overflow-hidden pt-20 md:pt-20">
-  <!-- Versión móvil (Imagen arriba, contenido abajo) -->
   <div class="md:hidden">
-    <!-- Carousel primero en móvil -->
     <div class="mb-8">
       <Carousel images={carouselImages} />
     </div>
@@ -38,7 +43,6 @@ const carouselImages = [
         Este exclusivo proyecto residencial combina elegancia, funcionalidad y una conexión directa con los puntos más dinámicos de la ciudad.
       </p>
       
-      <!-- Botón agendar visita -->
       <div class="flex justify-center">
         <a 
           href="#contacto" 
@@ -63,9 +67,7 @@ const carouselImages = [
     </div>
   </div>
   
-  <!-- Versión desktop (Texto arriba, carousel abajo) -->
   <div class="hidden md:block container mx-auto px-8 pb-24">
-    <!-- Título y párrafos en el centro -->
     <div class="max-w-3xl mx-auto text-center mb-12">
       <h2 class="text-5xl font-bold mb-6" style="font-family: var(--font-heading);">
         Vive en lo alto del confort
@@ -79,7 +81,6 @@ const carouselImages = [
         Este exclusivo proyecto residencial combina elegancia, funcionalidad y una conexión directa con los puntos más dinámicos de la ciudad.
       </p>
       
-      <!-- Botón en el centro debajo del texto -->
       <div class="flex justify-center mb-12">
         <a 
           href="#contacto" 
@@ -103,11 +104,9 @@ const carouselImages = [
       </div>
     </div>
     
-    <!-- Carousel abajo del botón con botones a los lados -->
     <div class="max-w-xl mx-auto relative">
-      <!-- Botón Anterior (fuera de la imagen, a la izquierda) -->
       <button 
-        class="absolute left-0 top-1/2 -translate-x-16 -translate-y-1/2 w-12 h-12 rounded-full border-2 border-[#222222] flex items-center justify-center hover:bg-gray-100 transition-colors" 
+        class="absolute left-0 top-1/2 -translate-x-16 -translate-y-1/2 w-12 h-12 rounded-full border-2 border-primary flex items-center justify-center hover:bg-gray-100 transition-colors" 
         aria-label="Anterior imagen"
         onclick="document.querySelector('#design-carousel .carousel-prev').click()"
       >
@@ -116,9 +115,8 @@ const carouselImages = [
         </svg>
       </button>
       
-      <!-- Botón Siguiente (fuera de la imagen, a la derecha) -->
       <button 
-        class="absolute right-0 top-1/2 translate-x-16 -translate-y-1/2 w-12 h-12 rounded-full border-2 border-[#222222] flex items-center justify-center hover:bg-gray-100 transition-colors" 
+        class="absolute right-0 top-1/2 translate-x-16 -translate-y-1/2 w-12 h-12 rounded-full border-2 border-primary flex items-center justify-center hover:bg-gray-100 transition-colors" 
         aria-label="Siguiente imagen"
         onclick="document.querySelector('#design-carousel .carousel-next').click()"
       >
@@ -127,7 +125,6 @@ const carouselImages = [
         </svg>
       </button>
       
-      <!-- El carousel mantiene su tamaño original -->
       <Carousel 
         images={carouselImages} 
         id="design-carousel" 
@@ -135,7 +132,6 @@ const carouselImages = [
       />
       
       <style>
-        /* Ocultar los botones originales del carousel */
         :global(#design-carousel .carousel-prev),
         :global(#design-carousel .carousel-next) {
           display: none;

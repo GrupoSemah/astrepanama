@@ -1,0 +1,96 @@
+---
+interface Props {
+  id?: string;
+}
+
+const { id = "terms-content" } = Astro.props;
+---
+
+<div id={id} class="legal-content">
+  <h2 class="text-2xl font-bold mb-4 text-primary">Términos y Condiciones</h2>
+  
+  <section class="mb-6">
+    <h3 class="text-xl font-semibold mb-3">1. Información General</h3>
+    <p class="mb-2">
+      Los presentes Términos y Condiciones regulan el uso del sitio web astrepanama.com (en adelante, "el Sitio Web") propiedad de Grupo Semah (en adelante, "la Empresa"), con domicilio en Panamá.
+    </p>
+    <p>
+      Al acceder y utilizar este Sitio Web, usted acepta estos Términos y Condiciones en su totalidad. Si no está de acuerdo con alguna parte de estos términos, no debe utilizar este Sitio Web.
+    </p>
+  </section>
+
+  <section class="mb-6">
+    <h3 class="text-xl font-semibold mb-3">2. Propiedad Intelectual</h3>
+    <p class="mb-2">
+      Todo el contenido incluido en este Sitio Web, incluyendo textos, gráficos, logotipos, iconos, imágenes, clips de audio, descargas digitales, compilaciones de datos y software, es propiedad de la Empresa o de sus proveedores de contenido y está protegido por las leyes internacionales de propiedad intelectual.
+    </p>
+    <p>
+      Queda estrictamente prohibida la reproducción, distribución, transmisión, modificación, reutilización, reposición, o uso del contenido de este Sitio Web para fines públicos o comerciales sin el permiso previo por escrito de la Empresa.
+    </p>
+  </section>
+
+  <section class="mb-6">
+    <h3 class="text-xl font-semibold mb-3">3. Descripción de los Servicios</h3>
+    <p class="mb-2">
+      El Sitio Web proporciona información sobre los apartamentos de lujo Astre Panamá ubicados en San Francisco, Panamá. Los precios, disponibilidad y características de las propiedades están sujetos a cambios sin previo aviso y no son vinculantes hasta la firma de un contrato de compra o arrendamiento.
+    </p>
+    <p>
+      La Empresa se reserva el derecho de modificar, suspender o discontinuar cualquier aspecto del Sitio Web en cualquier momento, incluyendo la disponibilidad de cualquier función, base de datos o contenido.
+    </p>
+  </section>
+
+  <section class="mb-6">
+    <h3 class="text-xl font-semibold mb-3">4. Limitación de Responsabilidad</h3>
+    <p class="mb-2">
+      La información contenida en este Sitio Web se proporciona "tal cual", sin garantías de ningún tipo, expresas o implícitas, incluyendo, pero no limitado a, garantías implícitas de comerciabilidad, idoneidad para un propósito particular o no infracción.
+    </p>
+    <p class="mb-2">
+      La Empresa no garantiza que el Sitio Web esté libre de errores o que el acceso sea continuo e ininterrumpido. En ningún caso la Empresa será responsable por cualquier daño directo, indirecto, incidental, especial o consecuente que resulte del uso o la imposibilidad de usar el Sitio Web.
+    </p>
+    <p>
+      Las imágenes, renders y fotografías presentadas en el Sitio Web son de carácter ilustrativo y pueden no representar exactamente el producto final.
+    </p>
+  </section>
+
+  <section class="mb-6">
+    <h3 class="text-xl font-semibold mb-3">5. Enlaces a Terceros</h3>
+    <p>
+      Este Sitio Web puede contener enlaces a sitios web de terceros. Estos enlaces se proporcionan únicamente para su conveniencia. La Empresa no tiene control sobre el contenido de estos sitios y no asume responsabilidad alguna por el contenido, políticas de privacidad o prácticas de los sitios web de terceros.
+    </p>
+  </section>
+
+  <section class="mb-6">
+    <h3 class="text-xl font-semibold mb-3">6. Modificaciones</h3>
+    <p>
+      La Empresa se reserva el derecho de modificar estos Términos y Condiciones en cualquier momento. Los cambios entrarán en vigor inmediatamente después de su publicación en el Sitio Web. Es su responsabilidad revisar periódicamente estos Términos y Condiciones para estar al tanto de cualquier modificación.
+    </p>
+  </section>
+
+  <section class="mb-6">
+    <h3 class="text-xl font-semibold mb-3">7. Ley Aplicable</h3>
+    <p>
+      Estos Términos y Condiciones se regirán e interpretarán de acuerdo con las leyes de la República de Panamá. Cualquier disputa que surja de o en relación con estos Términos y Condiciones estará sujeta a la jurisdicción exclusiva de los tribunales de Panamá.
+    </p>
+  </section>
+
+  <section>
+    <h3 class="text-xl font-semibold mb-3">8. Contacto</h3>
+    <p>
+      Si tiene alguna pregunta sobre estos Términos y Condiciones, puede contactarnos a través del formulario de contacto disponible en este Sitio Web o enviando un correo electrónico a info@astrepanama.com.
+    </p>
+  </section>
+  
+  <p class="mt-6 text-sm text-gray-500">
+    Última actualización: 15 de junio de 2025
+  </p>
+</div>
+
+<style>
+  .legal-content h3 {
+    color: #333;
+  }
+  
+  .legal-content p {
+    line-height: 1.6;
+  }
+</style>
