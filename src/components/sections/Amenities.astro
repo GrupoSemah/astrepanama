@@ -59,7 +59,7 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
   id="amenidades"
   class="md:min-h-screen w-full flex flex-col items-center justify-center bg-white md:py-24"
 >
-  <div class="text-center mb-14 md:mb-16 px-4">
+  <div class="text-center mb-14 md:mb-16">
     <h2 class="text-4xl md:text-5xl font-bold text-primary mb-4" style="font-family: var(--font-heading);">
       Comodidades que transforman tu rutina
     </h2>
@@ -82,14 +82,14 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
           />
         </div>
         <h2
-          class="text-5xl font-bold text-[#222222] mb-2 transform transition-all duration-500 rotate-x-0 perspective-500 whitespace-nowrap" 
+          class="text-5xl font-bold text-primary mb-2 transform transition-all duration-500 rotate-x-0 perspective-500 whitespace-nowrap" 
           id="amenity-title-mobile"
           style="font-family: var(--font-heading);"
         >
           {currentAmenity.title}
         </h2>
         <p
-          class="text-xl text-[#222222] opacity-80 transform transition-all duration-500 rotate-x-0 perspective-500"
+          class="text-xl text-primary opacity-80 transform transition-all duration-500 rotate-x-0 perspective-500"
           id="amenity-description-mobile"
           style="font-family: var(--font-body);"
         >
