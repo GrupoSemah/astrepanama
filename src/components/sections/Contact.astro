@@ -17,7 +17,7 @@ const ingresoOptions = [
     <div class="grid grid-cols-1 md:grid-cols-12 gap-8 lg:gap-12">
       <div class="md:col-span-4 flex flex-col items-center md:items-start">
         <div class="mb-6">
-          <img src="/icons/svg/logoastre.svg" alt="Astre Logo" class="h-16" />
+          <img src="/icons/svg/logoastre.svg" alt="Astre Logo" class="h-12" />
         </div>
 
         <div class="hidden md:block text-white/80 space-y-3 mt-6">
@@ -47,7 +47,7 @@ const ingresoOptions = [
                 name="nombre"
                 id="nombre"
                 placeholder="Nombre y Apellido"
-                class="w-full bg-transparent border border-white/50 rounded-full px-6 py-4 text-white placeholder:text-white/70 focus:outline-none focus:border-white"
+                class="w-full bg-transparent border border-white/50 rounded-full px-6 py-4 text-white placeholder:text-white/70 placeholder:text-center focus:outline-none focus:border-white"
                 required
               />
             </div>
@@ -58,7 +58,7 @@ const ingresoOptions = [
                 name="telefono"
                 id="telefono"
                 placeholder="Número de teléfono"
-                class="w-full bg-transparent border border-white/50 rounded-full px-6 py-4 text-white placeholder:text-white/70 focus:outline-none focus:border-white"
+                class="w-full bg-transparent border border-white/50 rounded-full px-6 py-4 text-white placeholder:text-white/70 placeholder:text-center focus:outline-none focus:border-white"
                 required
               />
             </div>
@@ -71,7 +71,7 @@ const ingresoOptions = [
                 name="email"
                 id="email"
                 placeholder="Correo Electrónico"
-                class="w-full bg-transparent border border-white/50 rounded-full px-6 py-4 text-white placeholder:text-white/70 focus:outline-none focus:border-white"
+                class="w-full bg-transparent border border-white/50 rounded-full px-6 py-4 text-white placeholder:text-white/70 placeholder:text-center focus:outline-none focus:border-white"
                 required
               />
             </div>
@@ -80,15 +80,15 @@ const ingresoOptions = [
               <select
                 name="ingreso"
                 id="ingreso"
-                class="w-full bg-transparent border border-white/50 rounded-full px-6 py-4 text-white appearance-none focus:outline-none focus:border-white cursor-pointer"
+                class="w-full bg-transparent border border-white/50 rounded-full px-6 py-4 text-white text-center appearance-none focus:outline-none focus:border-white cursor-pointer"
                 required
               >
-                <option value="" disabled selected class="bg-primary"
+                <option value="" disabled selected class="bg-primary text-center"
                   >Ingreso Familiar</option
                 >
                 {
                   ingresoOptions.map((option) => (
-                    <option value={option} class="bg-primary">
+                    <option value={option} class="bg-primary text-center">
                       {option}
                     </option>
                   ))
@@ -138,21 +138,23 @@ const ingresoOptions = [
               </svg>
             </button>
             
-            <div class="flex justify-center mt-6 cursor-pointer">
-              <a
-                href="https://instagram.com/astre"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="flex items-center gap-2 hover:opacity-80 transition-opacity"
-              >
-                <img src="/icons/svg/instagram.svg" alt="Instagram" width="28" height="28" />
-              </a>
-            </div>
+
           </div>
         </form>
       </div>
     </div>
 
+    <div class="flex justify-center scursor-pointer">
+      <a
+        href="https://instagram.com/astre"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center justify-center gap-2 hover:opacity-80 transition-opacity"
+      >
+        <img src="/icons/svg/instagram.svg" alt="Instagram" width="42" height="42" />
+      </a>
+    </div>
+    
     <div class="border-t border-white/20 my-4"></div>
 
     <div

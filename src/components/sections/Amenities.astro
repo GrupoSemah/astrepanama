@@ -57,30 +57,39 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
 
 <section
   id="amenidades"
-  class="md:min-h-screen w-full flex items-center justify-center bg-white md:py-24"
+  class="md:min-h-screen w-full flex flex-col items-center justify-center bg-white md:py-24"
 >
+  <div class="text-center mb-14 md:mb-16 px-4">
+    <h2 class="text-4xl md:text-5xl font-bold text-primary mb-4" style="font-family: var(--font-heading);">
+      Comodidades que transforman tu rutina
+    </h2>
+    <p class="text-base md:text-lg text-primary opacity-90 max-w-3xl mx-auto" style="font-family: var(--font-body);">
+      PH Astre ofrece una selección de amenidades diseñadas para tu bienestar, recreación y estilo de vida activo.
+    </p>
+  </div>
+
   <!-- Versión Móvil -->
   <div class="w-full md:hidden min-h-[90vh] flex flex-col justify-between py-8">
     <div class="container mx-auto px-4 flex-grow flex flex-col">
       <!-- Ícono, Título y descripción centrados -->
       <div class="text-center mb-4">
-        <div class="flex justify-center mb-4">
+        <div class="flex justify-center mb-4 transform transition-all duration-500 rotate-x-0 perspective-500" id="amenity-icon-container-mobile">
           <img
             src={currentAmenity.icon}
             alt={`Icono de ${currentAmenity.title}`}
-            class="w-22 h-22 transition-all duration-500 ease-in-out"
+            class="w-22 h-22"
             id="amenity-icon-mobile"
           />
         </div>
         <h2
-          class="text-5xl font-bold text-[#222222] mb-2 transition-all duration-500 ease-in-out" 
+          class="text-5xl font-bold text-[#222222] mb-2 transform transition-all duration-500 rotate-x-0 perspective-500" 
           id="amenity-title-mobile"
           style="font-family: var(--font-heading);"
         >
           {currentAmenity.title}
         </h2>
         <p
-          class="text-xl text-[#222222] opacity-80 transition-all duration-500 ease-in-out"
+          class="text-xl text-[#222222] opacity-80 transform transition-all duration-500 rotate-x-0 perspective-500"
           id="amenity-description-mobile"
           style="font-family: var(--font-body);"
         >
@@ -98,48 +107,15 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
           />
         </div>
 
-        <!-- Botones personalizados para móvil (posición inferior) -->
-        <div class="custom-carousel-controls flex justify-center mt-4 gap-6">
-          <button
-            id="mobile-prev-btn"
-            class="custom-prev-btn w-12 h-12 rounded-full border-2 border-primary flex items-center justify-center hover:bg-gray-100 transition-colors"
-            aria-label="Anterior imagen"
-          >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M15 18L9 12L15 6"
-                stroke="#222222"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"></path>
-            </svg>
-          </button>
-          <button
-            id="mobile-next-btn"
-            class="custom-next-btn w-12 h-12 rounded-full border-2 border-primary flex items-center justify-center hover:bg-gray-100 transition-colors"
-            aria-label="Siguiente imagen"
-          >
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M9 6L15 12L9 18"
-                stroke="#222222"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"></path>
-            </svg>
-          </button>
+        <!-- Puntos de navegación para móvil -->
+        <div class="custom-carousel-dots flex justify-center mt-6 gap-3" id="mobile-carousel-dots">
+          {amenidades.map((_, index) => (
+            <button
+              class={`carousel-dot w-3 h-3 rounded-full bg-primary ${index === 0 ? 'opacity-100' : 'opacity-40'}`}
+              data-index={index}
+              aria-label={`Ir a amenidad ${index + 1}`}
+            ></button>
+          ))}
         </div>
       </div>
     </div>
@@ -149,25 +125,25 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
     <div class="container mx-auto px-8">
       <div class="grid grid-cols-2 gap-20 place-content-center">
         <div>
-          <div class="flex justify-center mb-6">
+          <div class="flex justify-center mb-6 transform transition-all duration-500 rotate-x-0 perspective-500" id="amenity-icon-container-desktop">
             <img
               src={currentAmenity.icon}
               alt={`Icono de ${currentAmenity.title}`}
-              class="w-32 h-32 transition-all duration-500 ease-in-out"
+              class="w-32 h-32"
               id="amenity-icon-desktop"
             />
           </div>
 
           <!-- Título y descripción -->
           <h2
-            class="text-6xl text-center font-bold text-primary mb-3 transition-all duration-500 ease-in-out"
+            class="text-6xl text-center font-bold text-primary mb-3 transform transition-all duration-500 rotate-x-0 perspective-500"
             style="font-family: var(--font-heading);"
             id="amenity-title-desktop"
           >
             {currentAmenity.title}
           </h2>
           <p
-            class="text-xl text-center text-primary opacity-80 mb-8 max-w-lg transition-all duration-500 ease-in-out"
+            class="text-xl text-center text-primary opacity-80 mb-8 max-w-lg mx-auto transform transition-all duration-500 rotate-x-0 perspective-500"
             style="font-family: var(--font-body);"
             id="amenity-description-desktop"
           >
@@ -186,47 +162,15 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
       </div>
     </div>
 
-    <div class="flex justify-center mt-16 gap-16">
-      <button
-        id="desktop-prev-btn"
-        class="custom-prev-btn w-12 h-12 rounded-full border-2 border-primary bg-white flex items-center justify-center shadow-md hover:bg-gray-100 transition-colors"
-        aria-label="Anterior imagen"
-      >
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M15 18L9 12L15 6"
-            stroke="#222222"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"></path>
-        </svg>
-      </button>
-      <button
-        id="desktop-next-btn"
-        class="custom-next-btn w-12 h-12 rounded-full border-2 border-primary bg-white flex items-center justify-center shadow-md hover:bg-gray-100 transition-colors"
-        aria-label="Siguiente imagen"
-      >
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M9 6L15 12L9 18"
-            stroke="#222222"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"></path>
-        </svg>
-      </button>
+    <!-- Puntos de navegación para desktop -->
+    <div class="flex justify-center mt-10 gap-4" id="desktop-carousel-dots">
+      {amenidades.map((_, index) => (
+        <button
+          class={`carousel-dot w-3 h-3 rounded-full cursor-pointer bg-primary ${index === 0 ? 'opacity-100' : 'opacity-40'} hover:opacity-70 transition-opacity`}
+          data-index={index}
+          aria-label={`Ir a amenidad ${index + 1}`}
+        ></button>
+      ))}
     </div>
   </div>
 </section>
@@ -272,18 +216,64 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
     const titleMobile = document.getElementById('amenity-title-mobile');
     const descriptionMobile = document.getElementById('amenity-description-mobile');
     const iconMobile = document.getElementById('amenity-icon-mobile') as HTMLImageElement;
+    const iconContainerMobile = document.getElementById('amenity-icon-container-mobile');
     
     const iconDesktop = document.getElementById('amenity-icon-desktop') as HTMLImageElement;
     const titleDesktop = document.getElementById('amenity-title-desktop');
     const descriptionDesktop = document.getElementById('amenity-description-desktop');
-
-    const mobileControls = document.querySelector('.w-full.md\\:hidden .custom-carousel-controls');
-    const desktopControls = document.querySelector('.hidden.md\\:block .flex.justify-center.mt-16.gap-16');
+    const iconContainerDesktop = document.getElementById('amenity-icon-container-desktop');
     
-    const prevBtnMobile = mobileControls?.querySelector('.custom-prev-btn');
-    const nextBtnMobile = mobileControls?.querySelector('.custom-next-btn');
-    const prevBtnDesktop = desktopControls?.querySelector('.custom-prev-btn');
-    const nextBtnDesktop = desktopControls?.querySelector('.custom-next-btn');
+    // Selectores para los nuevos puntos de navegación
+    const mobileCarouselDots = document.getElementById('mobile-carousel-dots');
+    const desktopCarouselDots = document.getElementById('desktop-carousel-dots');
+    
+    // Función para actualizar los puntos activos
+    const updateDots = (index: number, isMobile: boolean): void => {
+      const dots = isMobile ? 
+        mobileCarouselDots?.querySelectorAll('.carousel-dot') : 
+        desktopCarouselDots?.querySelectorAll('.carousel-dot');
+      
+      if (dots) {
+        dots.forEach((dot, i) => {
+          if (i === index) {
+            dot.classList.add('opacity-100');
+            dot.classList.remove('opacity-40');
+          } else {
+            dot.classList.add('opacity-40');
+            dot.classList.remove('opacity-100');
+          }
+        });
+      }
+    };
+    
+    // Función para animar la transición con flip vertical
+    const animateTransition = (isMobile: boolean): void => {
+      // Elementos a animar
+      const iconContainer = isMobile ? iconContainerMobile : iconContainerDesktop;
+      const title = isMobile ? titleMobile : titleDesktop;
+      const description = isMobile ? descriptionMobile : descriptionDesktop;
+      
+      // Aplicar animación de flip saliendo (rotación en X)
+      if (iconContainer) iconContainer.classList.add('rotate-x-90', 'opacity-50');
+      if (title) title.classList.add('rotate-x-90', 'opacity-50');
+      if (description) description.classList.add('rotate-x-90', 'opacity-50');
+      
+      // Esperar brevemente y aplicar la animación de entrada
+      setTimeout(() => {
+        if (iconContainer) {
+          iconContainer.classList.remove('rotate-x-90', 'opacity-50');
+          iconContainer.classList.add('rotate-x-0', 'opacity-100');
+        }
+        if (title) {
+          title.classList.remove('rotate-x-90', 'opacity-50');
+          title.classList.add('rotate-x-0', 'opacity-100');
+        }
+        if (description) {
+          description.classList.remove('rotate-x-90', 'opacity-50');
+          description.classList.add('rotate-x-0', 'opacity-100');
+        }
+      }, 300);
+    };
     
     const updateInfo = (index: number, isMobile: boolean): void => {
       if (index >= 0 && index < amenidades.length) {
@@ -295,93 +285,89 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
           currentDesktopIndex = index;
         }
         
-        if (isMobile && titleMobile && descriptionMobile) {
-          titleMobile.textContent = amenidad.title;
-          descriptionMobile.textContent = amenidad.description;
-          
-          if (iconMobile) {
-            iconMobile.src = amenidad.icon;
-            iconMobile.alt = `Icono de ${amenidad.title}`;
-          }
-        }
+        // Animar la transición
+        animateTransition(isMobile);
         
-        if (!isMobile && iconDesktop && titleDesktop && descriptionDesktop) {
-          iconDesktop.src = amenidad.icon;
-          iconDesktop.alt = `Icono de ${amenidad.title}`;
-          titleDesktop.textContent = amenidad.title;
-          descriptionDesktop.textContent = amenidad.description;
-        }
+        setTimeout(() => {
+          if (isMobile && titleMobile && descriptionMobile) {
+            titleMobile.textContent = amenidad.title;
+            descriptionMobile.textContent = amenidad.description;
+            
+            if (iconMobile) {
+              iconMobile.src = amenidad.icon;
+              iconMobile.alt = `Icono de ${amenidad.title}`;
+            }
+          }
+          
+          if (!isMobile && iconDesktop && titleDesktop && descriptionDesktop) {
+            iconDesktop.src = amenidad.icon;
+            iconDesktop.alt = `Icono de ${amenidad.title}`;
+            titleDesktop.textContent = amenidad.title;
+            descriptionDesktop.textContent = amenidad.description;
+          }
+        }, 150); // Tiempo para que se complete la animación de salida
+        
+        // Actualizar puntos activos
+        updateDots(index, isMobile);
       }
     };
 
-    // Botones de navegación del móvil
-    const mobilePrevBtn = document.getElementById('mobile-prev-btn');
-    const mobileNextBtn = document.getElementById('mobile-next-btn');
-    
-    if (mobilePrevBtn) {
-      mobilePrevBtn.addEventListener('click', () => {
-        // Hacer clic en el botón original del carrusel, que emitirá el evento personalizado
-        const carouselPrevBtn = document.querySelector('#pool-carousel-mobile .carousel-prev') as HTMLButtonElement;
-        if (carouselPrevBtn) {
-          carouselPrevBtn.click();
-        }
+    // Configurar evento de clic para puntos de navegación móvil
+    if (mobileCarouselDots) {
+      const mobileDots = mobileCarouselDots.querySelectorAll('.carousel-dot');
+      mobileDots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+          // Actualizar el carousel
+          const carouselSlide = document.querySelector('#pool-carousel-mobile .carousel-track');
+          if (carouselSlide && carouselSlide instanceof HTMLElement) {
+            const slideWidth = document.querySelector('#pool-carousel-mobile')?.clientWidth || 0;
+            carouselSlide.style.transform = `translateX(-${index * slideWidth}px)`;
+          }
+          
+          // Actualizar info y puntos activos
+          updateInfo(index, true);
+          
+          // Disparar evento para mantener sincronización con el carousel
+          const event = new CustomEvent('carousel-dot-clicked', {
+            bubbles: true,
+            detail: { index }
+          });
+          mobileCarouselDots.dispatchEvent(event);
+        });
       });
     }
     
-    if (mobileNextBtn) {
-      mobileNextBtn.addEventListener('click', () => {
-        // Hacer clic en el botón original del carrusel, que emitirá el evento personalizado
-        const carouselNextBtn = document.querySelector('#pool-carousel-mobile .carousel-next') as HTMLButtonElement;
-        if (carouselNextBtn) {
-          carouselNextBtn.click();
-        }
-      });
-    }
-    
-    // Botones de navegación de desktop
-    const desktopPrevBtn = document.getElementById('desktop-prev-btn');
-    const desktopNextBtn = document.getElementById('desktop-next-btn');
-    
-    if (desktopPrevBtn) {
-      desktopPrevBtn.addEventListener('click', () => {
-        // Hacer clic en el botón original del carrusel, que emitirá el evento personalizado
-        const carouselPrevBtn = document.querySelector('#pool-carousel-desktop .carousel-prev') as HTMLButtonElement;
-        if (carouselPrevBtn) {
-          carouselPrevBtn.click();
-        }
-      });
-    }
-    
-    if (desktopNextBtn) {
-      desktopNextBtn.addEventListener('click', () => {
-        // Hacer clic en el botón original del carrusel, que emitirá el evento personalizado
-        const carouselNextBtn = document.querySelector('#pool-carousel-desktop .carousel-next') as HTMLButtonElement;
-        if (carouselNextBtn) {
-          carouselNextBtn.click();
-        }
-      });
-    }
-    
-    if (prevBtnDesktop) {
-      prevBtnDesktop.addEventListener('click', () => {
-        currentDesktopIndex = (currentDesktopIndex - 1 + amenidades.length) % amenidades.length;
-        setTimeout(() => updateInfo(currentDesktopIndex, false), 50);
-      });
-    }
-    
-    if (nextBtnDesktop) {
-      nextBtnDesktop.addEventListener('click', () => {
-        currentDesktopIndex = (currentDesktopIndex + 1) % amenidades.length;
-        setTimeout(() => updateInfo(currentDesktopIndex, false), 50);
+    // Configurar evento de clic para puntos de navegación desktop
+    if (desktopCarouselDots) {
+      const desktopDots = desktopCarouselDots.querySelectorAll('.carousel-dot');
+      desktopDots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+          // Actualizar el carousel
+          const carouselSlide = document.querySelector('#pool-carousel-desktop .carousel-track');
+          if (carouselSlide && carouselSlide instanceof HTMLElement) {
+            const slideWidth = document.querySelector('#pool-carousel-desktop')?.clientWidth || 0;
+            carouselSlide.style.transform = `translateX(-${index * slideWidth}px)`;
+          }
+          
+          // Actualizar info y puntos activos
+          updateInfo(index, false);
+          
+          // Disparar evento para mantener sincronización con el carousel
+          const event = new CustomEvent('carousel-dot-clicked', {
+            bubbles: true,
+            detail: { index }
+          });
+          desktopCarouselDots.dispatchEvent(event);
+        });
       });
     }
 
+    // Escuchar eventos del carousel para sincronizar con puntos
     const carouselMobile = document.getElementById('pool-carousel-mobile');
     if (carouselMobile) {
-      // Escuchar al nuevo evento personalizado para cambios de slide
-      carouselMobile.addEventListener('carousel-slide-changed', ((e: CustomEvent) => {
-        const { direction, index } = e.detail;
-        // Actualizar la información basada en el índice real del carousel
+      carouselMobile.addEventListener('carousel-slide-changed', ((e: Event) => {
+        const customEvent = e as CustomEvent<{index: number}>;
+        const index = customEvent.detail.index;
         currentMobileIndex = index;
         updateInfo(currentMobileIndex, true);
       }) as EventListener);
@@ -389,10 +375,9 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
 
     const carouselDesktop = document.getElementById('pool-carousel-desktop');
     if (carouselDesktop) {
-      // Escuchar al nuevo evento personalizado para cambios de slide
-      carouselDesktop.addEventListener('carousel-slide-changed', ((e: CustomEvent) => {
-        const { direction, index } = e.detail;
-        // Actualizar la información basada en el índice real del carousel
+      carouselDesktop.addEventListener('carousel-slide-changed', ((e: Event) => {
+        const customEvent = e as CustomEvent<{index: number}>;
+        const index = customEvent.detail.index;
         currentDesktopIndex = index;
         updateInfo(currentDesktopIndex, false);
       }) as EventListener);
@@ -412,5 +397,24 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
   /* Ocultar los indicadores de posición (dots) */
   :global(.carousel-container .carousel-dot) {
     display: none !important;
+  }
+
+  :global(#amenities-section .carousel-slide) {
+    overflow: hidden;
+  }
+
+  /* Estilos para animación flip */
+  .perspective-500 {
+    perspective: 500px;
+    transform-style: preserve-3d;
+    backface-visibility: hidden;
+  }
+
+  .rotate-x-0 {
+    transform: rotateX(0deg);
+  }
+
+  .rotate-x-90 {
+    transform: rotateX(90deg);
   }
 </style>

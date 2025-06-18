@@ -16,13 +16,25 @@ const {
 const heroImage = projectFiles.images.hero;
 const heroFolder = "DISENO";
 const imageUrl = getImageUrl(heroImage.id, heroFolder);
+
+// URL del video de hero desde Google Cloud Storage
+const videoId = "Astre%20(Hero%20Header).mp4";
+const videoUrl = getImageUrl(videoId, "HERO");
 ---
 
 <section class="relative flex items-start md:items-center justify-end md:justify-center w-full h-screen">
-  <div 
-    class="absolute inset-0 z-10"
-    style={`background-image: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('${imageUrl}'); background-size: cover; background-position: center;`}
-  ></div>
+  <div class="absolute inset-0 z-10">
+    <!-- Video con gradiente usando el color primario -->
+    <div class="absolute inset-0 bg-primary/80 z-20"></div>
+    <video
+      class="absolute inset-0 w-full h-full object-cover"
+      autoplay
+      muted
+      loop
+      playsinline
+      src={videoUrl}
+    ></video>
+  </div>
   
   <div class="relative z-20 flex flex-col justify-end md:justify-center md:items-center h-screen w-full md:mt-72 pb-42">
     <div class="w-full md:max-w-3xl lg:max-w-4xl">

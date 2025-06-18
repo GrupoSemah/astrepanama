@@ -3,43 +3,54 @@ interface Props {
   images: string[];
   id?: string;
   class?: string;
+  showDragIndicator?: boolean;
+  useNavDots?: boolean;
 }
 
-const { images = [], id = "image-carousel", class: className = "" } = Astro.props;
+const { 
+  images = [], 
+  id = "image-carousel", 
+  class: className = "", 
+  showDragIndicator = false, 
+  useNavDots = false 
+} = Astro.props;
 ---
 
-<div id={id} class={`carousel-container relative overflow-hidden rounded-2xl ${className}`}>
+<div id={id} class={`carousel-container relative overflow-hidden rounded-2xl ${className} ${showDragIndicator ? 'cursor-none' : ''}`}>
   <div class="carousel-track flex transition-transform duration-300 ease-out">
     {images.map((image, index) => (
-      <div class="carousel-slide min-w-full flex-shrink-0">
+      <div class="carousel-slide min-w-full flex-shrink-0 relative">
         <img 
           src={image} 
           alt={`Slide ${index + 1}`} 
           class="w-full h-full object-cover" 
         />
+
       </div>
     ))}
   </div>
   
   <!-- Controles de navegación para desktop -->
-  <div class="hidden md:block">
-    <button 
-      class="carousel-prev absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full flex items-center justify-center focus:outline-none"
-      aria-label="Anterior imagen"
-    >
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M15 18L9 12L15 6" stroke="#1D3557" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
-    <button 
-      class="carousel-next absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full flex items-center justify-center focus:outline-none"
-      aria-label="Siguiente imagen"
-    >
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M9 6L15 12L9 18" stroke="#1D3557" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-    </button>
-  </div>
+  {!useNavDots && (
+    <div class="hidden md:block">
+      <button 
+        class="carousel-prev absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full flex items-center justify-center focus:outline-none"
+        aria-label="Anterior imagen"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M15 18L9 12L15 6" stroke="#1D3557" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+      <button 
+        class="carousel-next absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full flex items-center justify-center focus:outline-none"
+        aria-label="Siguiente imagen"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 6L15 12L9 18" stroke="#1D3557" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </button>
+    </div>
+  )}
 
   <!-- Indicadores de posición -->
   <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
@@ -54,18 +65,26 @@ const { images = [], id = "image-carousel", class: className = "" } = Astro.prop
 </div>
 
 <script>
+  // Almacenar todas las instancias de carousel
+  const carouselInstances = new Map<HTMLElement, Carousel>();
+  
   class Carousel {
     container: HTMLElement;
     track: HTMLElement;
     slides: HTMLElement[];
     dots: HTMLElement[];
-    prevBtn: HTMLButtonElement | null;
-    nextBtn: HTMLButtonElement | null;
+    prevBtn: HTMLElement | null;
+    nextBtn: HTMLElement | null;
     currentIndex: number = 0;
     slideWidth: number = 0;
     touchStartX: number = 0;
     touchEndX: number = 0;
     isSwiping: boolean = false;
+    
+    // Variables para arrastrar con mouse
+    mouseStartX: number = 0;
+    mouseEndX: number = 0;
+    isDragging: boolean = false;
     
     constructor(container: HTMLElement) {
       this.container = container;
@@ -74,6 +93,9 @@ const { images = [], id = "image-carousel", class: className = "" } = Astro.prop
       this.dots = Array.from(container.querySelectorAll('.carousel-dot'));
       this.prevBtn = container.querySelector('.carousel-prev');
       this.nextBtn = container.querySelector('.carousel-next');
+      
+      // Guardar la instancia en el mapa global
+      carouselInstances.set(container, this);
       
       this.init();
     }
@@ -99,81 +121,97 @@ const { images = [], id = "image-carousel", class: className = "" } = Astro.prop
       this.container.addEventListener('touchstart', this.handleTouchStart.bind(this), { passive: true });
       this.container.addEventListener('touchmove', this.handleTouchMove.bind(this), { passive: false });
       this.container.addEventListener('touchend', this.handleTouchEnd.bind(this));
+      
+      // Mouse events para desktop
+      this.container.addEventListener('mousedown', this.handleMouseDown.bind(this));
+      document.addEventListener('mousemove', this.handleMouseMove.bind(this));
+      document.addEventListener('mouseup', this.handleMouseUp.bind(this));
     }
     
     updateSlideWidth() {
       this.slideWidth = this.container.offsetWidth;
       this.slides.forEach(slide => {
-        slide.style.width = `${this.slideWidth}px`;
+        (slide as HTMLElement).style.width = `${this.slideWidth}px`;
       });
-      this.goToSlide(this.currentIndex, false);
+      this.moveToSlide(this.currentIndex, false);
+    }
+    
+    moveToSlide(index: number, animate: boolean = true) {
+      if (!animate) {
+        this.track.classList.remove('transition-transform');
+      } else {
+        this.track.classList.add('transition-transform');
+      }
+      
+      const offset = index * this.slideWidth;
+      this.track.style.transform = `translateX(-${offset}px)`;
+      
+      // Actualizar estado
+      this.currentIndex = index;
+      this.updateActiveDot();
+      
+      // Actualizar indicadores externos asociados a este carousel
+      this.updateExternalIndicators();
+      
+      // Disparar evento personalizado
+      const event = new CustomEvent('slide-changed', { 
+        detail: {
+          index: this.currentIndex,
+          container: this.container,
+          slide: this.slides[this.currentIndex]
+        }
+      });
+      this.container.dispatchEvent(event);
     }
     
     updateActiveDot() {
-      this.dots.forEach((dot, index) => {
-        if (index === this.currentIndex) {
+      this.dots.forEach((dot, idx) => {
+        if (idx === this.currentIndex) {
           dot.classList.add('opacity-100');
-          dot.classList.remove('opacity-50');
         } else {
-          dot.classList.add('opacity-50');
           dot.classList.remove('opacity-100');
         }
       });
     }
     
-    goToSlide(index: number, animate: boolean = true) {
-      if (index < 0) {
-        index = this.slides.length - 1;
-      } else if (index >= this.slides.length) {
-        index = 0;
-      }
+    updateExternalIndicators() {
+      // Buscar la sección que contiene este carousel
+      const section = this.container.closest('section');
+      if (!section) return;
       
-      this.currentIndex = index;
-      const translateX = -index * this.slideWidth;
-      
-      if (animate) {
-        this.track.classList.add('transition-transform');
-      } else {
-        this.track.classList.remove('transition-transform');
-      }
-      
-      this.track.style.transform = `translateX(${translateX}px)`;
-      this.updateActiveDot();
-      
-      // Re-añadir la transición después de un cambio sin animación
-      if (!animate) {
-        setTimeout(() => {
-          this.track.classList.add('transition-transform');
-        }, 10);
+      // Buscar indicadores externos en la misma sección
+      const externalIndicators = section.querySelectorAll('.carousel-indicator');
+      if (externalIndicators.length > 0) {
+        externalIndicators.forEach((indicator, idx) => {
+          if (idx === this.currentIndex) {
+            indicator.classList.add('bg-primary');
+          } else {
+            indicator.classList.remove('bg-primary');
+          }
+        });
       }
     }
     
-    next() {
-      const oldIndex = this.currentIndex;
-      this.goToSlide(this.currentIndex + 1);
-      
-      // Solo disparar evento si realmente cambió el índice
-      if (oldIndex !== this.currentIndex) {
-        const event = new CustomEvent('carousel-slide-changed', {
-          bubbles: true,
-          detail: { direction: 'next', index: this.currentIndex }
-        });
-        this.container.dispatchEvent(event);
-      }
+    goToSlide(index: number) {
+      // Asegurarse de que el índice sea válido
+      const targetIndex = Math.max(0, Math.min(index, this.slides.length - 1));
+      this.moveToSlide(targetIndex);
     }
     
     prev() {
-      const oldIndex = this.currentIndex;
-      this.goToSlide(this.currentIndex - 1);
-      
-      // Solo disparar evento si realmente cambió el índice
-      if (oldIndex !== this.currentIndex) {
-        const event = new CustomEvent('carousel-slide-changed', {
-          bubbles: true,
-          detail: { direction: 'prev', index: this.currentIndex }
-        });
-        this.container.dispatchEvent(event);
+      let targetIndex = this.currentIndex - 1;
+      if (targetIndex < 0) {
+        targetIndex = this.slides.length - 1;
       }
+      this.goToSlide(targetIndex);
+    }
+    
+    next() {
+      let targetIndex = this.currentIndex + 1;
+      if (targetIndex >= this.slides.length) {
+        targetIndex = 0;
+      }
+      this.goToSlide(targetIndex);
     }
     
     handleTouchStart(e: TouchEvent) {
@@ -185,20 +223,23 @@ const { images = [], id = "image-carousel", class: className = "" } = Astro.prop
     handleTouchMove(e: TouchEvent) {
       if (!this.isSwiping) return;
       
-      e.preventDefault();
-      this.touchEndX = e.touches[0].clientX;
-      const diffX = this.touchEndX - this.touchStartX;
-      const translateX = -this.currentIndex * this.slideWidth + diffX;
+      const touchCurrentX = e.touches[0].clientX;
+      const diff = this.touchStartX - touchCurrentX;
       
-      // Limitar la cantidad de arrastre para que no parezca demasiado elástico
-      if (
-        (this.currentIndex === 0 && diffX > 0) || 
-        (this.currentIndex === this.slides.length - 1 && diffX < 0)
-      ) {
-        this.track.style.transform = `translateX(${translateX / 3}px)`;
+      const currentOffset = this.currentIndex * this.slideWidth;
+      const newOffset = currentOffset + diff;
+      
+      // Limitar el arrastre si estamos en el primer o último slide
+      if (this.currentIndex === 0 && diff < 0) {
+        this.track.style.transform = `translateX(-${newOffset * 0.3}px)`;
+      } else if (this.currentIndex === this.slides.length - 1 && diff > 0) {
+        this.track.style.transform = `translateX(-${currentOffset + diff * 0.3}px)`;
       } else {
-        this.track.style.transform = `translateX(${translateX}px)`;
+        this.track.style.transform = `translateX(-${newOffset}px)`;
       }
+      
+      // Prevenir scroll
+      e.preventDefault();
     }
     
     handleTouchEnd() {
@@ -207,39 +248,158 @@ const { images = [], id = "image-carousel", class: className = "" } = Astro.prop
       this.isSwiping = false;
       this.track.classList.add('transition-transform');
       
-      const diffX = this.touchEndX - this.touchStartX;
-      const threshold = this.slideWidth / 3; // Requiere arrastrar 1/3 del ancho para cambiar slide
+      const touchDiff = this.touchStartX - this.touchEndX;
       
-      if (Math.abs(diffX) > threshold) {
-        if (diffX > 0) {
-          this.prev();
-          // Disparar evento personalizado de cambio a slide previo
-          const prevEvent = new CustomEvent('carousel-slide-changed', {
-            bubbles: true,
-            detail: { direction: 'prev', index: this.currentIndex }
-          });
-          this.container.dispatchEvent(prevEvent);
-        } else {
+      // Si el arrastre es suficiente, cambiar slide
+      if (Math.abs(touchDiff) > this.slideWidth * 0.2) {
+        if (touchDiff > 0) {
           this.next();
-          // Disparar evento personalizado de cambio a siguiente slide
-          const nextEvent = new CustomEvent('carousel-slide-changed', {
-            bubbles: true,
-            detail: { direction: 'next', index: this.currentIndex }
-          });
-          this.container.dispatchEvent(nextEvent);
+        } else {
+          this.prev();
         }
       } else {
-        // No hubo cambio de slide, se regresa al mismo
-        this.goToSlide(this.currentIndex);
+        // Restaurar posición original
+        this.moveToSlide(this.currentIndex);
+      }
+    }
+    
+    handleMouseDown(e: MouseEvent) {
+      this.isDragging = true;
+      this.mouseStartX = e.clientX;
+      this.mouseEndX = e.clientX;
+      
+      // Eliminar transición para un arrastre suave
+      this.track.classList.remove('transition-transform');
+      
+      // Cambiar cursor mientras se arrastra
+      document.body.style.cursor = 'grabbing';
+      e.preventDefault();
+    }
+    
+    handleMouseMove(e: MouseEvent) {
+      if (!this.isDragging) return;
+      
+      this.mouseEndX = e.clientX;
+      const diff = this.mouseStartX - this.mouseEndX;
+      
+      const currentOffset = this.currentIndex * this.slideWidth;
+      const newOffset = currentOffset + diff;
+      
+      // Limitar el arrastre si estamos en el primer o último slide
+      if (this.currentIndex === 0 && diff < 0) {
+        this.track.style.transform = `translateX(-${newOffset * 0.3}px)`;
+      } else if (this.currentIndex === this.slides.length - 1 && diff > 0) {
+        this.track.style.transform = `translateX(-${currentOffset + diff * 0.3}px)`;
+      } else {
+        this.track.style.transform = `translateX(-${newOffset}px)`;
+      }
+      
+      // Prevenir selección de texto mientras se arrastra
+      e.preventDefault();
+    }
+    
+    handleMouseUp(e: MouseEvent) {
+      if (!this.isDragging) return;
+      
+      this.isDragging = false;
+      this.track.classList.add('transition-transform');
+      document.body.style.cursor = '';
+      
+      const dragDiff = this.mouseStartX - this.mouseEndX;
+      
+      // Si el arrastre es suficiente, cambiar slide
+      if (Math.abs(dragDiff) > this.slideWidth * 0.2) {
+        if (dragDiff > 0) {
+          this.next();
+        } else {
+          this.prev();
+        }
+      } else {
+        // Restaurar posición original
+        this.moveToSlide(this.currentIndex);
       }
     }
   }
   
   // Inicializar todos los carouseles en la página
   document.addEventListener('DOMContentLoaded', () => {
-    const carousels = document.querySelectorAll('.carousel-container');
-    carousels.forEach(carousel => {
-      new Carousel(carousel as HTMLElement);
+    const carouselElements = document.querySelectorAll('.carousel-container');
+    
+    // Crear instancias y guardar referencias
+    carouselElements.forEach(carousel => {
+      const carouselInstance = new Carousel(carousel as HTMLElement);
+      
+      // Añadir referencia directa al elemento HTML para que pueda ser accedido externamente
+      (carousel as any).carouselInstance = carouselInstance;
+      
+      // Crear cursor personalizado DRAG si está habilitado
+      if (carousel.classList.contains('cursor-none')) {
+        const dragCursor = document.createElement('div');
+        dragCursor.className = 'custom-drag-cursor';
+        dragCursor.innerHTML = '<span>DRAG</span>';
+        
+        // Estilos para el cursor DRAG
+        dragCursor.style.position = 'fixed';
+        dragCursor.style.pointerEvents = 'none';
+        dragCursor.style.zIndex = '9999';
+        dragCursor.style.display = 'none';
+        dragCursor.style.padding = '6px 12px';
+        dragCursor.style.borderRadius = '4px';
+        dragCursor.style.backgroundColor = 'var(--color-primary)';
+        dragCursor.style.backdropFilter = 'blur(4px)';
+        // Añadir prefijo Webkit usando notación de índice para compatibilidad con TypeScript
+        (dragCursor.style as any)['-webkit-backdrop-filter'] = 'blur(4px)';
+        dragCursor.style.color = 'var(--color-secondary)';
+        dragCursor.style.fontWeight = 'bold';
+        dragCursor.style.fontSize = '16px';
+        dragCursor.style.letterSpacing = '2px';
+        dragCursor.style.fontFamily = 'var(--font-heading)';
+        document.body.appendChild(dragCursor);
+        
+        // Seguimiento del cursor
+        const onMouseMove = (e: Event) => {
+          const mouseEvent = e as MouseEvent;
+          if (dragCursor) {
+            dragCursor.style.display = 'flex';
+            dragCursor.style.left = `${mouseEvent.clientX - dragCursor.offsetWidth / 2}px`;
+            dragCursor.style.top = `${mouseEvent.clientY - dragCursor.offsetHeight / 2}px`;
+          }
+        };
+        
+        const onMouseLeave = () => {
+          if (dragCursor) {
+            dragCursor.style.display = 'none';
+          }
+        };
+        
+        carousel.addEventListener('mousemove', onMouseMove);
+        carousel.addEventListener('mouseleave', onMouseLeave);
+      }
+      
+      // Listener para eventos de navegación externa
+      carousel.addEventListener('carousel-goto-slide', (e: Event) => {
+        const customEvent = e as CustomEvent;
+        if (customEvent.detail && typeof customEvent.detail.index === 'number') {
+          carouselInstance.goToSlide(customEvent.detail.index);
+        }
+      });
+    });
+    
+    // Conectar los indicadores de carousel externos
+    document.querySelectorAll('.carousel-indicator').forEach((indicator, index) => {
+      indicator.addEventListener('click', () => {
+        // Busca el carousel en la misma sección que el indicador
+        const section = indicator.closest('section');
+        if (!section) return;
+        
+        const carouselContainer = section.querySelector('.carousel-container');
+        if (carouselContainer) {
+          const carouselInstance = carouselInstances.get(carouselContainer as HTMLElement);
+          if (carouselInstance) {
+            carouselInstance.goToSlide(index);
+          }
+        }
+      });
     });
   });
 </script>
@@ -247,6 +407,13 @@ const { images = [], id = "image-carousel", class: className = "" } = Astro.prop
 <style>
   .carousel-container {
     touch-action: pan-y;
+  }
+  
+  .drag-indicator {
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    background-color: transparent;
+    backdrop-filter: blur(10px);
   }
   
   .carousel-dot.opacity-100 {

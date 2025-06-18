@@ -18,7 +18,16 @@ const videoPreviewImageId = "Disen%CC%83o_Imagenes-05.webp";
 const videoPreviewUrl = getImageUrl(videoPreviewImageId, "DISENO");
 ---
 
-<div class="bg-primary w-screen min-h-screen flex flex-col justify-center overflow-hidden" style="margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%); width: 100vw;">
+<div class="bg-primary w-screen min-h-screen flex flex-col justify-center overflow-hidden relative" style="margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%); width: 100vw;">
+  <!-- Gráfico decorativo superior izquierda -->
+  <div class="absolute top-16 left-16 z-0 ">
+    <img src="/icons/svg/background-menu.svg" alt="" class="w-80 h-80 object-cover rotate-90" />
+  </div>
+  
+  <!-- Gráfico decorativo inferior derecha -->
+  <div class="absolute bottom-0 right-16 z-0">
+    <img src="/icons/svg/background-menu.svg" alt="" class="w-80 h-80 object-cover" />
+  </div>
   <div class="md:hidden w-full px-8 py-16 flex flex-col justify-center">
     <div class="max-w-md mx-auto w-full">
       <div class="text-center mb-6">
@@ -43,8 +52,8 @@ const videoPreviewUrl = getImageUrl(videoPreviewImageId, "DISENO");
         </div>
       </div>
       
-      <div class="text-center mb-5">
-        <p class="text-xl text-white" style="font-family: var(--font-heading);">
+      <div class="text-center mb-6">
+        <p class="text-2xl text-white" style="font-family: var(--font-heading);">
           apartamentos de 2 y 3.5<br/>recámaras desde 100m²
         </p>
       </div>
@@ -84,7 +93,7 @@ const videoPreviewUrl = getImageUrl(videoPreviewImageId, "DISENO");
       
       <div class="grid grid-cols-2 gap-20 items-center">
         <div class="px-20">
-          <p class="text-2xl text-white mb-8" style="font-family: var(--font-heading);">
+          <p class="md:text-4xl text-2xl text-white mb-10" style="font-family: var(--font-heading);">
             Apartamentos de 2 y 3.5<br/>recámaras desde 100m²
           </p>
           
@@ -131,15 +140,66 @@ const videoPreviewUrl = getImageUrl(videoPreviewImageId, "DISENO");
       
       if (playButton && videoUrl) {
         playButton.addEventListener('click', () => {
+          // Crear un video player en lugar de solo un elemento de video
+          const playerContainer = document.createElement('div');
+          playerContainer.className = 'relative w-full h-full';
+          
+          // Crear el elemento de video con atributos necesarios
           const videoElement = document.createElement('video');
           videoElement.src = videoUrl;
           videoElement.className = 'w-full h-full object-cover';
           videoElement.controls = true;
+          videoElement.playsInline = true; // Importante para iOS
           videoElement.autoplay = true;
+          videoElement.muted = false;
+          videoElement.preload = 'auto';
           
+          // Importante: establecer el tipo MIME para ayudar al navegador
+          const sourceElement = document.createElement('source');
+          sourceElement.src = videoUrl;
+          sourceElement.type = 'video/mp4';
+          videoElement.appendChild(sourceElement);
+          
+          // Agregar mensaje de fallback
+          videoElement.innerHTML = 'Su navegador no soporta la reproducción de videos.';
+          
+          // Eliminar los elementos previos
           container.querySelector('.video-preview')?.remove();
           container.querySelector('.video-play-button')?.remove();
-          container.appendChild(videoElement);
+          
+          // Agregar el nuevo player
+          playerContainer.appendChild(videoElement);
+          container.appendChild(playerContainer);
+          
+          // Intentar reproducir el video
+          videoElement.load(); // Importante para forzar la carga
+          
+          const playPromise = videoElement.play();
+          
+          // Manejar la promesa de reproducción
+          if (playPromise !== undefined) {
+            playPromise
+              .then(() => {
+                console.log('Video comenzó a reproducirse con éxito');
+              })
+              .catch(error => {
+                console.error('Error al reproducir video:', error);
+                // Si falla, mostrar un botón para intentar reproducir manualmente
+                const retryButton = document.createElement('button');
+                retryButton.className = 'absolute inset-0 flex items-center justify-center bg-black/40';
+                retryButton.innerHTML = `
+                  <div class="p-4 bg-white/80 backdrop-blur-sm rounded-lg">
+                    <span>Toca para reproducir el video</span>
+                  </div>
+                `;
+                playerContainer.appendChild(retryButton);
+                
+                retryButton.addEventListener('click', () => {
+                  videoElement.play();
+                  retryButton.remove();
+                });
+              });
+          }
         });
       }
     });
