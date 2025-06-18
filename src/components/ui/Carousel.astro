@@ -153,15 +153,26 @@ const {
       // Actualizar indicadores externos asociados a este carousel
       this.updateExternalIndicators();
       
-      // Disparar evento personalizado
-      const event = new CustomEvent('slide-changed', { 
-        detail: {
-          index: this.currentIndex,
-          container: this.container,
-          slide: this.slides[this.currentIndex]
-        }
+      // Disparar eventos personalizados para sincronización
+      const events = [
+        new CustomEvent('slide-changed', { 
+          detail: {
+            index: this.currentIndex,
+            container: this.container,
+            slide: this.slides[this.currentIndex]
+          }
+        }),
+        new CustomEvent('carousel-slide-changed', { 
+          detail: {
+            index: this.currentIndex
+          }
+        })
+      ];
+      
+      // Disparar ambos eventos para garantizar compatibilidad
+      events.forEach(event => {
+        this.container.dispatchEvent(event);
       });
-      this.container.dispatchEvent(event);
     }
     
     updateActiveDot() {
@@ -216,6 +227,7 @@ const {
     
     handleTouchStart(e: TouchEvent) {
       this.touchStartX = e.touches[0].clientX;
+      this.touchEndX = e.touches[0].clientX; // Inicializar touchEndX
       this.isSwiping = true;
       this.track.classList.remove('transition-transform');
     }
@@ -224,6 +236,9 @@ const {
       if (!this.isSwiping) return;
       
       const touchCurrentX = e.touches[0].clientX;
+      // Actualizar touchEndX durante el movimiento
+      this.touchEndX = touchCurrentX;
+      
       const diff = this.touchStartX - touchCurrentX;
       
       const currentOffset = this.currentIndex * this.slideWidth;

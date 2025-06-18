@@ -82,7 +82,7 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
           />
         </div>
         <h2
-          class="text-5xl font-bold text-[#222222] mb-2 transform transition-all duration-500 rotate-x-0 perspective-500" 
+          class="text-5xl font-bold text-[#222222] mb-2 transform transition-all duration-500 rotate-x-0 perspective-500 whitespace-nowrap" 
           id="amenity-title-mobile"
           style="font-family: var(--font-heading);"
         >
@@ -136,7 +136,7 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
 
           <!-- Título y descripción -->
           <h2
-            class="text-6xl text-center font-bold text-primary mb-3 transform transition-all duration-500 rotate-x-0 perspective-500"
+            class="text-6xl text-center font-bold text-primary mb-3 transform transition-all duration-500 rotate-x-0 perspective-500 whitespace-nowrap"
             style="font-family: var(--font-heading);"
             id="amenity-title-desktop"
           >
@@ -365,22 +365,34 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
     // Escuchar eventos del carousel para sincronizar con puntos
     const carouselMobile = document.getElementById('pool-carousel-mobile');
     if (carouselMobile) {
-      carouselMobile.addEventListener('carousel-slide-changed', ((e: Event) => {
-        const customEvent = e as CustomEvent<{index: number}>;
-        const index = customEvent.detail.index;
-        currentMobileIndex = index;
-        updateInfo(currentMobileIndex, true);
-      }) as EventListener);
+      // Escuchamos ambos eventos para mayor compatibilidad
+      ['carousel-slide-changed', 'slide-changed'].forEach(eventName => {
+        carouselMobile.addEventListener(eventName, ((e: Event) => {
+          const customEvent = e as CustomEvent<{index: number}>;
+          const index = customEvent.detail.index;
+          if (currentMobileIndex !== index) {
+            currentMobileIndex = index;
+            updateInfo(currentMobileIndex, true);
+            // Actualizamos los puntos de navegación
+            updateDots(index, true);
+          }
+        }) as EventListener);
+      });
     }
 
     const carouselDesktop = document.getElementById('pool-carousel-desktop');
     if (carouselDesktop) {
-      carouselDesktop.addEventListener('carousel-slide-changed', ((e: Event) => {
-        const customEvent = e as CustomEvent<{index: number}>;
-        const index = customEvent.detail.index;
-        currentDesktopIndex = index;
-        updateInfo(currentDesktopIndex, false);
-      }) as EventListener);
+      ['carousel-slide-changed', 'slide-changed'].forEach(eventName => {
+        carouselDesktop.addEventListener(eventName, ((e: Event) => {
+          const customEvent = e as CustomEvent<{index: number}>;
+          const index = customEvent.detail.index;
+          if (currentDesktopIndex !== index) {
+            currentDesktopIndex = index;
+            updateInfo(currentDesktopIndex, false);
+            updateDots(index, false);
+          }
+        }) as EventListener);
+      });
     }
   });
 </script>
