@@ -137,13 +137,23 @@ const videoPreviewUrl = getImageUrl(videoPreviewImageId, "DISENO");
     
     pdfLinks.forEach(link => {
       if (link) {
-        // Para móviles, eliminamos el manejo mediante JavaScript y dejamos que el enlace funcione normalmente
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
         
+        // Tratamos tanto móvil como escritorio de manera similar para mayor compatibilidad
+        link.setAttribute('download', 'Plantas_Astre.pdf');
+        link.setAttribute('target', '_blank');
+        
         if (isMobile) {
-          // Para móviles, modificamos el enlace para que abra en nueva pestaña directamente
-          link.setAttribute('target', '_blank');
-          link.setAttribute('rel', 'noopener');
+          // En iOS Safari, el atributo download no siempre funciona, así que usamos JavaScript como respaldo
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const pdfUrl = link.getAttribute('href');
+            
+            if (pdfUrl) {
+              // Abrimos en nueva ventana, que es más compatible con dispositivos móviles
+              window.open(pdfUrl, '_blank');
+            }
+          });
         } else {
           // Solo para escritorio usamos el evento click personalizado
           link.addEventListener('click', (e) => {

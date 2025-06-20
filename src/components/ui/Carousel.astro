@@ -20,6 +20,11 @@ const {
 
 <div class="carousel-wrapper">
   <div id={id} class={`carousel-container relative overflow-hidden rounded-2xl ${className} ${showDragIndicator ? 'cursor-none' : ''}`}>
+    {showDragIndicator && (
+      <div class="drag-indicator absolute inset-0 flex items-center justify-center pointer-events-none">
+        <span class="text-white text-lg tracking-widest font-medium">DRAG</span>
+      </div>
+    )}
     <div class="carousel-track flex transition-transform duration-300 ease-out">
       {images.map((image, index) => (
         <div class="carousel-slide min-w-full flex-shrink-0 relative">
@@ -337,48 +342,52 @@ const {
       // Añadir referencia directa al elemento HTML para que pueda ser accedido externamente
       (carousel as any).carouselInstance = carouselInstance;
       
-      // Crear cursor personalizado DRAG si está habilitado
+      // Manejar el indicador DRAG si está habilitado
       if (carousel.classList.contains('cursor-none')) {
-        const dragCursor = document.createElement('div');
-        dragCursor.className = 'custom-drag-cursor';
-        dragCursor.innerHTML = '<span>DRAG</span>';
+        // Ocultar el cursor nativo
+        (carousel as HTMLElement).style.cursor = 'none';
         
-        // Estilos para el cursor DRAG
-        dragCursor.style.position = 'fixed';
-        dragCursor.style.pointerEvents = 'none';
-        dragCursor.style.zIndex = '9999';
-        dragCursor.style.display = 'none';
-        dragCursor.style.padding = '6px 12px';
-        dragCursor.style.borderRadius = '4px';
-        dragCursor.style.backgroundColor = 'var(--color-primary)';
-        dragCursor.style.backdropFilter = 'blur(4px)';
-        // Añadir prefijo Webkit usando notación de índice para compatibilidad con TypeScript
-        (dragCursor.style as any)['-webkit-backdrop-filter'] = 'blur(4px)';
-        dragCursor.style.color = 'var(--color-secondary)';
-        dragCursor.style.fontWeight = 'bold';
-        dragCursor.style.fontSize = '16px';
-        dragCursor.style.letterSpacing = '2px';
-        dragCursor.style.fontFamily = 'var(--font-heading)';
-        document.body.appendChild(dragCursor);
+        // Encontrar el indicador DRAG existente
+        const dragIndicator = carousel.querySelector('.drag-indicator');
         
-        // Seguimiento del cursor
-        const onMouseMove = (e: Event) => {
-          const mouseEvent = e as MouseEvent;
-          if (dragCursor) {
-            dragCursor.style.display = 'flex';
-            dragCursor.style.left = `${mouseEvent.clientX - dragCursor.offsetWidth / 2}px`;
-            dragCursor.style.top = `${mouseEvent.clientY - dragCursor.offsetHeight / 2}px`;
-          }
-        };
-        
-        const onMouseLeave = () => {
-          if (dragCursor) {
-            dragCursor.style.display = 'none';
-          }
-        };
-        
-        carousel.addEventListener('mousemove', onMouseMove);
-        carousel.addEventListener('mouseleave', onMouseLeave);
+        if (dragIndicator) {
+          // Funciones para manejar la visibilidad del indicador
+          const showDragIndicator = () => {
+            // Mostrar el indicador con una animación suave
+            dragIndicator.classList.add('opacity-100');
+            dragIndicator.classList.remove('opacity-0');
+          };
+          
+          const hideDragIndicator = () => {
+            // Ocultar el indicador con una animación suave
+            dragIndicator.classList.remove('opacity-100');
+            dragIndicator.classList.add('opacity-0');
+          };
+          
+          // Inicialmente ocultar
+          hideDragIndicator();
+          
+          // Agregar listeners de eventos
+          carousel.addEventListener('mouseenter', showDragIndicator);
+          carousel.addEventListener('mouseleave', hideDragIndicator);
+          
+          // Cuando se empieza a arrastrar, ocultar temporalmente
+          carousel.addEventListener('mousedown', () => {
+            hideDragIndicator();
+          });
+          
+          // Cuando se suelta, mostrar nuevamente
+          carousel.addEventListener('mouseup', () => {
+            showDragIndicator();
+          });
+          
+          // Al salir del documento mientras arrastra
+          document.addEventListener('mouseup', () => {
+            if (document.activeElement === carousel || carousel.contains(document.activeElement)) {
+              showDragIndicator();
+            }
+          });
+        }
       }
       
       // Listener para eventos de navegación externa
