@@ -137,17 +137,20 @@ const videoPreviewUrl = getImageUrl(videoPreviewImageId, "DISENO");
     
     pdfLinks.forEach(link => {
       if (link) {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          const pdfUrl = link.getAttribute('href');
-          if (pdfUrl) {
-            // Detectar si es un dispositivo móvil
-            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        // Para móviles, eliminamos el manejo mediante JavaScript y dejamos que el enlace funcione normalmente
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        
+        if (isMobile) {
+          // Para móviles, modificamos el enlace para que abra en nueva pestaña directamente
+          link.setAttribute('target', '_blank');
+          link.setAttribute('rel', 'noopener');
+        } else {
+          // Solo para escritorio usamos el evento click personalizado
+          link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const pdfUrl = link.getAttribute('href');
             
-            if (isMobile) {
-              // En dispositivos móviles simplemente abrir en nueva pestaña
-              window.open(pdfUrl, '_blank');
-            } else {
+            if (pdfUrl) {
               // En escritorio intentar descarga directa
               const fileName = pdfUrl.substring(pdfUrl.lastIndexOf('/') + 1);
               
@@ -169,8 +172,8 @@ const videoPreviewUrl = getImageUrl(videoPreviewImageId, "DISENO");
                   window.open(pdfUrl, '_blank');
                 });
             }
-          }
-        });
+          });
+        }
       }
     });
     
