@@ -59,7 +59,7 @@ const videoPreviewUrl = getImageUrl(videoPreviewImageId, "DISENO");
       </div>
       
       <div class="flex justify-center">
-        <a href={pdfUrl} class="group inline-flex items-center justify-center px-6 py-3 border-2 border-white text-white font-medium rounded-lg transition-colors hover:bg-white hover:text-[#222222] w-full" id="mobile-pdf-link">
+        <a href={pdfUrl} target="_blank" class="group inline-flex items-center justify-center px-6 py-3 border-2 border-white text-white font-medium rounded-lg transition-colors hover:bg-white hover:text-[#222222] w-full" id="mobile-pdf-link">
           <span>Ver plantas arquitectónicas</span>
           <svg 
             class="ml-2 w-5 h-5 transition-transform duration-300 group-hover:rotate-90" 
@@ -97,7 +97,7 @@ const videoPreviewUrl = getImageUrl(videoPreviewImageId, "DISENO");
             Apartamentos de 2 y 3.5<br/>recámaras desde 100m²
           </p>
           
-          <a href={pdfUrl} class="group inline-flex items-center px-8 py-3.5 border-2 border-white text-white font-medium rounded-lg transition-colors hover:bg-white hover:text-[#222222]" id="desktop-pdf-link">
+          <a href={pdfUrl} target="_blank" class="group inline-flex items-center px-8 py-3.5 border-2 border-white text-white font-medium rounded-lg transition-colors hover:bg-white hover:text-[#222222]" id="desktop-pdf-link">
             <span>Ver plantas arquitectónicas</span>
             <svg 
               class="ml-2 w-5 h-5 transition-transform duration-300 group-hover:rotate-90" 
@@ -132,60 +132,8 @@ const videoPreviewUrl = getImageUrl(videoPreviewImageId, "DISENO");
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    // Manejo de PDF tanto para dispositivos móviles como escritorio
-    const pdfLinks = document.querySelectorAll('#mobile-pdf-link, #desktop-pdf-link');
-    
-    pdfLinks.forEach(link => {
-      if (link) {
-        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-        
-        // Tratamos tanto móvil como escritorio de manera similar para mayor compatibilidad
-        link.setAttribute('download', 'Plantas_Astre.pdf');
-        link.setAttribute('target', '_blank');
-        
-        if (isMobile) {
-          // En iOS Safari, el atributo download no siempre funciona, así que usamos JavaScript como respaldo
-          link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const pdfUrl = link.getAttribute('href');
-            
-            if (pdfUrl) {
-              // Abrimos en nueva ventana, que es más compatible con dispositivos móviles
-              window.open(pdfUrl, '_blank');
-            }
-          });
-        } else {
-          // Solo para escritorio usamos el evento click personalizado
-          link.addEventListener('click', (e) => {
-            e.preventDefault();
-            const pdfUrl = link.getAttribute('href');
-            
-            if (pdfUrl) {
-              // En escritorio intentar descarga directa
-              const fileName = pdfUrl.substring(pdfUrl.lastIndexOf('/') + 1);
-              
-              fetch(pdfUrl)
-                .then(response => response.blob())
-                .then(blob => {
-                  const blobUrl = window.URL.createObjectURL(blob);
-                  const a = document.createElement('a');
-                  a.style.display = 'none';
-                  a.href = blobUrl;
-                  a.download = fileName;
-                  document.body.appendChild(a);
-                  a.click();
-                  window.URL.revokeObjectURL(blobUrl);
-                  document.body.removeChild(a);
-                })
-                .catch(() => {
-                  // Si falla la descarga, abrimos en nueva pestaña como alternativa
-                  window.open(pdfUrl, '_blank');
-                });
-            }
-          });
-        }
-      }
-    });
+    // No manipulamos los enlaces PDF - dejamos que el comportamiento nativo del navegador funcione
+    // Los enlaces ya tienen target="_blank" configurado en el HTML
     
     const videoContainers = document.querySelectorAll('.video-container');
     
