@@ -31,8 +31,8 @@ const { title = "Contacto" } = Astro.props;
         </div>
 
         <div class="w-full">
-          <div class="pipedrive-container">
-            <div class="pipedriveWebForms" data-pd-webforms="https://webforms.pipedrive.com/f/2TC1i6Fuw5xQBNkn6yqqjCZVGvPZf1C6tVSykl17rK5QvxtfWoQJkh6Yy4mWix0pd"></div>
+          <div class="pipedrive-container" id="pipedrive-form-container">
+            <!-- El formulario de Pipedrive se insertará aquí via JavaScript -->
           </div>
         </div>
       </div>
@@ -164,12 +164,28 @@ const { title = "Contacto" } = Astro.props;
 
 <script is:inline>
   document.addEventListener('DOMContentLoaded', function() {
-    // Cargar el script de Pipedrive dinámicamente
-    const pipedriveScript = document.createElement('script');
-    pipedriveScript.src = 'https://webforms.pipedrive.com/f/loader';
-    pipedriveScript.async = true;
-    document.body.appendChild(pipedriveScript);
+    function insertPipedriveForm() {
+      const container = document.getElementById('pipedrive-form-container');
+      if (!container) return;
+      
+      container.innerHTML = `
+        <div class="pipedriveWebForms" 
+             data-pd-webforms="https://webforms.pipedrive.com/f/2TC1i6Fuw5xQBNkn6yqqjCZVGvPZf1C6tVSykl17rK5QvxtfWoQJkh6Yy4mWix0pd">
+        </div>
+      `;
+      
+      const script = document.createElement('script');
+      script.src = 'https://webforms.pipedrive.com/f/loader';
+      script.async = true;
+      document.body.appendChild(script);
+    }
+    
+    insertPipedriveForm();
+    
+    // Volver a intentar con un pequeño retraso para asegurar carga completa
+    setTimeout(insertPipedriveForm, 1000);
 
+    // Configurar los eventos de los botones de términos y privacidad
     const termsLink = document.getElementById('terms-link');
     const privacyLink = document.getElementById('privacy-link');
 
