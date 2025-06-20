@@ -32,9 +32,7 @@ const { title = "Contacto" } = Astro.props;
 
         <div class="w-full">
           <div class="pipedrive-container">
-            <div class="pipedriveWebForms" data-pd-webforms="https://webforms.pipedrive.com/f/2TC1i6Fuw5xQBNkn6yqqjCZVGvPZf1C6tVSykl17rK5QvxtfWoQJkh6Yy4mWix0pd">
-              <script src="https://webforms.pipedrive.com/f/loader"></script>
-            </div>
+            <div class="pipedriveWebForms" data-pd-webforms="https://webforms.pipedrive.com/f/2TC1i6Fuw5xQBNkn6yqqjCZVGvPZf1C6tVSykl17rK5QvxtfWoQJkh6Yy4mWix0pd"></div>
           </div>
         </div>
       </div>
@@ -80,11 +78,12 @@ const { title = "Contacto" } = Astro.props;
 </a>
 
 <style>
-  /* Estilos para el contenedor de Pipedrive */
   .pipedrive-container {
     width: 100%;
     min-height: 650px;
     overflow: visible;
+    z-index: 10;
+    position: relative;
   }
 
   .pipedriveWebForms {
@@ -92,6 +91,8 @@ const { title = "Contacto" } = Astro.props;
     height: 100% !important;
     min-height: 650px !important;
     overflow: visible !important;
+    z-index: 15;
+    position: relative;
   }
   
   /* Estilos para el botón de WhatsApp */
@@ -123,6 +124,16 @@ const { title = "Contacto" } = Astro.props;
     transform: scale(1.1);
   }
 
+  /* Asegurar que el iframe de Pipedrive sea visible */
+  iframe[src*="pipedrive"] {
+    width: 100% !important;
+    min-height: 650px !important;
+    border: 0 !important;
+    position: relative !important;
+    z-index: 20 !important;
+    display: block !important;
+  }
+
   /* Estilos específicos para móviles */
   @media (max-width: 768px) {
     .whatsapp-icon {
@@ -143,15 +154,22 @@ const { title = "Contacto" } = Astro.props;
       min-height: 580px !important;
     }
     
-    .pipedriveWebForms iframe {
+    iframe[src*="pipedrive"] {
       width: 100% !important;
       min-height: 580px !important;
+      margin-bottom: 40px !important;
     }
   }
 </style>
 
 <script is:inline>
   document.addEventListener('DOMContentLoaded', function() {
+    // Cargar el script de Pipedrive dinámicamente
+    const pipedriveScript = document.createElement('script');
+    pipedriveScript.src = 'https://webforms.pipedrive.com/f/loader';
+    pipedriveScript.async = true;
+    document.body.appendChild(pipedriveScript);
+
     const termsLink = document.getElementById('terms-link');
     const privacyLink = document.getElementById('privacy-link');
 
