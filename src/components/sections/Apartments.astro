@@ -28,8 +28,8 @@ const videoPreviewUrl = getImageUrl(videoPreviewImageId, "DISENO");
   <div class="absolute bottom-0 right-16 z-0">
     <img src="/icons/svg/background-menu.svg" alt="" class="w-80 h-80 object-cover" />
   </div>
-  <div class="md:hidden w-full px-8 py-16 flex flex-col justify-center">
-    <div class="max-w-md mx-auto w-full">
+  <div class="md:hidden w-full px-8 py-16 flex flex-col justify-center relative">
+    <div class="max-w-md mx-auto w-full relative">
       <div class="text-center mb-6">
         <h2 class="text-4xl text-white mb-2" style="font-family: var(--font-heading); font-weight: var(--font-heading-weight);">
           Espacios que elevan tu experiencia diaria
@@ -58,8 +58,8 @@ const videoPreviewUrl = getImageUrl(videoPreviewImageId, "DISENO");
         </p>
       </div>
       
-      <div class="flex justify-center">
-        <a href={pdfUrl} target="_blank" class="group inline-flex items-center justify-center px-6 py-3 border-2 border-white text-white font-medium rounded-lg transition-colors hover:bg-white hover:text-[#222222] w-full" id="mobile-pdf-link">
+      <div class="flex justify-center relative z-10">
+        <a href={pdfUrl} target="_blank" class="group inline-flex items-center justify-center px-6 py-3 border-2 border-white text-white font-medium rounded-lg transition-colors hover:bg-white hover:text-[#222222] w-full relative z-10" id="mobile-pdf-link">
           <span>Ver plantas arquitectónicas</span>
           <svg 
             class="ml-2 w-5 h-5 transition-transform duration-300 group-hover:rotate-90" 
@@ -97,7 +97,7 @@ const videoPreviewUrl = getImageUrl(videoPreviewImageId, "DISENO");
             Apartamentos de 2 y 3.5<br/>recámaras desde 100m²
           </p>
           
-          <a href={pdfUrl} target="_blank" class="group inline-flex items-center px-8 py-3.5 border-2 border-white text-white font-medium rounded-lg transition-colors hover:bg-white hover:text-[#222222]" id="desktop-pdf-link">
+          <a href={pdfUrl} target="_blank" class="group inline-flex items-center px-8 py-3.5 border-2 border-white text-white font-medium rounded-lg transition-colors hover:bg-white hover:text-[#222222] relative z-10" id="desktop-pdf-link">
             <span>Ver plantas arquitectónicas</span>
             <svg 
               class="ml-2 w-5 h-5 transition-transform duration-300 group-hover:rotate-90" 
