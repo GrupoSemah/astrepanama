@@ -60,10 +60,10 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
   class="md:min-h-screen w-full flex flex-col items-center justify-center bg-white md:py-24"
 >
   <div class="text-center mb-14 md:mb-16">
-    <h2 class="text-4xl md:text-5xl font-bold text-primary mb-4" style="font-family: var(--font-heading);">
+    <h2 class="text-4xl md:text-5xl text-primary mb-4" style="font-family: var(--font-heading); font-weight: var(--font-heading-weight);">
       Comodidades que transforman tu rutina
     </h2>
-    <p class="text-base md:text-lg text-primary opacity-90 max-w-3xl mx-auto" style="font-family: var(--font-body);">
+    <p class="text-base md:text-lg text-primary opacity-90 max-w-3xl mx-auto" style="font-family: var(--font-body); font-weight: var(--font-body-weight);">
       PH Astre ofrece una selección de amenidades diseñadas para tu bienestar, recreación y estilo de vida activo.
     </p>
   </div>
@@ -82,16 +82,16 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
           />
         </div>
         <h2
-          class="text-5xl font-bold text-primary mb-2 transform transition-all duration-500 rotate-x-0 perspective-500 whitespace-nowrap" 
+          class="text-5xl text-primary mb-2 transform transition-all duration-500 rotate-x-0 perspective-500 whitespace-nowrap" 
           id="amenity-title-mobile"
-          style="font-family: var(--font-heading);"
+          style="font-family: var(--font-heading); font-weight: var(--font-heading-weight);"
         >
           {currentAmenity.title}
         </h2>
         <p
           class="text-xl text-primary opacity-80 transform transition-all duration-500 rotate-x-0 perspective-500"
           id="amenity-description-mobile"
-          style="font-family: var(--font-body);"
+          style="font-family: var(--font-body); font-weight: var(--font-body-weight);"
         >
           {currentAmenity.description}
         </p>
@@ -104,19 +104,11 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
             images={poolImages}
             id="pool-carousel-mobile"
             class="rounded-3xl overflow-hidden aspect-[16/10]"
+            useNavArrows={true}
           />
         </div>
 
-        <!-- Puntos de navegación para móvil -->
-        <div class="custom-carousel-dots flex justify-center mt-6 gap-3" id="mobile-carousel-dots">
-          {amenidades.map((_, index) => (
-            <button
-              class={`carousel-dot w-3 h-3 rounded-full bg-primary ${index === 0 ? 'opacity-100' : 'opacity-40'}`}
-              data-index={index}
-              aria-label={`Ir a amenidad ${index + 1}`}
-            ></button>
-          ))}
-        </div>
+        <!-- Se eliminaron los puntos de navegación móvil -->
       </div>
     </div>
   </div>
@@ -157,21 +149,13 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
             images={poolImages}
             id="pool-carousel-desktop"
             class="rounded-3xl overflow-hidden aspect-[16/10]"
+            useNavArrows={true}
           />
         </div>
       </div>
     </div>
 
-    <!-- Puntos de navegación para desktop -->
-    <div class="flex justify-center mt-10 gap-4" id="desktop-carousel-dots">
-      {amenidades.map((_, index) => (
-        <button
-          class={`carousel-dot w-3 h-3 rounded-full cursor-pointer bg-primary ${index === 0 ? 'opacity-100' : 'opacity-40'} hover:opacity-70 transition-opacity`}
-          data-index={index}
-          aria-label={`Ir a amenidad ${index + 1}`}
-        ></button>
-      ))}
-    </div>
+    <!-- Se eliminaron los puntos de navegación desktop -->
   </div>
 </section>
 
@@ -222,29 +206,6 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
     const titleDesktop = document.getElementById('amenity-title-desktop');
     const descriptionDesktop = document.getElementById('amenity-description-desktop');
     const iconContainerDesktop = document.getElementById('amenity-icon-container-desktop');
-    
-    // Selectores para los nuevos puntos de navegación
-    const mobileCarouselDots = document.getElementById('mobile-carousel-dots');
-    const desktopCarouselDots = document.getElementById('desktop-carousel-dots');
-    
-    // Función para actualizar los puntos activos
-    const updateDots = (index: number, isMobile: boolean): void => {
-      const dots = isMobile ? 
-        mobileCarouselDots?.querySelectorAll('.carousel-dot') : 
-        desktopCarouselDots?.querySelectorAll('.carousel-dot');
-      
-      if (dots) {
-        dots.forEach((dot, i) => {
-          if (i === index) {
-            dot.classList.add('opacity-100');
-            dot.classList.remove('opacity-40');
-          } else {
-            dot.classList.add('opacity-40');
-            dot.classList.remove('opacity-100');
-          }
-        });
-      }
-    };
     
     // Función para animar la transición con flip vertical
     const animateTransition = (isMobile: boolean): void => {
@@ -306,63 +267,10 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
             descriptionDesktop.textContent = amenidad.description;
           }
         }, 150); // Tiempo para que se complete la animación de salida
-        
-        // Actualizar puntos activos
-        updateDots(index, isMobile);
       }
     };
 
-    // Configurar evento de clic para puntos de navegación móvil
-    if (mobileCarouselDots) {
-      const mobileDots = mobileCarouselDots.querySelectorAll('.carousel-dot');
-      mobileDots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-          // Actualizar el carousel
-          const carouselSlide = document.querySelector('#pool-carousel-mobile .carousel-track');
-          if (carouselSlide && carouselSlide instanceof HTMLElement) {
-            const slideWidth = document.querySelector('#pool-carousel-mobile')?.clientWidth || 0;
-            carouselSlide.style.transform = `translateX(-${index * slideWidth}px)`;
-          }
-          
-          // Actualizar info y puntos activos
-          updateInfo(index, true);
-          
-          // Disparar evento para mantener sincronización con el carousel
-          const event = new CustomEvent('carousel-dot-clicked', {
-            bubbles: true,
-            detail: { index }
-          });
-          mobileCarouselDots.dispatchEvent(event);
-        });
-      });
-    }
-    
-    // Configurar evento de clic para puntos de navegación desktop
-    if (desktopCarouselDots) {
-      const desktopDots = desktopCarouselDots.querySelectorAll('.carousel-dot');
-      desktopDots.forEach((dot, index) => {
-        dot.addEventListener('click', () => {
-          // Actualizar el carousel
-          const carouselSlide = document.querySelector('#pool-carousel-desktop .carousel-track');
-          if (carouselSlide && carouselSlide instanceof HTMLElement) {
-            const slideWidth = document.querySelector('#pool-carousel-desktop')?.clientWidth || 0;
-            carouselSlide.style.transform = `translateX(-${index * slideWidth}px)`;
-          }
-          
-          // Actualizar info y puntos activos
-          updateInfo(index, false);
-          
-          // Disparar evento para mantener sincronización con el carousel
-          const event = new CustomEvent('carousel-dot-clicked', {
-            bubbles: true,
-            detail: { index }
-          });
-          desktopCarouselDots.dispatchEvent(event);
-        });
-      });
-    }
-
-    // Escuchar eventos del carousel para sincronizar con puntos
+    // Escuchar eventos del carousel para actualizar información
     const carouselMobile = document.getElementById('pool-carousel-mobile');
     if (carouselMobile) {
       // Escuchamos ambos eventos para mayor compatibilidad
@@ -373,8 +281,6 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
           if (currentMobileIndex !== index) {
             currentMobileIndex = index;
             updateInfo(currentMobileIndex, true);
-            // Actualizamos los puntos de navegación
-            updateDots(index, true);
           }
         }) as EventListener);
       });
@@ -389,7 +295,6 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
           if (currentDesktopIndex !== index) {
             currentDesktopIndex = index;
             updateInfo(currentDesktopIndex, false);
-            updateDots(index, false);
           }
         }) as EventListener);
       });

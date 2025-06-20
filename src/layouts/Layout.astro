@@ -52,10 +52,24 @@ const {
 		<meta name="twitter:image" content={new URL(image, Astro.url.origin).href} />
 		<meta name="twitter:creator" content={twitterUsername} />
 		
-		<!-- Google Fonts: Mermaid (para títulos) y Raleway (para texto) con display=swap para rendimiento -->
-		<link rel="preconnect" href="https://fonts.googleapis.com">
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-		<link href="https://fonts.googleapis.com/css2?family=Mermaid&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+		<!-- Estilos para usar Helvetica Neue para títulos y texto -->
+		<style>
+			@font-face {
+				font-family: 'Helvetica Neue';
+				src: local('Helvetica Neue Bold'), local('HelveticaNeue-Bold');
+				font-weight: 700;
+				font-style: normal;
+				font-display: swap;
+			}
+			
+			@font-face {
+				font-family: 'Helvetica Neue';
+				src: local('Helvetica Neue Light'), local('HelveticaNeue-Light');
+				font-weight: 300;
+				font-style: normal;
+				font-display: swap;
+			}
+		</style>
 	</head>
 	<body>
 		<slot />

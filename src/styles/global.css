@@ -7,6 +7,8 @@
   --color-astreblue: #1D3557;
   
   /* Configuración de fuentes */
-  --font-heading: 'Mermaid', serif;
-  --font-body: 'Raleway', sans-serif;
+  --font-heading: 'Helvetica Neue', sans-serif;
+  --font-heading-weight: 700;
+  --font-body: 'Helvetica Neue', sans-serif;
+  --font-body-weight: 300;
 }

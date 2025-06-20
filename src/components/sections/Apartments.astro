@@ -31,10 +31,10 @@ const videoPreviewUrl = getImageUrl(videoPreviewImageId, "DISENO");
   <div class="md:hidden w-full px-8 py-16 flex flex-col justify-center">
     <div class="max-w-md mx-auto w-full">
       <div class="text-center mb-6">
-        <h2 class="text-4xl  font-bold text-white mb-2" style="font-family: var(--font-heading);">
+        <h2 class="text-4xl text-white mb-2" style="font-family: var(--font-heading); font-weight: var(--font-heading-weight);">
           Espacios que elevan tu experiencia diaria
         </h2>
-        <p class="text-md text-white opacity-90 mt-12" style="font-family: var(--font-body);">
+        <p class="text-md text-white opacity-90 mt-12" style="font-family: var(--font-body); font-weight: var(--font-body-weight);">
           Cada apartamento en PH Astre ha sido concebido para ofrecer amplitud,<br/>luminosidad y detalles a cada espacio cuidadosamente seleccionados.
         </p>
       </div>
@@ -53,13 +53,13 @@ const videoPreviewUrl = getImageUrl(videoPreviewImageId, "DISENO");
       </div>
       
       <div class="text-center mb-6">
-        <p class="text-2xl text-white" style="font-family: var(--font-heading);">
+        <p class="text-2xl text-white" style="font-family: var(--font-heading); font-weight: var(--font-heading-weight);">
           apartamentos de 2 y 3.5<br/>recámaras desde 100m²
         </p>
       </div>
       
       <div class="flex justify-center">
-        <a href={pdfUrl} target="_blank" download="Plantas_Astre.pdf" class="group inline-flex items-center justify-center px-6 py-3 border-2 border-white text-white font-medium rounded-lg transition-colors hover:bg-white hover:text-[#222222] w-full">
+        <a href={pdfUrl} class="group inline-flex items-center justify-center px-6 py-3 border-2 border-white text-white font-medium rounded-lg transition-colors hover:bg-white hover:text-[#222222] w-full" id="mobile-pdf-link">
           <span>Ver plantas arquitectónicas</span>
           <svg 
             class="ml-2 w-5 h-5 transition-transform duration-300 group-hover:rotate-90" 
@@ -82,10 +82,10 @@ const videoPreviewUrl = getImageUrl(videoPreviewImageId, "DISENO");
   <div class="hidden md:block w-full px-8 py-16">
     <div class="max-w-7xl mx-auto">
       <div class="text-center mb-16">
-        <h2 class="text-5xl font-bold text-white mb-4" style="font-family: var(--font-heading);">
+        <h2 class="text-5xl text-white mb-4" style="font-family: var(--font-heading); font-weight: var(--font-heading-weight);">
           Espacios que elevan tu experiencia diaria
         </h2>
-        <p class="text-lg text-white opacity-90 max-w-3xl mx-auto" style="font-family: var(--font-body);">
+        <p class="text-lg text-white opacity-90 max-w-3xl mx-auto" style="font-family: var(--font-body); font-weight: var(--font-body-weight);">
           Cada apartamento en PH Astre ha sido concebido para ofrecer amplitud,
           luminosidad y detalles a cada espacio cuidadosamente seleccionados.
         </p>
@@ -93,11 +93,11 @@ const videoPreviewUrl = getImageUrl(videoPreviewImageId, "DISENO");
       
       <div class="grid grid-cols-2 gap-20 items-center">
         <div class="px-20">
-          <p class="md:text-4xl text-2xl text-white mb-10" style="font-family: var(--font-heading);">
+          <p class="md:text-4xl text-2xl text-white mb-10" style="font-family: var(--font-heading); font-weight: var(--font-heading-weight);">
             Apartamentos de 2 y 3.5<br/>recámaras desde 100m²
           </p>
           
-          <a href={pdfUrl} target="_blank" download="Plantas_Astre.pdf" class="group inline-flex items-center px-8 py-3.5 border-2 border-white text-white font-medium rounded-lg transition-colors hover:bg-white hover:text-[#222222]">
+          <a href={pdfUrl} class="group inline-flex items-center px-8 py-3.5 border-2 border-white text-white font-medium rounded-lg transition-colors hover:bg-white hover:text-[#222222]" id="desktop-pdf-link">
             <span>Ver plantas arquitectónicas</span>
             <svg 
               class="ml-2 w-5 h-5 transition-transform duration-300 group-hover:rotate-90" 
@@ -132,6 +132,48 @@ const videoPreviewUrl = getImageUrl(videoPreviewImageId, "DISENO");
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    // Manejo de PDF tanto para dispositivos móviles como escritorio
+    const pdfLinks = document.querySelectorAll('#mobile-pdf-link, #desktop-pdf-link');
+    
+    pdfLinks.forEach(link => {
+      if (link) {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const pdfUrl = link.getAttribute('href');
+          if (pdfUrl) {
+            // Detectar si es un dispositivo móvil
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+            
+            if (isMobile) {
+              // En dispositivos móviles simplemente abrir en nueva pestaña
+              window.open(pdfUrl, '_blank');
+            } else {
+              // En escritorio intentar descarga directa
+              const fileName = pdfUrl.substring(pdfUrl.lastIndexOf('/') + 1);
+              
+              fetch(pdfUrl)
+                .then(response => response.blob())
+                .then(blob => {
+                  const blobUrl = window.URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.style.display = 'none';
+                  a.href = blobUrl;
+                  a.download = fileName;
+                  document.body.appendChild(a);
+                  a.click();
+                  window.URL.revokeObjectURL(blobUrl);
+                  document.body.removeChild(a);
+                })
+                .catch(() => {
+                  // Si falla la descarga, abrimos en nueva pestaña como alternativa
+                  window.open(pdfUrl, '_blank');
+                });
+            }
+          }
+        });
+      }
+    });
+    
     const videoContainers = document.querySelectorAll('.video-container');
     
     videoContainers.forEach(container => {

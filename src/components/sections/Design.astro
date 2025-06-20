@@ -27,19 +27,19 @@ const carouselImages = imageNames.map(name => getImageUrl(name, imageFolder));
 <section id="diseno" class="w-full bg-white overflow-hidden pt-20 md:pt-20">
   <div class="md:hidden">
     <div class="mb-8">
-      <Carousel images={carouselImages} showDragIndicator={true} />
+      <Carousel images={carouselImages} showDragIndicator={true} useNavArrows={true} />
     </div>
     
     <div class="px-6 max-w-[394px] mx-auto">
-      <h2 class="text-4xl font-bold mb-5 text-center" style="font-family: var(--font-heading);">
+      <h2 class="text-4xl mb-5 text-center" style="font-family: var(--font-heading); font-weight: var(--font-heading-weight);">
         Vive en lo alto del confort
       </h2>
       
-      <p class="text-base text-gray-700 mb-4 text-center" style="font-family: var(--font-body);">
+      <p class="text-base text-gray-700 mb-4 text-center" style="font-family: var(--font-body); font-weight: var(--font-body-weight);">
         Ubicado en el prestigioso sector de San Francisco, PH Astre redefine el concepto de vida urbana en Ciudad de Panamá.
       </p>
       
-      <p class="text-base text-gray-700 mb-8 text-center" style="font-family: var(--font-body);">
+      <p class="text-base text-gray-700 mb-8 text-center" style="font-family: var(--font-body); font-weight: var(--font-body-weight);">
         Este exclusivo proyecto residencial combina elegancia, funcionalidad y una conexión directa con los puntos más dinámicos de la ciudad.
       </p>
       
@@ -69,15 +69,15 @@ const carouselImages = imageNames.map(name => getImageUrl(name, imageFolder));
   
   <div class="hidden md:block container mx-auto px-8 pb-24">
     <div class="max-w-4xl mx-auto text-center mb-12">
-      <h2 class="text-6xl font-bold mb-6" style="font-family: var(--font-heading);">
+      <h2 class="text-6xl mb-6" style="font-family: var(--font-heading); font-weight: var(--font-heading-weight);">
         Vive en lo alto del confort
       </h2>
       
-      <p class="text-md text-gray-700 mb-4" style="font-family: var(--font-body);">
+      <p class="text-md text-gray-700 mb-4" style="font-family: var(--font-body); font-weight: var(--font-body-weight);">
         Ubicado en el prestigioso sector de San Francisco, PH Astre redefine el concepto de vida urbana en Ciudad de Panamá.
       </p>
       
-      <p class="text-md text-gray-700 mb-8" style="font-family: var(--font-body);">
+      <p class="text-md text-gray-700 mb-8" style="font-family: var(--font-body); font-weight: var(--font-body-weight);">
         Este exclusivo proyecto residencial combina elegancia, funcionalidad y una conexión directa con los puntos más dinámicos de la ciudad.
       </p>
       
@@ -111,63 +111,12 @@ const carouselImages = imageNames.map(name => getImageUrl(name, imageFolder));
         images={carouselImages} 
         showDragIndicator={true} 
         class="max-w-5xl mx-auto rounded-xl overflow-hidden"
-        useNavDots={true}
+        useNavArrows={true}
       />
       
-      <div class="flex justify-center mt-6 gap-3">
-        {carouselImages.map((image: string, index: number) => (
-          <button 
-            class={`carousel-indicator w-3 h-3 rounded-full transition-colors ${index === 0 ? 'bg-primary' : 'bg-gray-300 hover:bg-gray-500'}`}
-            data-index={index}
-            aria-label={`Ir a imagen ${index + 1}`}
-          ></button>
-        ))}
-      </div>
+      <!-- Se eliminaron los puntos de navegación que estaban aquí -->
     </div>
   </div>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Obtener referencias de elementos
-      const carouselContainer = document.getElementById('design-carousel');
-      const indicators = document.querySelectorAll('#diseno .carousel-indicator');
-      
-      // Verificar que existan los elementos
-      if (!carouselContainer || indicators.length === 0) {
-        console.warn('No se encontraron elementos necesarios para la navegación del carousel');
-        return;
-      }
-      
-      // Método para manejar el cambio de slide
-      const goToSlide = (index: number): void => {
-        // Obtener instance del carousel (añadida previamente al elemento)
-        const carouselInstance = (carouselContainer as HTMLElement).querySelector('.carousel-track') as HTMLElement;
-        
-        // Calculamos el ancho para hacer la transformación manualmente si es necesario
-        if (carouselInstance) {
-          const slideWidth = carouselContainer.clientWidth;
-          carouselInstance.classList.add('transition-transform');
-          carouselInstance.style.transform = `translateX(-${index * slideWidth}px)`;
-          
-          // Actualizar estado visual de los indicadores
-          indicators.forEach((ind: Element, i: number) => {
-            if (i === index) {
-              ind.classList.add('bg-primary');
-              ind.classList.remove('bg-gray-300');
-            } else {
-              ind.classList.remove('bg-primary');
-              ind.classList.add('bg-gray-300');
-            }
-          });
-        }
-      };
-      
-      // Asociar evento click a cada indicador
-      indicators.forEach((indicator: Element, index: number) => {
-        indicator.addEventListener('click', () => {
-          goToSlide(index);
-        });
-      });
-    });
-  </script>
+  <!-- Las flechas de navegación ahora se manejan directamente desde el componente Carousel -->
 </section>
