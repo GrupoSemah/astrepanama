@@ -37,8 +37,8 @@ const ingresoOptions = [
         </div>
 
         <div class="mb-8 w-full">
-          <!-- Widget de Pipedrive con estilos responsivos -->
-          <div class="pipedriveWebForms w-full md:min-h-[450px]" data-pd-webforms="https://webforms.pipedrive.com/f/2TC1i6Fuw5xQBNkn6yqqjCZVGvPZf1C6tVSykl17rK5QvxtfWoQJkh6Yy4mWix0pd">
+          <!-- Widget de Pipedrive sin estilos adicionales -->
+          <div class="pipedriveWebForms" data-pd-webforms="https://webforms.pipedrive.com/f/2TC1i6Fuw5xQBNkn6yqqjCZVGvPZf1C6tVSykl17rK5QvxtfWoQJkh6Yy4mWix0pd">
             <script src="https://webforms.pipedrive.com/f/loader"></script>
           </div>
         </div>
@@ -114,6 +114,21 @@ const ingresoOptions = [
     transform: scale(1.1);
   }
   
+  /* Estilos para el contenedor de Pipedrive */
+  .pipedrive-form-container {
+    width: 100%;
+    overflow: visible;
+  }
+  
+  /* Estilos para asegurar que el iframe de Pipedrive se muestre en móviles */
+  .pipedriveWebForms {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 500px !important;
+    overflow: visible !important;
+  }
+  
+  /* Estilos específicos para móviles */
   @media (max-width: 768px) {
     .whatsapp-icon {
       width: 50px;
@@ -123,6 +138,22 @@ const ingresoOptions = [
     .whatsapp-float {
       right: 15px;
       bottom: 15px;
+    }
+    
+    .pipedrive-form-container {
+      min-height: 580px;
+      overflow-x: hidden;
+      overflow-y: visible;
+    }
+    
+    .pipedriveWebForms {
+      min-height: 580px !important;
+    }
+    
+    /* Ajustes para evitar problemas de visualización en móviles */
+    .pipedriveWebForms iframe {
+      width: 100% !important;
+      min-height: 580px !important;
     }
   }
 </style>
