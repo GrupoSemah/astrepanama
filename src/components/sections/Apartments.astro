@@ -16,6 +16,34 @@ const pdfUrl = getPdfUrl(pdfFileName, folderName);
 
 const videoPreviewImageId = "Disen%CC%83o_Imagenes-05.webp";
 const videoPreviewUrl = getImageUrl(videoPreviewImageId, "DISENO");
+
+// Datos de los tipos de apartamentos
+const apartmentTypes = [
+  {
+    type: "Tipo A",
+    bedrooms: 3,
+    bathrooms: 2,
+    area: "116.7m²"
+  },
+  {
+    type: "Tipo B",
+    bedrooms: 2,
+    bathrooms: 2,
+    area: "110.1m²"
+  },
+  {
+    type: "Tipo C",
+    bedrooms: 2,
+    bathrooms: 2.5,
+    area: "95.5m²"
+  },
+  {
+    type: "Tipo D",
+    bedrooms: 3,
+    bathrooms: 3.5,
+    area: "189.7m²"
+  }
+];
 ---
 
 <div class="bg-primary w-screen min-h-screen flex flex-col justify-center overflow-hidden relative" style="margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%); width: 100vw;">
@@ -28,18 +56,55 @@ const videoPreviewUrl = getImageUrl(videoPreviewImageId, "DISENO");
   <div class="absolute bottom-0 right-16 z-0">
     <img src="/icons/svg/background-menu.svg" alt="" class="w-80 h-80 object-cover" />
   </div>
-  <div class="md:hidden w-full px-8 py-16 flex flex-col justify-center relative">
-    <div class="max-w-md mx-auto w-full relative">
+  <div class="md:hidden w-full px-4 py-16 flex flex-col justify-center relative">
+    <div class="mx-auto w-full relative">
       <div class="text-center mb-6">
-        <h2 class="text-4xl text-white mb-2" style="font-family: var(--font-heading); font-weight: var(--font-heading-weight);">
+        <h2 class="text-3xl text-white mb-2" style="font-family: var(--font-heading); font-weight: var(--font-heading-weight);">
           Espacios que elevan tu experiencia diaria
         </h2>
-        <p class="text-md text-white opacity-90 mt-12" style="font-family: var(--font-body); font-weight: var(--font-body-weight);">
-          Cada apartamento en PH Astre ha sido concebido para ofrecer amplitud,<br/>luminosidad y detalles a cada espacio cuidadosamente seleccionados.
+        <p class="text-sm text-white opacity-90 mt-4 px-4" style="font-family: var(--font-body); font-weight: var(--font-body-weight);">
+          Cada apartamento en PH Astre ha sido concebido para ofrecer amplitud, luminosidad y detalles a cada espacio cuidadosamente seleccionados.
         </p>
       </div>
       
-      <div class="mb-6">
+      <!-- Grid de tipos de apartamentos con líneas divisorias -->
+      <div class="relative mb-8">
+        <!-- Línea horizontal que separa filas -->
+        <div class="absolute left-0 right-0 top-1/2 h-px bg-gray-500 opacity-40"></div>
+        
+        <!-- Línea vertical que separa columnas -->
+        <div class="absolute top-0 bottom-0 left-1/2 w-px bg-gray-500 opacity-40"></div>
+        
+        <div class="grid grid-cols-2 gap-0">
+          {apartmentTypes.map((apt, index) => (
+            <div class="relative z-10 p-4">
+              <div class="text-center mb-3">
+                <button class="bg-white text-black py-2 px-4 w-full rounded-full font-medium text-base">
+                  {apt.type}
+                </button>
+              </div>
+              <div class="flex items-center justify-center gap-2 text-white text-xs">
+                <div class="flex items-center gap-1">
+                  <img src="/icons/svg/bed.svg" alt="Recámaras" class="w-4 h-4" />
+                  <span>{apt.bedrooms}</span>
+                </div>
+                <span class="opacity-70">|</span>
+                <div class="flex items-center gap-1">
+                  <img src="/icons/svg/bath.svg" alt="Baños" class="w-4 h-4" />
+                  <span>{apt.bathrooms}</span>
+                </div>
+                <span class="opacity-70">|</span>
+                <div class="flex items-center gap-1">
+                  <img src="/icons/svg/area.svg" alt="Área" class="w-4 h-4" />
+                  <span>{apt.area}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      
+      <div class="mb-8">
         <div class="relative rounded-lg overflow-hidden video-container" data-video-url={videoUrl}>
           <img src={videoPreviewUrl} alt="Interior apartamento" class="w-full h-64 object-cover video-preview" />
           <div class="absolute inset-0 flex items-center justify-center video-play-button">
@@ -52,22 +117,16 @@ const videoPreviewUrl = getImageUrl(videoPreviewImageId, "DISENO");
         </div>
       </div>
       
-      <div class="text-center mb-6">
-        <p class="text-2xl text-white" style="font-family: var(--font-heading); font-weight: var(--font-heading-weight);">
-          apartamentos de 2 y 3.5<br/>recámaras desde 100m²
-        </p>
-      </div>
-      
       <div class="flex justify-center relative z-10">
         <a href={pdfUrl} target="_blank" class="group inline-flex items-center justify-center px-6 py-3 border-2 border-white text-white font-medium rounded-lg transition-colors hover:bg-white hover:text-[#222222] w-full relative z-10" id="mobile-pdf-link">
-          <span>Ver plantas arquitectónicas</span>
+          <span>Ver Plantas Arquitectónicas</span>
           <svg 
-            class="ml-2 w-5 h-5 transition-transform duration-300 group-hover:rotate-90" 
+            class="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" 
             viewBox="0 0 24 24" 
             fill="none" 
             xmlns="http://www.w3.org/2000/svg">
             <path 
-              d="M7 17L17 7M17 7H7M17 7V17" 
+              d="M5 12H19M19 12L12 5M19 12L12 19" 
               stroke="currentColor" 
               stroke-width="2" 
               stroke-linecap="round" 
@@ -81,38 +140,74 @@ const videoPreviewUrl = getImageUrl(videoPreviewImageId, "DISENO");
   
   <div class="hidden md:block w-full px-8 py-16">
     <div class="max-w-7xl mx-auto">
-      <div class="text-center mb-16">
+      <div class="text-center mb-8">
         <h2 class="text-5xl text-white mb-4" style="font-family: var(--font-heading); font-weight: var(--font-heading-weight);">
           Espacios que elevan tu experiencia diaria
         </h2>
-        <p class="text-lg text-white opacity-90 max-w-3xl mx-auto" style="font-family: var(--font-body); font-weight: var(--font-body-weight);">
+        <p class="text-2xl text-white opacity-90 max-w-3xl mx-auto" style="font-family: var(--font-body); font-weight: var(--font-body-weight);">
           Cada apartamento en PH Astre ha sido concebido para ofrecer amplitud,
           luminosidad y detalles a cada espacio cuidadosamente seleccionados.
         </p>
       </div>
       
-      <div class="grid grid-cols-2 gap-20 items-center">
-        <div class="px-20">
-          <p class="md:text-4xl text-2xl text-white mb-10" style="font-family: var(--font-heading); font-weight: var(--font-heading-weight);">
-            Apartamentos de 2 y 3.5<br/>recámaras desde 100m²
-          </p>
+      <div class="grid grid-cols-2 gap-12 items-center">
+        <div>
+          <!-- Grid de tipos de apartamentos con líneas separadoras -->
+          <div class="relative">
+            <!-- Línea horizontal que separa filas -->
+            <div class="absolute left-0 right-0 top-1/2 h-px bg-gray-500 opacity-40"></div>
+            
+            <!-- Línea vertical que separa columnas -->
+            <div class="absolute top-0 bottom-0 left-1/2 w-px bg-gray-500 opacity-40"></div>
+            
+            <div class="grid grid-cols-2 gap-0 mb-12">
+              {apartmentTypes.map((apt, index) => (
+                <div class="relative z-10 p-8">
+                  <div class="text-center mb-6">
+                    <button class="bg-white text-black py-3 px-10 w-60 rounded-full text-xl font-bold">
+                      {apt.type}
+                    </button>
+                  </div>
+                  <div class="flex items-center justify-center gap-6 text-white text-lg">
+                    <div class="flex items-center gap-2">
+                      <img src="/icons/svg/bed.svg" alt="Recámaras" class="w-6 h-6" />
+                      <span>{apt.bedrooms}</span>
+                    </div>
+                    <span class="mx-1 opacity-70">|</span>
+                    <div class="flex items-center gap-2">
+                      <img src="/icons/svg/bath.svg" alt="Baños" class="w-6 h-6" />
+                      <span>{apt.bathrooms}</span>
+                    </div>
+                    <span class="mx-1 opacity-70">|</span>
+                    <div class="flex items-center gap-2">
+                      <img src="/icons/svg/area.svg" alt="Área" class="w-6 h-6" />
+                      <span>{apt.area}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
           
-          <a href={pdfUrl} target="_blank" class="group inline-flex items-center px-8 py-3.5 border-2 border-white text-white font-medium rounded-lg transition-colors hover:bg-white hover:text-[#222222] relative z-10" id="desktop-pdf-link">
-            <span>Ver plantas arquitectónicas</span>
-            <svg 
-              class="ml-2 w-5 h-5 transition-transform duration-300 group-hover:rotate-90" 
-              viewBox="0 0 24 24" 
-              fill="none" 
-              xmlns="http://www.w3.org/2000/svg">
-              <path 
-                d="M7 17L17 7M17 7H7M17 7V17" 
-                stroke="currentColor" 
-                stroke-width="2" 
-                stroke-linecap="round" 
-                stroke-linejoin="round"
-              />
-            </svg>
-          </a>
+          <!-- Botón de plantas arquitectónicas -->
+          <div class="flex justify-center mt-8">
+            <a href={pdfUrl} target="_blank" class="group inline-flex items-center justify-center px-6 py-4 border-2 border-white text-white text-lg font-medium rounded-lg transition-colors hover:bg-white hover:text-[#222222] relative z-10 w-full max-w-md" id="desktop-pdf-link">
+              <span>Ver Plantas Arquitectónicas</span>
+              <svg 
+                class="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                xmlns="http://www.w3.org/2000/svg">
+                <path 
+                  d="M5 12H19M19 12L12 5M19 12L12 19" 
+                  stroke="currentColor" 
+                  stroke-width="2" 
+                  stroke-linecap="round" 
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </a>
+          </div>
         </div>
         
         <div class="relative rounded-xl overflow-hidden video-container" data-video-url={videoUrl}>

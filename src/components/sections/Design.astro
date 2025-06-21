@@ -4,10 +4,12 @@ import { getImageUrl } from '@/services/cloudStorage';
 
 interface Props {
   title?: string;
+  title2?: string;
 }
 
 const { 
-  title = "Vive en lo alto del confort"
+  title = "Vive en lo alto ",
+  title2 = "del confort"
 } = Astro.props;
 
 const imageFolder = "DISENO";
@@ -25,6 +27,7 @@ const carouselImages = imageNames.map(name => getImageUrl(name, imageFolder));
 ---
 
 <section id="diseno" class="w-full bg-white overflow-hidden pt-20 md:pt-20">
+  <!-- Mobile Version -->
   <div class="md:hidden">
     <div class="mb-8">
       <Carousel images={carouselImages} showDragIndicator={true} useNavArrows={true} />
@@ -32,7 +35,7 @@ const carouselImages = imageNames.map(name => getImageUrl(name, imageFolder));
     
     <div class="px-6 max-w-[394px] mx-auto">
       <h2 class="text-4xl mb-5 text-center" style="font-family: var(--font-heading); font-weight: var(--font-heading-weight);">
-        Vive en lo alto del confort
+        {title} <br /> {title2}
       </h2>
       
       <p class="text-base text-gray-700 mb-4 text-center" style="font-family: var(--font-body); font-weight: var(--font-body-weight);">
@@ -43,14 +46,14 @@ const carouselImages = imageNames.map(name => getImageUrl(name, imageFolder));
         Este exclusivo proyecto residencial combina elegancia, funcionalidad y una conexión directa con los puntos más dinámicos de la ciudad.
       </p>
       
-      <div class="flex justify-center">
+      <div class="flex justify-center mb-8">
         <a 
           href="#contacto" 
-          class="group inline-flex items-center px-8 py-4 border-2 border-black text-black font-medium rounded-lg transition-colors hover:bg-black hover:text-white"
+          class="group inline-flex items-center px-6 py-3 border border-black text-black font-medium rounded-md transition-colors hover:bg-black hover:text-white"
         >
           <span>Agendar una visita</span>
           <svg 
-            class="ml-2 w-5 h-5 transition-transform duration-300 group-hover:rotate-90" 
+            class="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" 
             viewBox="0 0 24 24" 
             fill="none" 
             xmlns="http://www.w3.org/2000/svg"
@@ -60,63 +63,60 @@ const carouselImages = imageNames.map(name => getImageUrl(name, imageFolder));
               stroke="currentColor" 
               stroke-width="2" 
               stroke-linecap="round" 
-              stroke-linejoin="round"
-            />
+              stroke-linejoin="round"/>
+          </svg>
         </a>
       </div>
     </div>
   </div>
   
-  <div class="hidden md:block container mx-auto px-8 pb-24">
-    <div class="max-w-4xl mx-auto text-center mb-12">
-      <h2 class="text-6xl mb-6" style="font-family: var(--font-heading); font-weight: var(--font-heading-weight);">
-        Vive en lo alto del confort
-      </h2>
-      
-      <p class="text-md text-gray-700 mb-4" style="font-family: var(--font-body); font-weight: var(--font-body-weight);">
-        Ubicado en el prestigioso sector de San Francisco, PH Astre redefine el concepto de vida urbana en Ciudad de Panamá.
-      </p>
-      
-      <p class="text-md text-gray-700 mb-8" style="font-family: var(--font-body); font-weight: var(--font-body-weight);">
-        Este exclusivo proyecto residencial combina elegancia, funcionalidad y una conexión directa con los puntos más dinámicos de la ciudad.
-      </p>
-      
-      <div class="flex justify-center mb-12">
-        <a 
-          href="#contacto" 
-          class="group inline-flex items-center px-4 py-2 border-2 border-black text-black font-medium rounded-lg transition-colors hover:bg-black hover:text-white"
-        >
-          <span>Agenda una visita</span>
-          <svg 
-            class="ml-2 w-5 h-5 transition-transform duration-300 group-hover:rotate-90" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path 
-              d="M7 17L17 7M17 7H7M17 7V17" 
-              stroke="currentColor" 
-              stroke-width="2" 
-              stroke-linecap="round" 
-              stroke-linejoin="round"
-            />
-        </a>
-      </div>
-    </div>
-    
-    <div class="max-w-3xl mx-auto relative">
-      
+  <!-- Desktop Version -->
+  <div class="hidden md:flex flex-row container mx-auto pb-16 px-4">
+    <div class="w-1/2 pr-10">
       <Carousel 
         id="design-carousel"
         images={carouselImages} 
         showDragIndicator={true} 
-        class="max-w-5xl mx-auto rounded-xl overflow-hidden"
+        class="rounded-lg overflow-hidden"
         useNavArrows={true}
       />
-      
-      <!-- Se eliminaron los puntos de navegación que estaban aquí -->
+    </div>
+    <div class="w-1/2 flex items-center">
+      <div class="w-full flex flex-col items-center justify-center">
+        <h2 class="text-5xl leading-tight mb-5" style="font-family: var(--font-heading); font-weight: var(--font-heading-weight);">
+          {title} <span class="flex flex-col items-center">{title2}</span>
+        </h2>
+        
+        <p class="text-base text-gray-700 mb-4" style="font-family: var(--font-body); font-weight: var(--font-body-weight);">
+          Ubicado en el prestigioso sector de San Francisco, PH Astre redefine el concepto de vida urbana en Ciudad de Panamá.
+        </p>
+        
+        <p class="text-base text-gray-700 mb-8" style="font-family: var(--font-body); font-weight: var(--font-body-weight);">
+          Este exclusivo proyecto residencial combina elegancia, funcionalidad y una conexión directa con los puntos más dinámicos de la ciudad.
+        </p>
+        
+        <div>
+          <a 
+            href="#contacto" 
+            class="group inline-flex items-center px-5 py-2 border border-black text-black font-medium rounded-md transition-colors hover:bg-black hover:text-white"
+          >
+            <span>Agendar una visita</span>
+            <svg 
+              class="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path 
+                d="M7 17L17 7M17 7H7M17 7V17" 
+                stroke="currentColor" 
+                stroke-width="2" 
+                stroke-linecap="round" 
+                stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
     </div>
   </div>
-
-  <!-- Las flechas de navegación ahora se manejan directamente desde el componente Carousel -->
 </section>

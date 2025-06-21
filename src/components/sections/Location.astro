@@ -6,7 +6,7 @@ interface Props {
   title?: string;
 }
 
-const { title = "Ubicación" } = Astro.props;
+const { title = "Una ubicación que lo tiene todo" } = Astro.props;
 
 const mapImageFolder = "UBICACION";
 const mapImageName = "Mapa%20Astre.webp";
@@ -14,68 +14,87 @@ const mapImageUrl = getImageUrl(mapImageName, mapImageFolder);
 
 const latitude = 8.988646429787098;
 const longitude = -79.5032962191003;
+
+const locations = [
+  { name: "Multiplaza Mall", id: "multiplaza" },
+  { name: "Centro de Convenciones Atlapa", id: "atlapa" },
+  { name: "Corredor Sur", id: "corredor" },
+  { name: "Sheraton Grand Panamá", id: "sheraton" },
+];
 ---
 
-<section
-  id="ubicacion"
-  class="min-h-screen w-full relative flex flex-col max-w-full overflow-hidden"
->
-  <div class="w-full h-[85vh] md:h-[90vh] flex-grow relative">
-    <div class="absolute inset-0">
-      <button 
-        id="open-map-modal"
-        class="w-full h-full border-0 p-0 m-0 bg-transparent cursor-pointer group"
-        aria-label="Ver mapa ampliado"
-      >
-        <img 
-          src={mapImageUrl} 
-          alt="Mapa de ubicación de Astre" 
-          class="w-full h-full object-cover" 
-          id="map-image"
-        />
-        
-        <!-- Ícono de lupa con signo + -->
-        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white/80 backdrop-blur-sm p-4 rounded-full shadow-lg group-hover:bg-white transition-all duration-300 flex items-center justify-center z-10">
-          <div class="relative w-12 h-12">
-            <!-- Lupa -->
-            <svg class="w-12 h-12" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-            </svg>
-            
-            <!-- Signo + en el centro del círculo de la lupa -->
-            <svg class="w-4 h-4 absolute top-[25%] left-[25%]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-            </svg>
+<section id="ubicacion" class="w-full relative bg-gray-100 overflow-hidden min-h-screen flex items-center">
+  <div class="flex flex-col md:flex-row md:max-w-none w-full">
+      <!-- Información de la ubicación - Lado izquierdo -->
+      <div class="w-full md:w-1/2 py-16 md:py-24 px-4 md:px-8">
+        <div class="md:max-w-xl mx-auto md:mx-0">
+          <h2 class="text-4xl md:text-5xl font-bold mb-6 text-center">
+            {title}
+          </h2>
+          
+          <p class="text-lg mb-8">
+            San Francisco es una de las zonas más codiciadas de Ciudad de Panamá, y PH Astre se sitúa justo en su núcleo. Vive a minutos de destino como:
+          </p>
+          
+          <!-- Lista de lugares cercanos -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+            {locations.map(location => (
+              <div class="flex items-center">
+                <div class="w-8 h-8 rounded-full border border-black flex items-center justify-center mr-3">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M5 13L9 17L19 7" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <span class="text-lg">{location.name}</span>
+              </div>
+            ))}
+          </div>
+          
+          <!-- Botón de ubicación -->
+          <div class="flex justify-center md:justify-start">
+            <a
+              href="https://maps.app.goo.gl/j7CG3XsMig97BgDF6"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="group inline-flex items-center justify-between px-6 py-3 border border-black rounded-md bg-white text-black hover:bg-black hover:text-white transition-colors duration-300">
+              <span class="text-lg mr-4">Ubicación del proyecto</span>
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                class="transition-transform duration-300 group-hover:translate-x-1"
+              >
+                <path
+                  d="M5 12H19M19 12L12 5M19 12L12 19"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"></path>
+              </svg>
+            </a>
           </div>
         </div>
-      </button>
-    </div>
-    <div class="absolute inset-0 flex items-end justify-center pb-12 md:pb-16">
-      <div class="w-full max-w-md px-4 md:px-0">
-        <a
-          href="https://maps.app.goo.gl/j7CG3XsMig97BgDF6"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="group flex items-center justify-between w-full border border-secondary rounded px-6 py-3 bg-primary/90 backdrop-blur-sm text-secondary hover:bg-secondary hover:text-primary transition-colors"
-          style="font-family: var(--font-body); font-weight: var(--font-body-weight);"
-        >
-          <span class="text-lg">Ubicación del proyecto</span>
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            class="transition-transform duration-300 group-hover:rotate-90"
+      </div>
+      
+      <!-- Mapa - Lado derecho -->
+      <div class="w-full md:w-1/2 relative">
+        <div class="h-[300px] md:h-full md:absolute md:inset-0 md:right-0">
+          <button 
+            id="open-map-modal"
+            class="w-full h-full border-0 p-0 m-0 bg-transparent cursor-pointer"
+            aria-label="Ver mapa ampliado"
           >
-            <path
-              d="M7 17L17 7M17 7H7M17 7V17"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"></path>
-          </svg>
-        </a>
+            <img 
+              src={mapImageUrl} 
+              alt="Mapa de ubicación de Astre" 
+              class="w-full h-full object-cover md:object-right-top" 
+              id="map-image"
+              style="margin-right: -1px;"
+            />
+          </button>
+        </div>
       </div>
     </div>
   </div>

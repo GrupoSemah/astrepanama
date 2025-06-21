@@ -6,6 +6,7 @@ import Hero from '@/components/sections/Hero.astro';
 import Amenities from '@/components/sections/Amenities.astro';
 
 import Design from '@/components/sections/Design.astro';
+import Options from '@/components/sections/Options.astro';
 import Apartments from '@/components/sections/Apartments.astro';
 import Location from '@/components/sections/Location.astro';
 import Contact from '@/components/sections/Contact.astro';
@@ -31,8 +32,9 @@ const sectionMapping = {
       <Hero />
     </section>
     
-    <section id={sectionMapping.design.id} class="min-h-screen bg-white p-8">
+    <section id={sectionMapping.design.id} class="min-h-screen bg-white flex flex-col justify-between">
       <Design />
+      <Options />
     </section>
     
     <section id={sectionMapping.apartments.id} class="min-h-screen bg-secondary p-8">

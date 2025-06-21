@@ -1,0 +1,83 @@
+---
+interface Props {
+  title?: string;
+}
+
+const { 
+  title = "Es mucho más que un apartamento"
+} = Astro.props;
+
+// Features data
+const features = [
+  {
+    icon: "/icons/svg/corredor.svg",
+    title: "Acceso directo al corredor sur"
+  },
+  {
+    icon: "/icons/svg/restaurante.svg",
+    title: "Múltiples restaurantes y comercios a su alrededor"
+  },
+  {
+    icon: "/icons/svg/mar.svg",
+    title: "Vista al mar desde cada rincón"
+  },
+  {
+    icon: "/icons/svg/multiplaza.svg",
+    title: "A pasos de Multiplaza y Pacific Center"
+  }
+];
+---
+
+<section class="py-16 bg-white">
+  <!-- Mobile Version -->
+  <div class="md:hidden bg-gray-200 py-8">
+    <div class="container mx-auto">
+      <div class="text-center mb-8 px-4">
+        <img src="/icons/svg/logoastreblack.svg" alt="Astre Logo" class="h-12 mx-auto mb-4" />
+        <h2 class="text-lg" style="font-family: var(--font-heading); font-weight: var(--font-heading-weight);">
+          {title}
+        </h2>
+      </div>
+      
+      <div class="bg-secondary rounded-lg py-6 px-4 mx-4">
+        <div class="grid grid-cols-2 gap-6">
+          {features.map(feature => (
+            <div class="flex flex-col items-center text-center">
+              <div class="rounded-full w-24 h-24 flex items-center justify-center mb-3">
+                <img src={feature.icon} alt={feature.title} class="w-16 h-16" />
+              </div>
+              <p class="text-xs max-w-[120px]" style="font-family: var(--font-body); font-weight: var(--font-body-weight);">
+                {feature.title}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Desktop Version -->
+  <div class="hidden md:block bg-gray-200 py-16">
+    <div class="container mx-auto">
+      <div class="text-center mb-10">
+        <img src="/icons/svg/logoastreblack.svg" alt="Astre Logo" class="h-14 mx-auto mb-4" />
+        <h2 class="text-xl">
+          {title}
+        </h2>
+      </div>
+      
+      <div class="flex bg-secondary rounded-lg justify-center items-start space-x-10 max-w-7xl mx-auto font-body">
+        {features.map(feature => (
+          <div class="flex flex-col items-center text-center w-1/4">
+            <div class="rounded-full w-32 h-32 flex items-center justify-center">
+              <img src={feature.icon} alt={feature.title} class="w-24 h-24" />
+            </div>
+            <p class="text-[13px] max-w-[180px] mb-2">
+              {feature.title}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
