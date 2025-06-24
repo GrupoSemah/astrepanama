@@ -32,8 +32,17 @@ const videoUrl = getImageUrl(videoId, "HERO");
       muted
       loop
       playsinline
+      preload="auto"
       src={videoUrl}
+      poster={imageUrl}
     ></video>
+    
+    <!-- Fallback para dispositivos móviles -->
+    <img 
+      src={imageUrl}
+      alt="Astre Panama" 
+      class="absolute inset-0 w-full h-full object-cover hidden video-fallback" 
+    />
   </div>
   
   <div class="relative z-20 flex flex-col justify-end md:justify-center md:items-center h-screen w-full md:mt-72 pb-52">
@@ -74,12 +83,63 @@ const videoUrl = getImageUrl(videoId, "HERO");
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    // Manejo de reproducción del video
+    const video = document.querySelector('video');
+    const fallbackImg = document.querySelector('.video-fallback');
+    
+    // Función para comprobar si el video puede reproducirse
+    function checkVideoPlayback() {
+      if (video && !video.paused && video.currentTime > 0 && !video.ended) {
+        // El video se está reproduciendo
+        
+      } else {
+        // El video no se reproduce, mostrar imagen de fallback
+        if (fallbackImg) {
+          fallbackImg.classList.remove('hidden');
+        }
+        if (video) {
+          video.style.display = 'none';
+        }
+      }
+    }
+    
+    // Intentar reproducir el video
+    if (video) {
+      const playPromise = video.play();
+      
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            // Reproducción automática exitosa
+            setTimeout(checkVideoPlayback, 1000);
+          })
+          .catch(error => {
+            // Reproducción automática fallida
+            console.error('Error reproduciendo video:', error);
+            if (fallbackImg) {
+              fallbackImg.classList.remove('hidden');
+            }
+            if (video) {
+              video.style.display = 'none';
+            }
+          });
+      }
+    }
+    
+    // Manejo de scroll
     const scrollButton = document.querySelector('a[href="#diseno"]');
     scrollButton?.addEventListener('click', (e) => {
       e.preventDefault();
-      const targetSection = document.getElementById('diseno');
-      if (targetSection) {
-        targetSection.scrollIntoView({ behavior: 'smooth' });
+      
+      const targetElement = document.getElementById('diseno');
+      if (targetElement) {
+        const navbar = document.querySelector('header');
+        const navbarHeight = navbar ? navbar.offsetHeight : 0;
+        
+        window.scrollTo({
+          top: targetElement.offsetTop - navbarHeight,
+          behavior: 'smooth'
+        });
       }
     });
   });
