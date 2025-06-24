@@ -28,45 +28,31 @@ const sectionMapping = {
   <SideMenu isOpen={isMenuOpen} />
   
   <main>
-    <section id={sectionMapping.home.id} class="min-h-screen">
+    <section class="min-h-screen">
       <Hero />
     </section>
     
-    <section id={sectionMapping.design.id} class="min-h-screen bg-white flex flex-col justify-between">
+    <section class="min-h-screen bg-white flex flex-col justify-between">
       <Design />
       <Options />
     </section>
     
-    <section id={sectionMapping.apartments.id} class="min-h-screen bg-secondary p-8">
+    <section class="min-h-screen bg-secondary p-8">
       <Apartments />
     </section>
     
-    <section id={sectionMapping.amenities.id} class="min-h-screen bg-white p-8">
+    <section class="min-h-screen bg-white p-8">
       <Amenities />
     </section>
     
-    <section id={sectionMapping.location.id} class="min-h-screen bg-secondary">
+    <section class="min-h-screen bg-secondary">
       <Location />
     </section>
+    
+    <section>
+      <Contact />
+    </section>
   </main>
-  <Contact />
 </Layout>
 
-<script>
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function(this: HTMLAnchorElement, e: Event) {
-        e.preventDefault();
-        const targetId = this.getAttribute('href')?.substring(1);
-        const targetElement = document.getElementById(targetId || '');
-        
-        if (targetElement) {
-          window.scrollTo({
-            top: targetElement.offsetTop,
-            behavior: 'smooth'
-          });
-        }
-      });
-    });
-  });
-</script>
+
