@@ -9,7 +9,7 @@ interface Props {
 const { title = "Una ubicación que lo tiene todo" } = Astro.props;
 
 const mapImageFolder = "UBICACION";
-const mapImageName = "Mapa%20Astre.webp";
+const mapImageName = "Mapa%20Astre2.webp";
 const mapImageUrl = getImageUrl(mapImageName, mapImageFolder);
 
 const latitude = 8.988646429787098;
@@ -28,11 +28,11 @@ const locations = [
       <!-- Información de la ubicación - Lado izquierdo -->
       <div class="w-full md:w-1/2 py-16 md:py-24 px-4 md:px-8">
         <div class="md:max-w-xl mx-auto md:mx-0">
-          <h2 class="text-4xl md:text-5xl font-bold mb-6 text-center">
+          <h2 class="text-4xl md:text-5xl mb-6 text-center" style="font-family: var(--font-heading); font-weight: var(--font-heading-weight);">
             {title}
           </h2>
           
-          <p class="text-lg mb-8">
+          <p class="text-lg mb-8" style="font-family: var(--font-body); font-weight: var(--font-body-weight);">
             San Francisco es una de las zonas más codiciadas de Ciudad de Panamá, y PH Astre se sitúa justo en su núcleo. Vive a minutos de destino como:
           </p>
           
@@ -45,7 +45,7 @@ const locations = [
                     <path d="M5 13L9 17L19 7" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                   </svg>
                 </div>
-                <span class="text-lg">{location.name}</span>
+                <span class="text-lg" style="font-family: var(--font-body); font-weight: var(--font-body-weight);">{location.name}</span>
               </div>
             ))}
           </div>
@@ -57,7 +57,7 @@ const locations = [
               target="_blank"
               rel="noopener noreferrer"
               class="group inline-flex items-center justify-between px-6 py-3 border border-black rounded-md bg-white text-black hover:bg-black hover:text-white transition-colors duration-300">
-              <span class="text-lg mr-4">Ubicación del proyecto</span>
+              <span class="text-lg mr-4" style="font-family: var(--font-body); font-weight: var(--font-body-weight);">Ubicación del proyecto</span>
               <svg
                 width="20"
                 height="20"

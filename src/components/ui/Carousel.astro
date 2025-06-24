@@ -335,7 +335,6 @@ const {
   document.addEventListener('DOMContentLoaded', () => {
     const carouselElements = document.querySelectorAll('.carousel-container');
     
-    // Crear instancias y guardar referencias
     carouselElements.forEach(carousel => {
       const carouselInstance = new Carousel(carousel as HTMLElement);
       
@@ -346,57 +345,69 @@ const {
       if (carousel.classList.contains('cursor-none')) {
         // Ocultar el cursor nativo
         (carousel as HTMLElement).style.cursor = 'none';
-        
-        // Encontrar el indicador DRAG existente
-        const dragIndicator = carousel.querySelector('.drag-indicator');
-        
-        if (dragIndicator) {
-          // Funciones para manejar la visibilidad del indicador
-          const showDragIndicator = () => {
-            // Mostrar el indicador con una animación suave
-            dragIndicator.classList.add('opacity-100');
-            dragIndicator.classList.remove('opacity-0');
-          };
-          
-          const hideDragIndicator = () => {
-            // Ocultar el indicador con una animación suave
-            dragIndicator.classList.remove('opacity-100');
-            dragIndicator.classList.add('opacity-0');
-          };
-          
-          // Inicialmente ocultar
-          hideDragIndicator();
-          
-          // Agregar listeners de eventos
-          carousel.addEventListener('mouseenter', showDragIndicator);
-          carousel.addEventListener('mouseleave', hideDragIndicator);
-          
-          // Cuando se empieza a arrastrar, ocultar temporalmente
-          carousel.addEventListener('mousedown', () => {
-            hideDragIndicator();
-          });
-          
-          // Cuando se suelta, mostrar nuevamente
-          carousel.addEventListener('mouseup', () => {
-            showDragIndicator();
-          });
-          
-          // Al salir del documento mientras arrastra
-          document.addEventListener('mouseup', () => {
-            if (document.activeElement === carousel || carousel.contains(document.activeElement)) {
-              showDragIndicator();
-            }
-          });
+      }
+      
+      // Añadir soporte para el evento navigate-to-slide
+      carousel.addEventListener('navigate-to-slide', ((e: Event) => {
+        const customEvent = e as CustomEvent<{index: number}>;
+        const carouselInstance = carouselInstances.get(carousel as HTMLElement);
+        if (carouselInstance && typeof customEvent.detail.index === 'number') {
+          carouselInstance.goToSlide(customEvent.detail.index);
         }
+      }) as EventListener);
+      
+      // Encontrar el indicador DRAG existente
+      const dragIndicator = carousel.querySelector('.drag-indicator');
+      
+      if (dragIndicator) {
+        // Funciones para manejar la visibilidad del indicador
+        const showDragIndicator = () => {
+          // Mostrar el indicador con una animación suave
+          dragIndicator.classList.add('opacity-100');
+          dragIndicator.classList.remove('opacity-0');
+        };
+        
+        const hideDragIndicator = () => {
+          // Ocultar el indicador con una animación suave
+          dragIndicator.classList.remove('opacity-100');
+          dragIndicator.classList.add('opacity-0');
+        };
+        
+        // Inicialmente ocultar
+        hideDragIndicator();
+        
+        // Agregar listeners de eventos
+        carousel.addEventListener('mouseenter', showDragIndicator);
+        carousel.addEventListener('mouseleave', hideDragIndicator);
+        
+        // Cuando se empieza a arrastrar, ocultar temporalmente
+        carousel.addEventListener('mousedown', () => {
+          hideDragIndicator();
+        });
+        
+        // Cuando se suelta, mostrar nuevamente
+        carousel.addEventListener('mouseup', () => {
+          showDragIndicator();
+        });
+        
+        // Al salir del documento mientras arrastra
+        document.addEventListener('mouseup', () => {
+          if (document.activeElement === carousel || carousel.contains(document.activeElement)) {
+            showDragIndicator();
+          }
+        });
       }
       
       // Listener para eventos de navegación externa
-      carousel.addEventListener('carousel-goto-slide', (e: Event) => {
-        const customEvent = e as CustomEvent;
+      carousel.addEventListener('carousel-goto-slide', ((e: Event) => {
+        const customEvent = e as CustomEvent<{index: number}>;
         if (customEvent.detail && typeof customEvent.detail.index === 'number') {
-          carouselInstance.goToSlide(customEvent.detail.index);
+          const instance = carouselInstances.get(carousel as HTMLElement);
+          if (instance) {
+            instance.goToSlide(customEvent.detail.index);
+          }
         }
-      });
+      }) as EventListener);
     });
     
     // Conectar los indicadores de carousel externos
