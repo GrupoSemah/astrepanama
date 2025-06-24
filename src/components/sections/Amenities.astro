@@ -141,6 +141,26 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
           >
             {currentAmenity.description}
           </p>
+          
+          <!-- Botones de navegación (movidos al lado izquierdo) -->
+          <div class="carousel-navigation mt-4 flex justify-center gap-6">
+            <button 
+              class="carousel-prev-bottom w-10 h-10 bg-white rounded-full flex items-center justify-center focus:outline-none shadow-md group transition-all duration-200 nav-arrow"
+              aria-label="Anterior imagen"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15 18L9 12L15 6" stroke="#1D3557" class="arrow-path group-hover:stroke-white transition-colors duration-200" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button 
+              class="carousel-next-bottom w-10 h-10 bg-white rounded-full flex items-center justify-center focus:outline-none shadow-md group transition-all duration-200 nav-arrow"
+              aria-label="Siguiente imagen"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M9 6L15 12L9 18" stroke="#1D3557" class="arrow-path group-hover:stroke-white transition-colors duration-200" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
         </div>
 
         <!-- Columna derecha con carousel -->
@@ -149,7 +169,7 @@ const poolImages = imageNames.map(name => getImageUrl(name, imageFolder));
             images={poolImages}
             id="pool-carousel-desktop"
             class="rounded-3xl overflow-hidden aspect-[16/10]"
-            useNavArrows={true}
+            useNavArrows={false}
           />
         </div>
       </div>
