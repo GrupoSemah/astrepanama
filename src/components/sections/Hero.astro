@@ -1,5 +1,5 @@
 ---
-import { getImageUrl, projectFiles } from '@/services/cloudStorage';
+import { getImageUrl, projectFiles } from '@/services/localAssets';
 
 interface Props {
   title1?: string;
@@ -15,11 +15,11 @@ const {
 
 const heroImage = projectFiles.images.hero;
 const heroFolder = "DISENO";
-const imageUrl = getImageUrl(heroImage.id, heroFolder);
+const imageUrl = getImageUrl(heroImage.filename, heroFolder);
 
-// URL del video de hero desde Google Cloud Storage
-const videoId = "Astre%20(Hero%20Header).mp4";
-const videoUrl = getImageUrl(videoId, "HERO");
+// URL del video de hero desde archivos locales
+const videoFileName = "Astre (Hero Header).mp4";
+const videoUrl = getImageUrl(videoFileName, "HERO");
 ---
 
 <section class="relative flex items-start md:items-center justify-end md:justify-center w-full h-screen">

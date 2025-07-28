@@ -1,6 +1,6 @@
 ---
 import Carousel from "../ui/Carousel.astro";
-import { getImageUrl } from '@/services/cloudStorage';
+import { getImageUrl } from '@/services/localAssets';
 
 interface Props {
   title?: string;
@@ -15,12 +15,12 @@ const {
 const imageFolder = "DISENO";
 
 const imageNames = [
-  "Disen%CC%83o_Imagenes-01.webp",
-  "Disen%CC%83o_Imagenes-02.webp",
-  "Disen%CC%83o_Imagenes-03.webp",
-  "Disen%CC%83o_Imagenes-04.webp",
-  "Disen%CC%83o_Imagenes-05.webp",
-  "Disen%CC%83o_Imagenes-06.webp"
+  "Diseno_Imagenes-01.webp",
+  "Diseno_Imagenes-02.webp",
+  "Diseno_Imagenes-03.webp",
+  "Diseno_Imagenes-04.webp",
+  "Diseno_Imagenes-05.webp",
+  "Diseno_Imagenes-06.webp"
 ];
 
 const carouselImages = imageNames.map(name => getImageUrl(name, imageFolder));

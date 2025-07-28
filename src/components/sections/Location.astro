@@ -1,5 +1,5 @@
 ---
-import { getImageUrl } from "@/services/cloudStorage";
+import { getImageUrl } from "@/services/localAssets";
 import MapModal from "@/components/ui/MapModal.astro";
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 const { title = "Una ubicación que lo tiene todo" } = Astro.props;
 
 const mapImageFolder = "UBICACION";
-const mapImageName = "Mapa%20Astre2.webp";
+const mapImageName = "Mapa Astre2.webp";
 const mapImageUrl = getImageUrl(mapImageName, mapImageFolder);
 
 const locations = [

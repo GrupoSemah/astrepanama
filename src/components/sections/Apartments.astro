@@ -1,5 +1,5 @@
 ---
-import { getVideoUrl, getPdfUrl, getImageUrl } from '@/services/cloudStorage';
+import { getVideoUrl, getPdfUrl, getImageUrl } from '@/services/localAssets';
 
 interface Props {
   title?: string;
@@ -8,13 +8,13 @@ interface Props {
 const { title = "Apartamentos" } = Astro.props;
 
 const folderName = "APARTAMENTOS";
-const videoFileName = "Video%20Astre%20(Apto%20Modelo).mp4";
+const videoFileName = "Video Astre (Apto Modelo).mp4";
 const pdfFileName = "Plantas_Astre.pdf";
 
 const videoUrl = getVideoUrl(videoFileName, folderName);
 const pdfUrl = getPdfUrl(pdfFileName, folderName);
 
-const videoPreviewImageId = "Disen%CC%83o_Imagenes-05.webp";
+const videoPreviewImageId = "Diseno_Imagenes-05.webp";
 const videoPreviewUrl = getImageUrl(videoPreviewImageId, "DISENO");
 
 // Datos de los tipos de apartamentos
