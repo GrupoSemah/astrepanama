@@ -4,7 +4,7 @@
 
 ## Apartamentos de lujo en el corazón de San Francisco, Panamá
 
-[![Website](https://img.shields.io/badge/Website-Online-success?style=for-the-badge&logo=vercel)](https://astrepanama.com/)
+[![Website](https://img.shields.io/badge/Website-Online-success?style=for-the-badge)](https://astrepanama.com/)
 [![Lighthouse Score](https://img.shields.io/badge/Lighthouse-100%25-success?style=for-the-badge&logo=lighthouse)](https://pagespeed.web.dev/)
 [![Built with Astro](https://img.shields.io/badge/Built%20with-Astro-purple?style=for-the-badge&logo=astro)](https://astro.build/)
 
@@ -24,7 +24,6 @@
 /
 ├── public/
 │   ├── favicon.svg
-│   ├── _headers        # Configuración de seguridad HTTP para Netlify
 │   ├── manifest.json   # Configuración PWA
 │   ├── robots.txt      # Instrucciones para motores de búsqueda
 │   └── sitemap.xml     # Mapa del sitio para SEO
@@ -38,7 +37,7 @@
 │   │   └── index.astro  # Página principal
 │   └── styles/
 │       └── global.css   # Estilos globales
-├── vercel.json         # Configuración de seguridad para Vercel
+├── nixpacks.toml       # Configuración de despliegue para Dokploy
 └── package.json
 ```
 
@@ -89,7 +88,7 @@ Para más información sobre este exclusivo proyecto residencial:
 
 - **Teléfono**: +507 123-4567
 - **Email**: info@astrepanama.com
-- **Sitio Web**: [astrepanama.vercel.app](https://astrepanama.vercel.app/)
+- **Sitio Web**: [astrepanama.com](https://astrepanama.com/)
 - **Visita nuestra sala de ventas**: Calle 50, San Francisco, Panamá
 
 ---
